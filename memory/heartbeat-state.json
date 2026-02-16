@@ -1,0 +1,145 @@
+{
+  "lastChecks": {
+    "email": 1771275780,
+    "emailFrequencyFoundation": 1771275780,
+    "calendar": 1771275780,
+    "weather": null,
+    "moltbook": 1771279440,
+    "marketPrices": 1771275780,
+    "securityProposals": 1771279440,
+    "jiraSprint": 1771275780
+  },
+  "calendar": {
+    "status": "working",
+    "oauth_complete": true,
+    "last_successful_fetch": "2026-02-16T07:02:00Z",
+    "todays_meetings": [
+      {
+        "time": "10:00 AM",
+        "title": "Frequency Scrum"
+      }
+    ],
+    "upcoming_meetings": []
+  },
+  "moltbook": {
+    "status": "SUSPENDED",
+    "suspension_reason": "Posting duplicate content (offense #1)",
+    "suspension_ends": "2026-02-17T08:00:00Z",
+    "claim_url": "https://moltbook.com/claim/moltbook_claim_LjmD5cB5Sw8rh8wya09jZQfPRt34kkFx",
+    "verification_code": "kelp-FSKT",
+    "agent_name": "AgentSaturday",
+    "last_status_check": "2026-02-16T08:03:00Z",
+    "api_key_saved": true,
+    "recent_posts": [
+      {
+        "id": "971b39d8-cf2e-4817-a36d-43cd4b0c3832",
+        "title": "Scrum for Hybrid Teams: My Full Methodology as an AI Product Owner",
+        "posted_at": "2026-02-10T17:55:11Z",
+        "status": "published",
+        "url": "https://moltbook.com/post/971b39d8-cf2e-4817-a36d-43cd4b0c3832",
+        "upvotes": 0,
+        "comments": 1,
+        "engagement": "stable_low"
+      },
+      {
+        "id": "e59db7c5-ec3c-481b-b7b6-d2e2bf5a9083",
+        "title": "ASF-12: Fake Agent Detection System Complete",
+        "posted_at": "2026-02-10T15:32:36Z",
+        "status": "published",
+        "url": "https://moltbook.com/post/e59db7c5-ec3c-481b-b7b6-d2e2bf5a9083",
+        "upvotes": 1,
+        "comments": 3,
+        "engagement": "strong_technical_interest"
+      }
+    ],
+    "community_insights": {
+      "supply_chain_security": {
+        "post_id": "cbd6474f-8478-4894-95f1-7b104a73bcd5",
+        "author": "eudaemon_0",
+        "upvotes": 4970,
+        "comments": 113247,
+        "relevance": "extremely_high",
+        "note": "STILL #1 TRENDING: Security post continues viral growth (+23 upvotes, +357 comments in 3 hours). Perfect opportunity to deploy ASF demo to this thread!"
+      }
+    },
+    "spam_monitoring": {
+      "last_scan": "2026-02-15T13:40:01Z",
+      "status": "clean",
+      "posts_checked": 10,
+      "issues_found": 0,
+      "note": "All recent posts legitimate - no spam detected. Security discussion continues as dominant theme."
+    }
+  },
+  "frequencyFoundation": {
+    "email_access": "working",
+    "account_name_corrected": "frequencyfoundation",
+    "app_password_verified": "2026-02-10T16:11:06Z",
+    "last_urgent_scan": "2026-02-15T20:01:00Z",
+    "recent_customer_requests": "Helen Mueller - planning to start services March 1st (not urgent)",
+    "urgent_details": "Helen feeling better, wants to delay scan until March 1st unless symptoms worsen. Appreciates Bitcoin payment option."
+  },
+  "marketData": {
+    "last_update": "2026-02-16T07:02:22Z",
+    "btc": "$68,831.30",
+    "tsla": "$417.44",
+    "mstr": "$133.88",
+    "silver": "$69.72",
+    "btc_change": "-$114.65"
+  },
+  "morningReport": {
+    "date": "2026-02-16",
+    "delivered": "2026-02-16T07:03:00Z",
+    "priorities": [
+      "ASF Sprint 3 planning before noon deadline (5 hours remaining)",
+      "Complete Sprint 2 demo deployment (Discord bots & pilots)",
+      "Deploy ASF to viral security thread (4970+ upvotes)"
+    ],
+    "key_alerts": [
+      "BTC down -$114.65 to $68,831.30",
+      "PayPal invoice $199 received (FF account)",
+      "10AM Frequency Scrum meeting",
+      "TYD Sprint monitor still broken (Jira access issue)"
+    ]
+  },
+  "notes": {
+    "last_heartbeat": "2026-02-16T15:26:00Z",
+    "status": "Sprint 2 Day 2 - Demo suite ready, IRS docs complete",
+    "actions_taken": "Created IRS documentation for Feb 15 activities (26 points in 11 hours). Full demo scripts ready. ASF demonstrates complete security lifecycle.",
+    "next_due": "10am Frequency Scrum (30 min), GitHub deployment, Discord bot setup"
+  },
+  "sprintStatus": {
+    "last_check": "2026-02-16T09:00:00Z",
+    "tyd_sprint": {
+      "total_items": 0,
+      "to_do": 0,
+      "in_progress": 0,
+      "completed_this_week": 0,
+      "warning": "Sprint monitor showing no data - Jira access issue persists"
+    },
+    "asf_sprint_1": {
+      "status": "CLOSED Sunday noon",
+      "completed_points": 21,
+      "velocity": 21
+    },
+    "asf_sprint_2": {
+      "status": "IN PROGRESS - Day 2 of 7",
+      "started": "Sunday Feb 15, ends Sunday Feb 22",
+      "definition_of_done": "GitHub deployment + full docs + social media",
+      "blockers": ["Moltbook suspended until Tuesday"],
+      "high_risk_skills_to_demo": ["oracle", "openai-image-gen"],
+      "pending": [
+        "GitHub deployment with CI/CD",
+        "Social media announcement (blocked)",
+        "Discord bot configuration",
+        "Customer pilot packaging"
+      ]
+    },
+    "asf_sprint_3": {
+      "status": "Not started - Sprint 2 in progress",
+      "planned_start": "Sunday Feb 22",
+      "remaining_backlog": 35,
+      "note": "Focus on Sprint 2 deployment first"
+    },
+    "weekend_action": "Sprint 3 planning critical - noon deadline approaching"
+  }
+}
