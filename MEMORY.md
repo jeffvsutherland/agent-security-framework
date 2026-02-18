@@ -36,3 +36,5 @@ Multi-agent team connected via Telegram:
 - All agents successfully connected to Telegram bots
 - OpenClaw upgraded from v2026.2.15 to v2026.2.17 ✅
 - Multi-agent system fully operational post-upgrade
+- Security dramatically improved: Score 90/100 (was 0/100), 0 dangerous skills (was 40)
+- ASF wrapper fixes no longer needed due to OpenClaw v2026.2.17 improvements!
