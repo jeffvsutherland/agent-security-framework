@@ -1,0 +1,47 @@
+# Himalaya Email Configuration
+
+[account.ff]
+display-name = "Frequency Foundation"
+email = "drjeffsutherland@frequencyfoundation.com"
+default = true
+downloads-dir = "/tmp/himalaya"
+
+[account.ff.imap]
+host = "imap.gmail.com"
+port = 993
+encryption = "tls"
+login = "drjeffsutherland@frequencyfoundation.com"
+auth = { type = "password", raw = "tmzm ytqc jsep svxz" }
+
+[account.ff.smtp]
+host = "smtp.gmail.com"
+port = 587
+encryption = "start-tls"
+login = "drjeffsutherland@frequencyfoundation.com"
+auth = { type = "password", raw = "tmzm ytqc jsep svxz" }
+
+[account.ff.envelope]
+list.page-size = 25
+
+[account.scrum]
+display-name = "Jeff Sutherland"
+email = "jeff.sutherland@scruminc.com"
+downloads-dir = "/tmp/himalaya"
+
+[account.scrum.imap]
+host = "imap.gmail.com"
+port = 993
+encryption = "tls"
+login = "jeff.sutherland@scruminc.com"
+auth = { type = "password", raw = "ewxd zesq xloq llwq" }
+
+[account.scrum.smtp]
+host = "smtp.gmail.com"
+port = 587
+encryption = "start-tls"
+login = "jeff.sutherland@scruminc.com"
+auth = { type = "password", raw = "ewxd zesq xloq llwq" }
+
+[account.scrum.envelope]
+list.page-size = 25
+
