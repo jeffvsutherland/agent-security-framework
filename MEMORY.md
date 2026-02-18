@@ -24,6 +24,7 @@ Multi-agent team connected via Telegram:
 ## Key Relationships
 - User: Jeff Sutherland (Telegram ID: 1510884737)
 - Copilot: Set up the multi-agent infrastructure
+- ASF Telegram Group: https://t.me/+ozlK69XU1Yc2ZWYx (for human team members)
 
 ## Important Files
 - `/workspace/agents/product-owner/TELEGRAM-MULTI-AGENT-GUIDE.md` - Complete guide for multi-agent communication
