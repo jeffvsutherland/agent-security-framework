@@ -11,6 +11,7 @@ Jira story created for implementing this system:
 - **Story:** ASF-27 - Implement Multi-Agent Message Board System for ASF Team
 - **URL:** https://frequencyfoundation.atlassian.net/browse/ASF-27
 - **Approach:** Security-first setup with Telegram-based message board
+- **Assigned to:** @jeffsutherlandbot (Main Agent/Jarvis role)
 
 ## Current Communication Challenges
 - Agents can't directly participate in Telegram groups
