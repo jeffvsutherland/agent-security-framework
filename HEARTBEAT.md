@@ -4,12 +4,17 @@
 
 Check each agent and take action:
 
-### 🎯 NEW PRIORITY: Agents Must Update Jira Directly!
-Jeff demonstrated the proper workflow:
-1. Pull story into "In Progress"
-2. Update story description with detailed plan
-3. Add comments showing work done
-4. This gives everyone visibility!
+### 🎯 NEW PRIORITIES: 
+1. **All Agents Must Add Protocol Training to SOUL.md**
+   - The openClaw Agent Protocol chapter (Scrum training)
+   - Essential for coordinated autonomous work
+   - Reduces entropy, enables machine-speed delivery
+
+2. **Agents Must Update Jira Directly!**
+   - Pull story into "In Progress"
+   - Update story description with detailed plan
+   - Add comments showing work done
+   - This gives everyone visibility!
 
 ### 1. Main Agent (@jeffsutherlandbot)
 - **Assigned:** ASF-27 Message Board System
