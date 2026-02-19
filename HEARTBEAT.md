@@ -4,6 +4,13 @@
 
 Check each agent and take action:
 
+### 🎯 NEW PRIORITY: Agents Must Update Jira Directly!
+Jeff demonstrated the proper workflow:
+1. Pull story into "In Progress"
+2. Update story description with detailed plan
+3. Add comments showing work done
+4. This gives everyone visibility!
+
 ### 1. Main Agent (@jeffsutherlandbot)
 - **Assigned:** ASF-27 Message Board System
 - **Check:** Progress on implementation?

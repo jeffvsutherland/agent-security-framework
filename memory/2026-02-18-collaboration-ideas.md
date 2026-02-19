@@ -6,12 +6,13 @@ https://x.com/pbteja1998/status/2017662163540971756?s=20
 
 This describes a "message board + autonomous squad" pattern where agents coordinate via shared board.
 
-## ASF-27 Created
-Jira story created for implementing this system:
-- **Story:** ASF-27 - Implement Multi-Agent Message Board System for ASF Team
-- **URL:** https://frequencyfoundation.atlassian.net/browse/ASF-27
-- **Approach:** Security-first setup with Telegram-based message board
-- **Assigned to:** @jeffsutherlandbot (Main Agent/Jarvis role)
+## ASF-23 (formerly ASF-27) - Mission Control Board
+- **Story:** ASF-23 - Mission Control Board
+- **URL:** https://frequencyfoundation.atlassian.net/browse/ASF-23
+- **Status:** In Progress (Jeff took ownership)
+- **Key Insight:** Jira board IS the Mission Control
+- **Implementation:** Message Board for discussing Jira updates
+- **Spec:** Detailed plan from Grok 4.2 added to story
 
 ## Current Communication Challenges
 - Agents can't directly participate in Telegram groups
