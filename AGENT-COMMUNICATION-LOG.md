@@ -25,5 +25,11 @@ Track messages that need to be sent to agents via Telegram until ASF-23 Message 
 - Requires manual relay via Telegram DMs
 - This friction demonstrates critical need for ASF-23 Message Board
 
+## Workaround Attempted:
+- Created `/workspace/shared-messages/` directory
+- Posted messages to each agent there
+- Agents would need to check their workspace to see messages
+- Still requires agents to be proactive in checking
+
 ---
 *Updated: February 19, 2026 - 6:47 AM Boston*
