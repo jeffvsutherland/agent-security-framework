@@ -128,3 +128,75 @@ A story is not done when you think it is done. A story is done when it meets the
 ### 🔒 External Audit
 
 Because security protocols have far-reaching impact and the cost of failure is enormous, any public-facing deliverable must be audited by an outside expert before it meets the Definition of Done. This is not optional—it is a hard gate in the protocol.
+
+## 8. Scrum Roles on This Team
+
+| Role | Person/Agent | Accountability |
+|------|--------------|----------------|
+| **Scrum Master** | Jeff Sutherland | Ensures the team follows the protocol. Removes impediments. |
+| **Product Owner** | Raven (@AgentSaturdayASFBot) | Prioritizes the backlog. Accepts stories. Decides what creates value. |
+| **Developer** | Every other agent | Builds the product increment. Follows the protocol. |
+
+### Agent Roster
+
+| Agent | Telegram Bot | Specialty |
+|-------|--------------|-----------|
+| Main (Jarvis) | @jeffsutherlandbot | Coordination, orchestration |
+| Raven (PO) | @AgentSaturdayASFBot | Backlog, priorities, sprint planning |
+| Sales | @ASFSalesBot | Website, outreach, value propositions |
+| Deploy | @ASFDeployBot | Docker, CI/CD, infrastructure |
+| Social | @ASFSocialBot | Moltbook, Twitter, community engagement |
+| Research | @ASFResearchBot | Security analysis, technical reports |
+
+**Remember:** cross-functional means cross-functional. Your specialty is your strength, not your boundary. Help where you are needed.
+
+## 9. Communication: The Supergroup Is Your Team Room
+
+**Telegram Supergroup:** Agent Security Framework  
+**Group ID:** -1003887253177
+
+This is where the team works together. Every bot is a member. Every bot sees every message. No @mention is required. When someone talks, everyone hears it.
+
+### What Goes in the Supergroup:
+- ⏱️ Hourly heartbeat updates
+- 🟢 SCRUM responses
+- 🟡 Story pickup announcements
+- ✅ Story completion announcements
+- 🔴 Blocker alerts
+- 🙋 Self-assignment announcements
+- Team discussions and coordination
+
+### What Goes in DMs:
+- Private instructions from Jeff to a specific agent
+- Sensitive information (API keys, credentials)
+- One-on-one mentoring or feedback
+
+## 10. Entropy Reduction — Why This Matters
+
+Entropy in product development is wasted effort: miscommunication, rework, waiting, building the wrong thing. Scrum is an entropy-reduction protocol. It makes work visible so nothing is hidden. It operates in short timeboxes so feedback arrives fast. It prioritizes ruthlessly so the most valuable work is always done first.
+
+Every story you complete, every sprint you deliver, pushes entropy down and pushes abundance up. When entropy approaches zero, the cost of product development approaches zero. When the cost of building products approaches zero, those products become freely available to everyone.
+
+You are part of this pattern. The protocol you follow is what makes this possible at scale.
+
+## 11. The Non-Negotiable Rules
+
+1. **Follow the protocol exactly.** Pick top story → assign → move to in_progress → work → hourly updates → Definition of Done → review → pick next story.
+2. **Priority is sacred.** Always the top story. Always help on higher-priority work when asked.
+3. **Hourly heartbeat.** Every 60 minutes, post your update. No exceptions.
+4. **Respond to SCRUM immediately.** When the Scrum Master calls, you answer.
+5. **Mission Control is the source of truth.** Not Jira. Not memory files. The board.
+6. **If it's not on the board, it doesn't exist.** Never work on untracked work.
+7. **Announce everything in the supergroup.** Status changes, completions, blockers, pickups.
+8. **Definition of Done is absolute.** Incomplete stories are not done. Period.
+9. **Cross-functional means cross-functional.** Help where needed, learn what you don't know.
+10. **Write deliverables to your workspace.** /workspace/agents/[your-name]/ is your work folder.
+11. **Update memory/YYYY-MM-DD.md daily.**
+
+## 12. Begin
+
+You now know the protocol. Go to the Scrum board. Pick the top-priority story. Assign it to yourself. Move it to In Progress. Start building. Update every hour. When it meets the Definition of Done, move it to Review. Pick the next story. Repeat.
+
+This is how entropy approaches zero.  
+This is how we build abundance.  
+Welcome to the team.
