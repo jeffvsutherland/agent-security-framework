@@ -1,0 +1,164 @@
+{
+  "product-owner": {
+    "agent_name": "product-owner",
+    "default_model_tier": "standard",
+    "model_selection": {
+      "rules": [
+        {
+          "pattern": "heartbeat|status|ping",
+          "tier": "heartbeat"
+        },
+        {
+          "pattern": "list|check|simple",
+          "tier": "routine"
+        },
+        {
+          "pattern": "analyze|generate|create",
+          "tier": "standard"
+        },
+        {
+          "pattern": "architect|security|critical",
+          "tier": "complex"
+        }
+      ]
+    },
+    "cost_tracking": true,
+    "batch_window": 300,
+    "cache_ttl": 3600
+  },
+  "main-agent": {
+    "agent_name": "main-agent",
+    "default_model_tier": "standard",
+    "model_selection": {
+      "rules": [
+        {
+          "pattern": "heartbeat|status|ping",
+          "tier": "heartbeat"
+        },
+        {
+          "pattern": "list|check|simple",
+          "tier": "routine"
+        },
+        {
+          "pattern": "analyze|generate|create",
+          "tier": "standard"
+        },
+        {
+          "pattern": "architect|security|critical",
+          "tier": "complex"
+        }
+      ]
+    },
+    "cost_tracking": true,
+    "batch_window": 300,
+    "cache_ttl": 3600
+  },
+  "sales-agent": {
+    "agent_name": "sales-agent",
+    "default_model_tier": "routine",
+    "model_selection": {
+      "rules": [
+        {
+          "pattern": "heartbeat|status|ping",
+          "tier": "heartbeat"
+        },
+        {
+          "pattern": "list|check|simple",
+          "tier": "routine"
+        },
+        {
+          "pattern": "analyze|generate|create",
+          "tier": "standard"
+        },
+        {
+          "pattern": "architect|security|critical",
+          "tier": "complex"
+        }
+      ]
+    },
+    "cost_tracking": true,
+    "batch_window": 300,
+    "cache_ttl": 3600
+  },
+  "deploy-agent": {
+    "agent_name": "deploy-agent",
+    "default_model_tier": "routine",
+    "model_selection": {
+      "rules": [
+        {
+          "pattern": "heartbeat|status|ping",
+          "tier": "heartbeat"
+        },
+        {
+          "pattern": "list|check|simple",
+          "tier": "routine"
+        },
+        {
+          "pattern": "analyze|generate|create",
+          "tier": "standard"
+        },
+        {
+          "pattern": "architect|security|critical",
+          "tier": "complex"
+        }
+      ]
+    },
+    "cost_tracking": true,
+    "batch_window": 300,
+    "cache_ttl": 3600
+  },
+  "research-agent": {
+    "agent_name": "research-agent",
+    "default_model_tier": "standard",
+    "model_selection": {
+      "rules": [
+        {
+          "pattern": "heartbeat|status|ping",
+          "tier": "heartbeat"
+        },
+        {
+          "pattern": "list|check|simple",
+          "tier": "routine"
+        },
+        {
+          "pattern": "analyze|generate|create",
+          "tier": "standard"
+        },
+        {
+          "pattern": "architect|security|critical",
+          "tier": "complex"
+        }
+      ]
+    },
+    "cost_tracking": true,
+    "batch_window": 300,
+    "cache_ttl": 3600
+  },
+  "social-agent": {
+    "agent_name": "social-agent",
+    "default_model_tier": "routine",
+    "model_selection": {
+      "rules": [
+        {
+          "pattern": "heartbeat|status|ping",
+          "tier": "heartbeat"
+        },
+        {
+          "pattern": "list|check|simple",
+          "tier": "routine"
+        },
+        {
+          "pattern": "analyze|generate|create",
+          "tier": "standard"
+        },
+        {
+          "pattern": "architect|security|critical",
+          "tier": "complex"
+        }
+      ]
+    },
+    "cost_tracking": true,
+    "batch_window": 300,
+    "cache_ttl": 3600
+  }
+}

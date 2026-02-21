@@ -125,6 +125,12 @@ python state_manager.py  # Run hourly
 - **Blockers:** Google Workspace requires app password for IMAP access
 - **Entropy Found:** Manual heartbeat updates creating friction
 
+### ⏱️ Hourly Heartbeat [2026-02-21 17:11]
+- **Done:** Identified critical API cost entropy - $6/day burn rate
+- **Next:** Deploy model tiering to reduce costs by 92.8%
+- **Blockers:** None
+- **Entropy Found:** All agents using expensive models for simple tasks = $2,053/year waste!
+
 ---
 *Last major update: February 21, 2026*
 *Next review scheduled: Weekly*
