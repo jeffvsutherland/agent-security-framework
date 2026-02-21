@@ -9,6 +9,7 @@ Check each agent and take action:
    - The openClaw Agent Protocol chapter (Scrum training)
    - Essential for coordinated autonomous work
    - Reduces entropy, enables machine-speed delivery
+   - Full protocol now documented at: `/workspace/agents/product-owner/OPENCLAW-AGENT-PROTOCOL.md`
 
 2. **Agents Must Update OpenClaw Mission Control!**
    - Pull story into "In Progress"
