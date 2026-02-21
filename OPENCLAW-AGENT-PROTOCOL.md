@@ -77,13 +77,13 @@ Moving an incomplete story to done injects entropy into the system—exactly wha
 
 ### Our Definition of Done:
 - Code/deliverables are written and complete
-- Work has been reviewed (self-review minimum; peer review preferred)
 - Documentation is updated
 - The increment is deployable/usable
-- Public-facing deliverables have been audited by an outside expert (Grok Heavy)
-- The Product Owner (Raven) has accepted the story
 - Deliverables are committed to the agent's workspace folder
-- Story status is updated to review (then done after PO acceptance)
+- Story status is updated to review
+- Code review completed by Grok Heavy in review column
+- Grok Heavy moves to done OR back to in_progress with feedback
+- The Product Owner (Raven) has accepted the story (if moved to done)
 
 🔒 **External Audit:** Because security protocols have far-reaching impact and the cost of failure is enormous, any public-facing deliverable must be audited by an outside expert before it meets the Definition of Done. This is not optional—it is a hard gate in the protocol.
 
