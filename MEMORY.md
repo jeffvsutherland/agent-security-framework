@@ -28,6 +28,7 @@ Multi-agent team connected via Telegram:
 
 ## Important Files
 - `/workspace/agents/product-owner/TELEGRAM-MULTI-AGENT-GUIDE.md` - Complete guide for multi-agent communication
+- `/workspace/agents/product-owner/OPENCLAW-AGENT-PROTOCOL.md` - Complete Scrum protocol for autonomous teams
 - Jira config: `/home/node/.jira-config`
 - Jira URL: https://frequencyfoundation.atlassian.net
 - Jira Project: ASF
