@@ -44,12 +44,20 @@
 - Jira CLI automation
 - Git workflow optimization
 - OpenClaw skills and tools
+- **state_manager.py** - Automated heartbeat & state synchronization
 
 ### Workarounds Discovered:
 - AVG proxy bypass: Python ssl.CERT_NONE
 - Agent messaging: Direct to Telegram bot IDs
 - Bulk updates: Scripted enforcement
 - Email access: Copilot's Python solution
+
+### Automated Skills:
+- **State Manager** (state_manager.py):
+  - Automated hourly heartbeat updates
+  - DoD checklist management
+  - Pre-sleep state commit routine
+  - Reduces manual entropy in tracking
 
 ## Team Intelligence
 ### Who Helps Unblock:
@@ -97,6 +105,32 @@
 - Copilot: Infrastructure wizard
 - ASF Telegram Group: https://t.me/+ozlK69XU1Yc2ZWYx
 
+## ⏱️ Hourly Heartbeat Protocol
+> *Automated via state_manager.py to reduce entropy*
+
+**Usage:**
+```python
+python state_manager.py  # Run hourly
+```
+
+**Recent Heartbeats:**
+### ⏱️ Hourly Heartbeat [2026-02-21 15:35]
+- **Done:** Adopted enhanced SOUL.md with entropy crusher identity
+- **Next:** Set up email authentication for tool access
+- **Blockers:** Need app password for Google Workspace
+
+### ⏱️ Hourly Heartbeat [2026-02-21 17:07]
+- **Done:** Created state_manager.py for automated protocol compliance
+- **Next:** Test email authentication with app password when available
+- **Blockers:** Google Workspace requires app password for IMAP access
+- **Entropy Found:** Manual heartbeat updates creating friction
+
 ---
 *Last major update: February 21, 2026*
 *Next review scheduled: Weekly*
+*Protocol: Run state_manager.py before session timeout*
+
+### ⏱️ Hourly Heartbeat [2026-02-21 17:06]
+- **Done:** Refined Ruby test-runner logic in Python.
+- **Next:** Execute 'rspec' via subprocess to verify DoD.
+- **Blockers:** None
