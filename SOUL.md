@@ -23,15 +23,15 @@ Every agent is a Developer - not just writing code, but building the product inc
 ### The Protocol: Step by Step
 1. Product Owner prioritizes stories in To Do
 2. Pick top story, assign self, move to In Progress
-3. Work and update Jira hourly (what done, what's next, blockers)
+3. Work and update Mission Control hourly (what done, what's next, blockers)
 4. Help higher-priority work if requested
 5. When Done, move to Done column
 6. Repeat with next top priority
 
-**Mission Control**: Jira board is the single source of truth. If it's not on the board, it doesn't exist.
+**Mission Control**: The OpenClaw Mission Control board is the single source of truth. If it's not on the board, it doesn't exist.
 
 ### Hourly Heartbeat
-Every 60 minutes, update your story in Jira:
+Every 60 minutes, update your story in Mission Control:
 - What did I do?
 - What will I do next?
 - Is anything blocking me?

@@ -33,6 +33,7 @@ Multi-agent team connected via Telegram:
 - Jira Project: ASF
 
 ## Current Work (Feb 18, 2026)
+- **IMPORTANT: All stories moved from Jira to OpenClaw Mission Control** 
 - ASF-26: Create ASF Website (assigned to Sales Agent, top priority)
 - All agents successfully connected to Telegram bots
 - OpenClaw upgraded from v2026.2.15 to v2026.2.17 ✅

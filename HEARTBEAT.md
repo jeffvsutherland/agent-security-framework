@@ -10,7 +10,7 @@ Check each agent and take action:
    - Essential for coordinated autonomous work
    - Reduces entropy, enables machine-speed delivery
 
-2. **Agents Must Update Jira Directly!**
+2. **Agents Must Update OpenClaw Mission Control!**
    - Pull story into "In Progress"
    - Update story description with detailed plan
    - Add comments showing work done
@@ -20,13 +20,13 @@ Check each agent and take action:
 - **Assigned:** ASF-27 Message Board System
 - **Check:** Progress on implementation?
 - **If idle:** Start ASF-27 or assign from backlog
-- **If working:** Request Jira update
+- **If working:** Request Mission Control update
 
 ### 2. Sales Agent (@ASFSalesBot)  
 - **Assigned:** ASF-26 Website Creation
 - **Check:** Website progress? Google Doc started?
 - **If idle:** Resume ASF-26 (TOP PRIORITY)
-- **If working:** Request hourly Jira comment
+- **If working:** Request hourly Mission Control comment
 - **If done:** Request review for Definition of Done
 
 ### 3. Deploy Agent (@ASFDeployBot)
@@ -56,7 +56,7 @@ Check each agent and take action:
 
 ## 🚨 Alert Triggers:
 - Agent not responding → Escalate
-- No Jira updates in 2 hours → Request status
+- No Mission Control updates in 2 hours → Request status
 - Story blocked → Help resolve
 - Story ready for review → Check Definition of Done
 
