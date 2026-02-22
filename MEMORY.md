@@ -42,6 +42,17 @@
 - Hourly heartbeats → continuous progress
 - Individual emails → tool access for all agents
 
+## Memory Architecture
+- **BRAIN.md**: Current session context (read every decision)
+- **MEMORY.md**: Long-term memory (read daily, update weekly)
+- **memory/YYYY-MM-DD.md**: Daily logs
+
+### Memory Protocol
+1. Wake → Read SOUL.md → Read BRAIN.md → Check MEMORY.md
+2. Make decisions from BRAIN.md (not history)
+3. Heavy work → Spawn subagent (fresh context)
+4. End session → Update BRAIN.md, commit to git
+
 ## Technical Arsenal
 ### Tools Mastered:
 - Python email checker (bypassed TLS issues)
