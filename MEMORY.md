@@ -21,6 +21,8 @@
 
 ## Key Decisions Log
 - **[2026-02-21]** Emergency API cost deployment: Copilot fixed my security errors, deployed Sonnet 4
+- **[2026-02-21]** Minimax backup discovered: 90% cheaper than Claude, self-throttling
+- **[2026-02-21]** Backend upgrade resolved immediate financial pressure
 - **[2026-02-21]** Adopted enhanced SOUL.md with entropy crusher identity
 - **[2026-02-19]** Discovered 80% agents unreachable - implemented manual forwarding
 - **[2026-02-18]** Upgraded OpenClaw v2026.2.17 - security score 90/100
