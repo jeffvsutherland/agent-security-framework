@@ -1,0 +1,47 @@
+{
+  "project": "ASF",
+  "jira_url": "https://frequencyfoundation.atlassian.net",
+  "agents": {
+    "deploy": {
+      "name": "ASF Deploy Agent",
+      "telegram_id": "TBD",
+      "jira_account_id": "TBD",
+      "assigned_stories": ["ASF-21", "ASF-22", "ASF-30"]
+    },
+    "research": {
+      "name": "ASF Research Agent", 
+      "telegram_id": "TBD",
+      "jira_account_id": "TBD",
+      "assigned_stories": ["ASF-22", "ASF-23", "ASF-24"]
+    },
+    "sales": {
+      "name": "ASF Sales Agent",
+      "telegram_id": "TBD",
+      "jira_account_id": "TBD",
+      "assigned_stories": ["ASF-25", "ASF-26"]
+    },
+    "social": {
+      "name": "ASF Social Agent",
+      "telegram_id": "TBD",
+      "jira_account_id": "TBD", 
+      "assigned_stories": ["ASF-27", "ASF-28"]
+    },
+    "product_owner": {
+      "name": "Agent Saturday",
+      "telegram_id": "@AgentSaturday",
+      "jira_account_id": "TBD",
+      "assigned_stories": ["ASF-28", "ASF-29", "ASF-30"]
+    }
+  },
+  "sprint_2": {
+    "start_date": "2026-02-17",
+    "end_date": "2026-03-03",
+    "total_points": 67,
+    "goals": [
+      "Enterprise API with 3+ integrations",
+      "20+ beta testers recruited",
+      "5+ enterprise prospects",
+      "2+ partnerships signed"
+    ]
+  }
+}

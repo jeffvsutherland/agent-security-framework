@@ -1,0 +1,16 @@
+{
+  "scan_date": "2026-02-18T21:13:37.509360",
+  "openclaw_version": "v2026.2.17",
+  "summary": {
+    "total_skills": 52,
+    "safe_skills": 50,
+    "warning_skills": 2,
+    "danger_skills": 0,
+    "security_score": 90
+  },
+  "fixes_status": {
+    "openai-image-gen": "NOT_FIXED",
+    "nano-banana-pro": "NOT_FIXED"
+  },
+  "dangerous_skills": []
+}
