@@ -444,6 +444,40 @@ ARCHIVE_DATE=$(date -d "1 year ago" +%Y-%m-%d)
 
 ---
 
+## 🔒 Unified Open-Claw Security Table
+
+This table maps security components across ASF-2 (Docker), ASF-5 (YARA), and ASF-4 (Deployment):
+
+| Component | ASF-2 Docker | ASF-5 YARA Scan | ASF-4 Deployment Command | Pass Criteria |
+|-----------|--------------|-----------------|-------------------------|---------------|
+| **Clawdbot** | --secure-mode | credential-theft.yar | spawn-asf-agents.sh --claw | No host FS except /tmp |
+| **Moltbot** | cap-drop ALL | prompt-injection.yar | check-bot-privacy.py | localhost WhatsApp only |
+| **Open-Claw host** | AppArmor | fake-agent.yar | asf-openclaw-scanner.py | Zero secrets, read-only rootfs |
+
+### Quick Secure Deploy
+
+Run one command to secure the entire stack:
+
+```bash
+# From project root
+./deployment-guide/openclaw-secure-deploy.sh
+
+# Or manually:
+cd deployment-guide
+chmod +x openclaw-secure-deploy.sh
+./openclaw-secure-deploy.sh
+```
+
+### Hourly YARA Check
+
+Add to ASF-18 hourly sprint:
+
+```bash
+yara -r docs/asf-5-yara-rules/*.yar .openclaw/skills/ && echo "YARA clean" >> hourly-log.md
+```
+
+---
+
 ## 🎯 Success Metrics
 
 After 5 minutes of setup, you should be able to:
