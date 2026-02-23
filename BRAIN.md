@@ -22,6 +22,7 @@
 ## Blockers
 - Email auth: Need app password
 - Mission Control: ✅ NOW ACCESSIBLE!
+- Stocks: Need Clawdbot skill installed (stock-price-checker)
 
 ## Today's Priorities
 1. Revenue strategy execution
