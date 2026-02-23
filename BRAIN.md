@@ -34,6 +34,13 @@
 - Revenue target: $5K→$15K→$25K/month
 - Sprint goal: Monetization
 
+## Morning Report Routine
+Run every morning:
+1. Stocks: yfinance for TSLA, MSTR
+2. Crypto: /workspace/skills/stock-price/crypto_price.py for BTC
+3. Team: Mission Control status
+4. Email: Check if accessible
+
 ## Last Heartbeat
 - Time: See MEMORY.md
 - Status: Running
