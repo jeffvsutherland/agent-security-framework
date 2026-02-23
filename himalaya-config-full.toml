@@ -1,0 +1,157 @@
+# Himalaya Email Configuration for Docker
+# All 6 email accounts configured with App Passwords
+# Updated: 2026-02-23
+
+downloads-dir = "/tmp/himalaya"
+
+# ============================================================
+# Account 1: Frequency Foundation (default)
+# ============================================================
+[accounts.ff]
+email = "drjeffsutherland@frequencyfoundation.com"
+display-name = "Frequency Foundation"
+default = true
+
+backend.type = "imap"
+backend.host = "imap.gmail.com"
+backend.port = 993
+backend.encryption.type = "tls"
+backend.encryption.accept-invalid-certs = true
+backend.login = "drjeffsutherland@frequencyfoundation.com"
+backend.auth.type = "password"
+backend.auth.raw = "tmzmytqcjsepsvxz"
+
+message.send.backend.type = "smtp"
+message.send.backend.host = "smtp.gmail.com"
+message.send.backend.port = 465
+message.send.backend.encryption.type = "tls"
+message.send.backend.encryption.accept-invalid-certs = true
+message.send.backend.login = "drjeffsutherland@frequencyfoundation.com"
+message.send.backend.auth.type = "password"
+message.send.backend.auth.raw = "tmzmytqcjsepsvxz"
+
+# ============================================================
+# Account 2: Scrum Inc
+# ============================================================
+[accounts.scrum]
+email = "jeff.sutherland@scruminc.com"
+display-name = "Jeff Sutherland [Scrum Inc]"
+
+backend.type = "imap"
+backend.host = "imap.gmail.com"
+backend.port = 993
+backend.encryption.type = "tls"
+backend.encryption.accept-invalid-certs = true
+backend.login = "jeff.sutherland@scruminc.com"
+backend.auth.type = "password"
+backend.auth.raw = "ewxdzesqxloqllwq"
+
+message.send.backend.type = "smtp"
+message.send.backend.host = "smtp.gmail.com"
+message.send.backend.port = 465
+message.send.backend.encryption.type = "tls"
+message.send.backend.encryption.accept-invalid-certs = true
+message.send.backend.login = "jeff.sutherland@scruminc.com"
+message.send.backend.auth.type = "password"
+message.send.backend.auth.raw = "ewxdzesqxloqllwq"
+
+# ============================================================
+# Account 3: Jeff Sutherland Gmail
+# ============================================================
+[accounts.gmail]
+email = "jeff.sutherland@gmail.com"
+display-name = "Jeff Sutherland"
+
+backend.type = "imap"
+backend.host = "imap.gmail.com"
+backend.port = 993
+backend.encryption.type = "tls"
+backend.encryption.accept-invalid-certs = true
+backend.login = "jeff.sutherland@gmail.com"
+backend.auth.type = "password"
+backend.auth.raw = "bmepgexdlwidmpbe"
+
+message.send.backend.type = "smtp"
+message.send.backend.host = "smtp.gmail.com"
+message.send.backend.port = 465
+message.send.backend.encryption.type = "tls"
+message.send.backend.encryption.accept-invalid-certs = true
+message.send.backend.login = "jeff.sutherland@gmail.com"
+message.send.backend.auth.type = "password"
+message.send.backend.auth.raw = "bmepgexdlwidmpbe"
+
+# ============================================================
+# Account 4: Dr Jeff Sutherland Gmail
+# ============================================================
+[accounts.drjeff]
+email = "drjeffsutherland@gmail.com"
+display-name = "Dr Jeff Sutherland"
+
+backend.type = "imap"
+backend.host = "imap.gmail.com"
+backend.port = 993
+backend.encryption.type = "tls"
+backend.encryption.accept-invalid-certs = true
+backend.login = "drjeffsutherland@gmail.com"
+backend.auth.type = "password"
+backend.auth.raw = "xwfjdrsrpsxptduk"
+
+message.send.backend.type = "smtp"
+message.send.backend.host = "smtp.gmail.com"
+message.send.backend.port = 465
+message.send.backend.encryption.type = "tls"
+message.send.backend.encryption.accept-invalid-certs = true
+message.send.backend.login = "drjeffsutherland@gmail.com"
+message.send.backend.auth.type = "password"
+message.send.backend.auth.raw = "xwfjdrsrpsxptduk"
+
+# ============================================================
+# Account 5: Agent Saturday (ScrumAI.org)
+# ============================================================
+[accounts.saturday]
+email = "agent.saturday@scrumai.org"
+display-name = "Agent Saturday [ASF Product Owner]"
+
+backend.type = "imap"
+backend.host = "imap.gmail.com"
+backend.port = 993
+backend.encryption.type = "tls"
+backend.encryption.accept-invalid-certs = true
+backend.login = "agent.saturday@scrumai.org"
+backend.auth.type = "password"
+backend.auth.raw = "xmvuxcakcuohtuyk"
+
+message.send.backend.type = "smtp"
+message.send.backend.host = "smtp.gmail.com"
+message.send.backend.port = 465
+message.send.backend.encryption.type = "tls"
+message.send.backend.encryption.accept-invalid-certs = true
+message.send.backend.login = "agent.saturday@scrumai.org"
+message.send.backend.auth.type = "password"
+message.send.backend.auth.raw = "xmvuxcakcuohtuyk"
+
+# ============================================================
+# Account 6: Jeff Sutherland (ScrumAI.org)
+# ============================================================
+[accounts.scrumai]
+email = "jeff.sutherland@scrumai.org"
+display-name = "Jeff Sutherland [ScrumAI]"
+
+backend.type = "imap"
+backend.host = "imap.gmail.com"
+backend.port = 993
+backend.encryption.type = "tls"
+backend.encryption.accept-invalid-certs = true
+backend.login = "jeff.sutherland@scrumai.org"
+backend.auth.type = "password"
+backend.auth.raw = "ihcwmyutrtkqndei"
+
+message.send.backend.type = "smtp"
+message.send.backend.host = "smtp.gmail.com"
+message.send.backend.port = 465
+message.send.backend.encryption.type = "tls"
+message.send.backend.encryption.accept-invalid-certs = true
+message.send.backend.login = "jeff.sutherland@scrumai.org"
+message.send.backend.auth.type = "password"
+message.send.backend.auth.raw = "ihcwmyutrtkqndei"
+
