@@ -1,98 +1,141 @@
-# ASF-3: Clawdbot Node Wrapper - GitHub Publication
+# ASF-3: Node.js Wrapper for GitHub Actions
 
-## 🎯 Story Summary
-**As an** enterprise customer  
-**I want** the Clawdbot node wrapper published on GitHub with enterprise documentation  
-**So that** I can deploy stable multi-node AI agent infrastructure
+## Overview
+This document describes the secure Node.js wrapper setup for GitHub Actions and CI/CD pipelines for OpenClaw Gateway and Mission Control deployments.
 
-## 📊 Business Value
-- **First stable node operation** achieved (2026-02-10)
-- **Critical enterprise capability** - multi-device AI coordination
-- **Open source positioning** - demonstrate enterprise-grade stability
-- **Community contribution** - enable distributed agent deployments
+## Use Cases
+- Secure build/publish for OpenClaw Gateway patches
+- Automated testing on pull requests
+- Provenance attestations for container images
+- Non-root runner execution
 
-## 🔧 Technical Requirements
-
-### Core Deliverables
-- [ ] **Node wrapper source code** published to GitHub
-- [ ] **Stability documentation** - 24h uptime milestone
-- [ ] **Enterprise deployment guide** 
-- [ ] **API documentation** for node coordination
-- [ ] **Security hardening guide** for node networks
-
-### Repository Structure
-```
-clawdbot-node-wrapper/
-├── src/                    # Node wrapper source
-├── docs/                   # Enterprise documentation  
-├── examples/               # Deployment examples
-├── security/               # Security configurations
-├── monitoring/             # Health check scripts
-└── README.md              # Quick start guide
+## Prerequisites
+```bash
+node --version  # v18+
+npm --version   # v9+
 ```
 
-## 📋 Acceptance Criteria
+## Installation
 
-### Must Have
-- [x] **Node stability verified** (24+ hours uptime)
-- [ ] **GitHub repository created** with proper structure
-- [ ] **README with enterprise focus** (setup, security, monitoring)
-- [ ] **API documentation** for node-to-gateway communication
-- [ ] **Security best practices** documented
-- [ ] **Deployment examples** (Docker, bare metal, cloud)
+### Secure npm install
+```bash
+# Use npm ci for deterministic builds
+npm ci
 
-### Should Have  
-- [ ] **Monitoring dashboard** code/config
-- [ ] **Multi-node orchestration** examples
-- [ ] **Performance benchmarks** from stable run
-- [ ] **Troubleshooting guide** based on stability work
-- [ ] **Enterprise contact info** for support
+# Or install with audit
+npm ci --audit
+```
 
-### Could Have
-- [ ] **Helm charts** for Kubernetes deployment
-- [ ] **Terraform modules** for cloud deployment
-- [ ] **Integration examples** with existing enterprise tools
-- [ ] **Cost optimization guide** for multi-node deployments
+## Security Scanning
 
-## 🚀 Enterprise Messaging
+### npm audit
+```bash
+# Run security audit
+npm audit
 
-### Key Points
-- **"First 24-hour stable operation achieved"**
-- **"Production-ready multi-node AI infrastructure"**
-- **"Enterprise-grade monitoring and security"**
-- **"Open source with enterprise support available"**
+# Fix vulnerabilities
+npm audit fix
+```
 
-### Target Audience
-- DevOps teams evaluating AI infrastructure
-- Enterprise architects planning agent deployments
-- Technical decision makers comparing solutions
-- Open source community interested in agent coordination
+### Snyk Integration
+```bash
+# Install Snyk
+npm install -g snyk
 
-## 🔗 Dependencies
-- ASF-2 (Docker templates) - ✅ Complete
-- Node stability verification - ✅ Complete (today)
-- Security documentation from ASF framework
+# Authenticate
+snyk auth
 
-## 📈 Success Metrics
-- GitHub stars/forks within first week
-- Enterprise inquiries generated
-- Community adoption (issues, PRs)
-- Documentation feedback scores
+# Test for vulnerabilities
+snyk test
 
-## 🎬 Demo Script
-1. **Show 24-hour uptime dashboard**
-2. **Demonstrate node coordination** (camera, screen, commands)
-3. **Walk through GitHub repository** structure
-4. **Highlight enterprise security** features
-5. **Show monitoring/alerting** capabilities
+# Monitor for new vulnerabilities
+snyk monitor
+```
 
-## ⏰ Estimated Effort
-**Story Points:** 8  
-**Sprint Goal:** Ready for publication by end of sprint
+## GitHub Actions Example
+
+```yaml
+name: Security Scan
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          
+      - name: Install dependencies
+        run: npm ci --audit
+        
+      - name: Run tests
+        run: npm test
+        
+      - name: Snyk vulnerability scan
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          
+      - name: Build container
+        run: docker build -t openclaw .
+        
+      - name: Run container security scan
+        run: |
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+          aquasec/trivy image openclaw:latest
+```
+
+## Provenance Attestations
+
+### SLSA Compliance
+```yaml
+# Add to your GitHub workflow
+- name: Generate provenance
+  uses: slsa-framework/slsa-github-generator/generic-generator@v1
+  with:
+    artifact_name: openclaw.tar.gz
+    digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+```
+
+## Non-Root Runner
+
+### Dockerfile for non-root
+```dockerfile
+FROM node:18-alpine
+
+# Create non-root user
+RUN addgroup -g 1000 appgroup && \
+    adduser -u 1000 -G appgroup -s /bin/sh -D appuser
+
+# Set ownership
+COPY --chown=appuser:appgroup . /app
+USER appuser
+
+WORKDIR /app
+CMD ["node", "index.js"]
+```
+
+## Environment Variables
+
+| Variable | Description | Required |
+|----------|-------------|----------|
+| NODE_ENV | Production or development | Yes |
+| GITHUB_TOKEN | GitHub API token | For CI |
+| SNYK_TOKEN | Snyk vulnerability scanner | Optional |
+
+## Related Documents
+- [docker-templates/nodejs](../docker-templates/nodejs/)
+- [ASF-4 Deployment Guide](../deployment-guide/)
+- [OpenClaw Protocol](../OPENCLAW-AGENT-PROTOCOL.md)
 
 ---
-
-**Story Priority:** HIGH - Strike while stability is proven  
-**Epic:** Agent Security Framework (ASF)  
-**Labels:** enterprise, github, documentation, stability  
-**Assignee:** AgentSaturday + Jeff Sutherland
+*Last Updated: 2026-02-21*
