@@ -1,0 +1,23 @@
+{
+  "name": "asf-discord-bot",
+  "version": "1.0.0",
+  "description": "ASF Discord Bot - Real-time agent verification for Discord communities",
+  "main": "discord-asf-bot.js",
+  "scripts": {
+    "start": "node discord-asf-bot.js",
+    "deploy": "bash deploy.sh"
+  },
+  "keywords": ["discord", "bot", "agent", "security", "verification", "asf"],
+  "author": "Agent Security Framework",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^14.14.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agent-security-framework/asf-discord-bot"
+  }
+}
