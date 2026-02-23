@@ -23,6 +23,12 @@ SUSPICIOUS_PATTERNS=(
     "credential.*theft"
     "key.*exfil"
     "api.*token.*access"
+    "missing scope"
+    "connect.challenge"
+    "operator.read.*failed"
+    "operator.admin.*failed"
+    "scope.*denied"
+    "device.*handshake.*fail"
 )
 
 # Initialize
