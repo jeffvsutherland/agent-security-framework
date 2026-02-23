@@ -20,9 +20,9 @@
 - REVIEW: 4 stories
 
 ## Blockers
-- Email auth: Need app password
+- Email: ✅ NOW ACCESSIBLE via check-email.py
 - Mission Control: ✅ NOW ACCESSIBLE!
-- Stocks: Need Clawdbot skill installed (stock-price-checker)
+- Stocks: ✅ Can check via yfinance
 
 ## Today's Priorities
 1. Revenue strategy execution
@@ -39,7 +39,7 @@ Run every morning:
 1. Stocks: yfinance for TSLA, MSTR
 2. Crypto: /workspace/skills/stock-price/crypto_price.py for BTC
 3. Team: Mission Control status
-4. Email: Check if accessible
+4. Email: python3 /workspace/check-email.py scrum --count 5
 
 ## Last Heartbeat
 - Time: See MEMORY.md
