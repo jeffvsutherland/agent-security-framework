@@ -249,3 +249,30 @@ These YARA rules are part of the Agent Security Framework and are released under
 ---
 
 **Remember**: Security is a continuous process. Keep your rules updated and scan regularly!
+
+## Security Hardening Checklist
+
+- [x] Git ignore test samples and IOCs
+- [x] Rules compiled and validated
+- [ ] Integration into skill install flow
+- [ ] Daily cron/launchd scanning enabled
+- [ ] Weekly rule rotation schedule
+
+## Weekly Rule Update Process
+
+```bash
+# Every Monday - Pull latest IOCs and update rules
+cd ~/clawd/agent-security-framework
+git pull origin main
+yara -c docs/asf-5-yara-rules/*.yara
+# Test against samples
+# Deploy to production
+```
+
+## Integration
+
+See [DOCKER-INTEGRATION.md](./DOCKER-INTEGRATION.md) for:
+- Docker volume mounts
+- Skill install hooks
+- Daily cron scanning
+- macOS LaunchAgent setup

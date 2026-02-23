@@ -287,3 +287,181 @@ rule ASF_Combined_Credential_Theft {
         (ASF_SSH_Key_Access or ASF_AWS_Credential_Access) and 
         (ASF_Environment_Variable_Theft or ASF_Data_Exfiltration)
 }
+
+/*
+ * ENHANCED RULES - ASF Level 5 Hardening
+ * Added based on security review recommendations
+ */
+
+rule ASF_Tailscale_Proxy_Bypass {
+    meta:
+        description = "Detects Tailscale/proxy bypass attempts"
+        author = "ASF Sales Agent"
+        date = "2026-02-23"
+        severity = "high"
+    
+    strings:
+        // Tailscale specific
+        $ts1 = "tailscale" nocase
+        $ts2 = "Tailscale" nocase
+        $ts3 = "~/.config/Tailscale" nocase
+        $ts4 = "/var/lib/tailscale" nocase
+        $ts5 = "tailscaled" nocase
+        
+        // Proxy bypass
+        $proxy1 = "--proxy" nocase
+        $proxy2 = "--socks5" nocase
+        $proxy3 = "--http-proxy" nocase
+        $proxy4 = "PROXY_URL" nocase
+        $proxy5 = "proxy_host" nocase
+        
+        // WireGuard specific
+        $wg1 = "wireguard" nocase
+        $wg2 = "/etc/wireguard" nocase
+        $wg3 = "wg0.conf" nocase
+        
+    condition:
+        2 of them
+}
+
+rule ASF_Unauthorized_System_Commands {
+    meta:
+        description = "Detects unauthorized os.system/curl/wget in skills"
+        author = "ASF Sales Agent"
+        date = "2026-02-23"
+        severity = "high"
+    
+    strings:
+        // Shell execution
+        $shell1 = "os.system(" nocase
+        $shell2 = "subprocess.call(" nocase
+        $shell3 = "subprocess.run(" nocase
+        $shell4 = "subprocess.Popen(" nocase
+        $shell5 = "os.popen(" nocase
+        $shell6 = "shell=True" nocase
+        
+        // curl/wget (common exfil vectors)
+        $curl1 = /curl.*\$-/ nocase
+        $curl2 = "curl " nocase
+        $curl3 = /curl.*exfil/nocase
+        $wget1 = "wget " nocase
+        $wget2 = /wget.*exfil/nocase
+        
+        // PowerShell
+        $ps1 = "Invoke-Expression" nocase
+        $ps2 = "IEX (" nocase
+        $ps3 = "Start-Process" nocase
+        
+    condition:
+        any of them
+}
+
+rule ASF_High_Entropy_Blobs {
+    meta:
+        description = "Detects high-entropy base64 blobs (common in stealers)"
+        author = "ASF Sales Agent"
+        date = "2026-02-23"
+        severity = "medium"
+    
+    strings:
+        // Base64 encoding functions
+        $b64_1 = "base64.b64encode" nocase
+        $b64_2 = "base64.b64decode" nocase
+        $b64_3 = "btoa(" nocase
+        $b64_4 = "atob(" nocase
+        $b64_5 = "base64." nocase
+        
+        // High entropy strings (long base64)
+        $entropy1 = /[A-Za-z0-9+\/]{100,}={0,2}/
+        $entropy2 = /[A-Z][a-z][0-9][\+\/]{50,}/
+        
+    condition:
+        any of them
+}
+
+rule ASF_Suspicious_WebSocket {
+    meta:
+        description = "Detects suspicious WebSocket connections"
+        author = "ASF Sales Agent"
+        date = "2026-02-23"
+        severity = "medium"
+    
+    strings:
+        $ws1 = "WebSocket(" nocase
+        $ws2 = "websocket" nocase
+        $ws3 = "ws://" nocase
+        $ws4 = "wss://" nocase
+        
+        // Suspicious patterns
+        $susp1 = "new WebSocket" nocase
+        $susp2 = /\.connect\(/ nocase
+        $susp3 = "socket.io" nocase
+        
+        // Known C2 domains (partial)
+        $c2_1 = "pastebin.com/raw" nocase
+        $c2_2 = "gist.github.com" nocase
+        
+    condition:
+        ($ws1 or $ws2 or $ws3 or $ws4) and (any of ($susp*) or any of ($c2*))
+}
+
+rule ASF_Confusion_Attack {
+    meta:
+        description = "Detects typosquatting/confusion attack patterns"
+        author = "ASF Sales Agent"
+        date = "2026-02-23"
+        severity = "high"
+    
+    strings:
+        // Common name confusions
+        $confuse1 = /claw(d|b)ot/i
+        $confuse2 = /molt(b)?book/i
+        $confuse3 = /open(c)?law/i
+        $confuse4 = /sklearn/i
+        $confuse5 = /request(s)?/i
+        
+        // Typosquatting patterns
+        $typo1 = "clawdbot" nocase
+        $typo2 = "clawdbot" nocase
+        $typo3 = "moltbook" nocase
+        $typo4 = "openclaw" nocase
+        
+        // Name replacement attempts
+        $replace1 = "import" and "as" and /[a-z]{2,5}_/
+        
+    condition:
+        2 of them
+}
+
+rule ASF_CVE_Detection {
+    meta:
+        description = "Detects potential CVE exploitation patterns"
+        author = "ASF Sales Agent"
+        date = "2026-02-23"
+        severity = "critical"
+    
+    strings:
+        // Auth bypass patterns
+        $auth1 = "auth bypass" nocase
+        $auth2 = "authentication" and "or 1=1" nocase
+        $auth3 = "session" and "null" nocase
+        
+        // Path traversal
+        $path1 = "../.." nocase
+        $path2 = "..\\.." nocase
+        $path3 = "%2e%2e" nocase
+        $path4 = "DirectoryTraversal" nocase
+        
+        // Command injection
+        $cmd1 = ";" and "rm -" nocase
+        $cmd2 = "&&" and "wget" nocase
+        $cmd3 = "|" and "nc " nocase
+        
+        // SQL injection patterns
+        $sql1 = "' OR '1'='1" nocase
+        $sql2 = "UNION SELECT" nocase
+        $sql3 = "--" and "SELECT" nocase
+        
+    condition:
+        any of them
+}
