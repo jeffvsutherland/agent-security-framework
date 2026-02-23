@@ -11,8 +11,13 @@
 | Agent | Task | Status |
 |-------|------|--------|
 | Sales | ASF-26 Website | In Progress |
-| Main | ASF-27 Message Board | In Progress |
-| Others | Available | Awaiting assignment |
+| Team | 5 stories in progress | Active |
+| Review | 4 stories awaiting | PO acceptance |
+
+## Team Metrics
+- DONE: 16 stories
+- IN_PROGRESS: 5 stories
+- REVIEW: 4 stories
 
 ## Blockers
 - Email auth: Need app password
