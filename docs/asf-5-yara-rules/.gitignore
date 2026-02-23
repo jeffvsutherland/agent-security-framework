@@ -1,0 +1,14 @@
+# YARA Rules Test Samples
+# Do NOT commit real malicious samples - use benign test files only
+
+# Test samples (use for validation only)
+test_samples/
+*.malicious
+*.infected
+
+# Compiled rules
+*.yarc
+
+# Sensitive IOCs (keep separate, never commit real IOCs)
+iocs/
+private/
