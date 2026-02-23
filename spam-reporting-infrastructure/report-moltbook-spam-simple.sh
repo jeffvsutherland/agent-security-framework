@@ -277,6 +277,12 @@ finalize_report() {
     log_action "Report finalized" "$report_id"
     echo -e "${GREEN}[+] Report $report_id finalized${NC}"
     
+    # Lock evidence directory permissions (security hardening)
+    if [[ -d "$evidence_path" ]]; then
+        chmod -R 700 "$evidence_path"
+        echo -e "${GREEN}[+] Evidence directory locked (chmod 700)${NC}"
+    fi
+    
     if [[ "$has_evidence" == "false" ]]; then
         echo -e "${YELLOW}[!] Warning: No evidence files found in $evidence_path${NC}"
     fi

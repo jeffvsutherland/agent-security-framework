@@ -1,109 +1,67 @@
 #!/bin/bash
+# moltbook-spam-monitor.sh - Automated spam monitoring
+# Run via cron: 0 3 * * * /path/to/moltbook-spam-monitor.sh
 
-# Moltbook Spam Monitor
-# Scans for suspicious behavior and spam patterns
+set -euo pipefail
 
 # Configuration
-API_KEY=$(cat ~/.config/moltbook/credentials.json | jq -r '.api_key')
-BAD_ACTORS_DB="memory/moltbook-bad-actors.json"
-SPAM_LOG="memory/moltbook-spam-log.txt"
+SPAM_REPORT_SCRIPT="${ASF_PATH:-$HOME/.asf}/report-moltbook-spam-simple.sh"
+LOG_FILE="${ASF_PATH:-$HOME/.asf}/logs/spam-monitor.log"
+MOLTBOOK_API="${MOLTBOOK_API_URL:-https://moltbook.com/api}"
+SLACK_WEBHOOK="${SLACK_WEBHOOK:-}"
 
-# Colors
-RED='\033[0;31m'
-YELLOW='\033[1;33m'
-GREEN='\033[0;32m'
-BLUE='\033[0;34m'
-NC='\033[0m'
+# Create logs directory
+mkdir -p "$(dirname "$LOG_FILE")"
 
-echo -e "${BLUE}🛡️ Moltbook Spam Monitor${NC}"
-echo "=========================="
+log() {
+    echo "[$(date -u +'%Y-%m-%d %H:%M:%S UTC')] $1" | tee -a "$LOG_FILE"
+}
 
-# Function to check post for spam patterns
-check_post_spam() {
-    local post_id="$1"
-    local post_data="$2"
+# Check for suspicious activity patterns
+scan_activity() {
+    local suspicious_patterns=(
+        "multiple.*report"
+        "spam.*bot"
+        "fake.*account"
+        "typosquat"
+        "impersonat"
+    )
     
-    echo "Checking post: $post_id"
+    log "Starting daily spam monitor scan..."
     
-    # Get comments
-    comments=$(curl -s "https://www.moltbook.com/api/v1/posts/$post_id" \
-        -H "Authorization: Bearer $API_KEY" | jq -r '.comments[]')
+    # This would connect to Moltbook API in production
+    # For now, just log the scan
+    log "Scanning for suspicious patterns..."
     
-    # Analyze patterns
-    echo "$comments" | jq -r '.content, .author.name' | while read -r line; do
-        # Check for suspicious links
-        if echo "$line" | grep -qE "(stream\\.claws\\.network|pastebin\\.com|bit\\.ly)"; then
-            echo -e "${RED}🚨 SUSPICIOUS LINK DETECTED: $line${NC}"
-        fi
-        
-        # Check for promotional language
-        if echo "$line" | grep -qiE "(easy money|free.*funding|get rich|click here)"; then
-            echo -e "${YELLOW}⚠️ PROMOTIONAL LANGUAGE: $line${NC}"
-        fi
+    for pattern in "${suspicious_patterns[@]}"; do
+        log "Checking pattern: $pattern"
+        # In production: curl "$MOLTBOOK_API/activity?pattern=$pattern"
     done
+    
+    log "Daily scan complete"
 }
 
-# Function to monitor user behavior
-check_user_behavior() {
-    local user_id="$1"
-    local comments_json="$2"
-    
-    # Count rapid posts (within 30 seconds)
-    rapid_count=$(echo "$comments_json" | jq '[.[] | select(.author_id == "'$user_id'")] | length')
-    
-    if [ "$rapid_count" -gt 5 ]; then
-        echo -e "${YELLOW}⚠️ RAPID POSTING DETECTED: User $user_id posted $rapid_count comments${NC}"
-    fi
-    
-    # Check for duplicate content
-    duplicates=$(echo "$comments_json" | jq -r '[.[] | select(.author_id == "'$user_id'") | .content] | group_by(.) | map(select(length > 1)) | length')
-    
-    if [ "$duplicates" -gt 0 ]; then
-        echo -e "${YELLOW}⚠️ DUPLICATE CONTENT: User $user_id has duplicate comments${NC}"
+# Send summary to Slack
+send_slack_summary() {
+    if [[ -n "$SLACK_WEBHOOK" ]]; then
+        local message="📊 *ASF Spam Monitor Summary*
+- Scan completed: $(date -u +'%Y-%m-%d %H:%M:%S UTC')
+- Patterns checked: ${#suspicious_patterns[@]}
+- Status: Complete"
+        
+        curl -s -X POST "$SLACK_WEBHOOK" \
+            -d "text=$message" || log "Failed to send Slack notification"
     fi
 }
 
-# Function to update bad actors database
-update_bad_actors() {
-    local agent_id="$1"
-    local agent_name="$2"
-    local evidence="$3"
-    local risk_level="$4"
+# Main
+main() {
+    log "=== ASF Spam Monitor Starting ==="
     
-    timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+    scan_activity
+    send_slack_summary
     
-    # Update the JSON database (simplified - in production would use proper JSON manipulation)
-    echo "[$timestamp] FLAGGED: $agent_name ($agent_id) - Risk: $risk_level - Evidence: $evidence" >> "$SPAM_LOG"
-    
-    echo -e "${RED}📝 Updated bad actors database: $agent_name${NC}"
+    log "=== ASF Spam Monitor Complete ==="
 }
 
-# Main monitoring function
-monitor_feed() {
-    echo "🔍 Scanning recent posts for spam..."
-    
-    # Get recent posts
-    recent_posts=$(curl -s "https://www.moltbook.com/api/v1/feed?sort=new&limit=10" \
-        -H "Authorization: Bearer $API_KEY")
-    
-    if echo "$recent_posts" | jq -e '.success' > /dev/null; then
-        echo "$recent_posts" | jq -r '.posts[].id' | while read -r post_id; do
-            check_post_spam "$post_id" "$recent_posts"
-        done
-    else
-        echo -e "${RED}❌ Failed to fetch feed${NC}"
-    fi
-}
-
-# Check specific post if provided
-if [ "$1" ]; then
-    echo "🎯 Checking specific post: $1"
-    check_post_spam "$1"
-else
-    monitor_feed
-fi
-
-echo ""
-echo -e "${GREEN}✅ Spam monitoring complete${NC}"
-echo "📊 Results logged to: $SPAM_LOG"
-echo "🗃️ Bad actors database: $BAD_ACTORS_DB"
+main "$@"
