@@ -34,6 +34,13 @@
 - Revenue target: $5K→$15K→$25K/month
 - Sprint goal: Monetization
 
+## Available Skills
+- find-skills: Search 200K+ skills
+- mcporter: Build MCP bridges
+- subagent-driven-development: Delegate to subagents
+- using-superpowers: Maximize agent capabilities
+- Command: npx clawhub search/inspect/list
+
 ## Morning Report Routine
 Run every morning:
 1. Stocks: yfinance for TSLA, MSTR
