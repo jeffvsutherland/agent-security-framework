@@ -22,6 +22,12 @@ Things like:
 ### SSH
 - home-server → 192.168.1.100, user: admin
 
+### GitHub
+- **Token:** [TOKEN_REDACTED]
+- **Repo:** https://github.com/jeffvsutherland/agent-security-framework
+- **Usage:** Push ASF stories to GitHub for Grok Heavy review
+- **Load command:** source ~/clawd/.env
+
 ### TTS
 - Preferred voice: "Nova" (warm, slightly British)
 - Default speaker: Kitchen HomePod
