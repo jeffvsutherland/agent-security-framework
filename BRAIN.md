@@ -47,7 +47,8 @@ Run every morning:
 2. Crypto: /workspace/skills/stock-price/crypto_price.py for BTC
 3. Team: Mission Control status
 4. Email: python3 /workspace/check-email.py scrum --count 5
-5. Moltbook: Check for interesting posts/community activity
+5. Calendar: python3 /workspace/check-calendar.py
+6. Moltbook: Check for interesting posts/community activity
 
 ## Last Heartbeat
 - Time: See MEMORY.md
