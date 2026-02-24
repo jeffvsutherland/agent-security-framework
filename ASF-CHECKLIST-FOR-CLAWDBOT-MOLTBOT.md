@@ -1,102 +1,135 @@
 # ASF Checklist for Clawdbot-Moltbot-Open-Claw
 
-## Quick Start - Secure Your Stack in 5 Minutes
+## Quick Start: Secure Your Stack in 5 Minutes
 
 ```bash
-# One-command full secure deploy
+# 1. Clone the repo
 git clone https://github.com/jeffvsutherland/agent-security-framework.git
 cd agent-security-framework
-./deployment-guide/openclaw-secure-deploy.sh
+
+# 2. Run quick setup
+./deployment-guide/asf-quick-setup.sh
+
+# 3. Secure deploy
+./openclaw-secure-deploy.sh
 ```
 
 ## Component Mapping
 
-| Clawdbot/Moltbot/Open-Claw Component | ASF Story | Tool/Script | Priority |
-|--------------------------------------|-----------|-------------|----------|
-| **Docker Containers** | ASF-2 | `docker-templates/` | 🔴 Critical |
-| **Spam Detection** | ASF-22 | `security-tools/moltbook-spam-monitor.sh` | 🔴 Critical |
-| **Fake Agent Detection** | ASF-12 | `security-tools/fake-agent-detector.sh` | 🔴 Critical |
-| **Website (scrumai.org)** | ASF-26 | `docs/asf-26-website/` | 🟠 High |
-| **Enterprise Integration** | ASF-20 | `ASF-ENTERPRISE-*.md` | 🟡 Medium |
-| **YARA Security Scanning** | ASF-5 | `docs/asf-5-yara-rules/` | 🔴 Critical |
-| **Port Scan Protection** | ASF-9 | `security-tools/port-scan-detector.sh` | 🟠 High |
-| **Infrastructure Security** | ASF-11 | `security-tools/infrastructure-security-check.sh` | 🟠 High |
+### Clawdbot (WhatsApp Bridge)
+| Risk | ASF Story/Tool | Status |
+|------|----------------|--------|
+| WhatsApp API keys exposed | ASF-2 Docker | ✅ |
+| Unauthorized access | ASF-5 YARA | 📋 |
+| Fake agent injection | fake-agent-detector.sh | ✅ |
+| Port scanning | port-scan-detector.sh | ✅ |
+| Secret leakage | trufflehog in CI | 📋 |
 
-## Deployment Order (Recommended)
+### Moltbot (PC Control)
+| Risk | ASF Story/Tool | Status |
+|------|----------------|--------|
+| Voice stack security | ASF-2 Docker | ✅ |
+| Spam from bot | ASF-22 Spam Monitor | ✅ |
+| Malicious skills | ASF-5 YARA | 📋 |
+| Discord/Telegram leaks | infrastructure-security-check.sh | ✅ |
+| Unauthorized execution | fake-agent-detector.sh | ✅ |
 
-### Phase 1: Core Security (Day 1)
-1. **Docker Hardening** - Run secure Docker templates
-   ```bash
-   cd docker-templates
-   python3 docker_setup_agentfriday.py --secure-mode
-   ```
+### Open-Claw (Host)
+| Risk | ASF Story/Tool | Status |
+|------|----------------|--------|
+| Host compromise | ASF-2 Docker | ✅ |
+| Network isolation | port-scan-detector.sh | ✅ |
+| Privilege escalation | ASF-18 Code Review | ✅ |
+| Configuration drift | asf-quick-setup.sh | ✅ |
+| Credential theft | ASF-5 YARA | 📋 |
 
-2. **Fake Agent Detection** - Block impersonators
-   ```bash
-   ./security-tools/fake-agent-detector.sh --scan .
-   ```
+## Deployment Order
 
-3. **YARA Scanning** - Detect malicious skills
-   ```bash
-   yara -r docs/asf-5-yara-rules/*.yar .
-   ```
+### Phase 1: Foundation (Day 1)
+1. ✅ ASF-2: Docker templates deployed
+2. ✅ ASF-4: Quick setup tested
+3. ✅ ASF-18: Code review process in place
 
-### Phase 2: Monitoring (Day 2)
-4. **Spam Monitoring** - Real-time detection
-   ```bash
-   ./security-tools/moltbook-spam-monitor.sh &
-   ```
+### Phase 2: Protection (Day 2)
+1. 📋 ASF-5: YARA rules implemented
+2. ✅ ASF-22: Spam monitoring active
+3. ✅ ASF-24: Bad actor database running
 
-5. **Port Scan Protection** - Block reconnaissance
-   ```bash
-   ./security-tools/port-scan-detector.sh
-   ```
-
-### Phase 3: Enterprise (Day 3+)
-6. **Website Hardening** - Secure public-facing site
-   - See `docs/asf-26-website/SECURITY-HARDENING.md`
-
-7. **Enterprise Integration** - SSO, RBAC, logging
-   - See `ASF-ENTERPRISE-INTEGRATION-GUIDE.md`
+### Phase 3: Hardening (Day 3)
+1. 📋 ASF-26: Website security configured
+2. ✅ ASF-20: Enterprise integration ready
+3. 🔄 Testing & validation
 
 ## Security Checklist
 
-- [ ] Docker containers run as non-root
-- [ ] Containers have `--cap-drop ALL`
-- [ ] Read-only root filesystem enabled
-- [ ] No privileged containers
-- [ ] YARA rules scan all new skills
-- [ ] Spam monitoring active
-- [ ] Fake agent detection running
-- [ ] Port scan protection enabled
-- [ ] Secrets managed via Vault or Docker secrets
-- [ ] Logs forwarded to central logging
-- [ ] HTTPS enforced on all web interfaces
-- [ ] RBAC configured for admin access
+### Pre-Deploy
+- [ ] GitHub tokens rotated
+- [ ] Docker secrets configured
+- [ ] Network isolation verified
+- [ ] Backup tested
 
-## Quick Verification
+### Post-Deploy
+- [ ] All services healthy
+- [ ] Logging to central system
+- [ ] Alerts configured
+- [ ] Run asf-openclaw-scanner.py
 
+### Daily Operations
+- [ ] Hourly security check (via ASF-18)
+- [ ] YARA scan of new skills
+- [ ] Review spam reports
+- [ ] Check infrastructure logs
+
+### Weekly
+- [ ] Update Docker images
+- [ ] Rotate credentials
+- [ ] Review false positives
+- [ ] Update YARA rules
+
+## One-Command Operations
+
+### Full Security Scan
 ```bash
-# Run full security gate
-./asf-security-gate.sh .
-
-# Check Docker security
-docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
-  aquasec/trivy config .
-
-# Verify no secrets
-trufflehog filesystem .
+./security-tools/infrastructure-security-check.sh
 ```
 
-## Related Documents
+### YARA Scan
+```bash
+yara -r docs/asf-5-yara-rules/*.yar ~/.asf/skills/
+```
 
-| Document | Description |
-|----------|-------------|
-| [deployment-guide/README.md](./deployment-guide/README.md) | Full deployment guide |
-| [ASF-18-SCRUM-PROCESS.md](./ASF-18-SCRUM-PROCESS.md) | Security review process |
-| [docs/asf-5-yara-rules/](./docs/asf-5-yara-rules/) | YARA detection rules |
-| [spam-reporting-infrastructure/](./spam-reporting-infrastructure/) | Spam/bad actor tracking |
+### Spam Detection
+```bash
+./security-tools/moltbook-spam-monitor.sh
+```
+
+### Agent Health
+```bash
+python3 deployment-guide/asf-openclaw-scanner.py
+```
+
+## Emergency Response
+
+### If Compromised
+1. Isolate container: `docker network disconnect`
+2. Preserve evidence: `cp -r ~/.asf ~/asf-backup-$(date)`
+3. Rotate all credentials
+4. Review logs: `~/asf-backup-*/logs/`
+5. Notify via configured webhooks
+
+### Contact
+- Security issues: See RESPONSIBLE_DISCLOSURE.md
+- Enterprise support: ASF-20 integration docs
+
+## Related Documentation
+
+| Document | Purpose |
+|----------|---------|
+| ASF-SCRUM-PROTOCOL.md | Team process |
+| deployment-guide/README.md | Deployment |
+| ASF-18-SCRUM-PROCESS.md | Code review |
+| ASF-ENTERPRISE-INTEGRATION-GUIDE.md | Enterprise |
 
 ---
-*Last Updated: 2026-02-23*
-*For Clawdbot-Moltbot-Open-Claw deployment*
+**Last Updated:** February 2026
+**Version:** 1.0.0

@@ -1,55 +1,105 @@
-# ASF-26: Agent Security Framework Website
+# ASF-26: Website Security
 
 ## Overview
-The ASF website at scrumai.org/agentsecurityframework serves as the public-facing portal for the Agent Security Framework.
+ASF-26 provides security hardening for web interfaces, dashboards, and public-facing websites used by the ASF stack.
 
 ## Threat Model
 
-### Who might attack?
-- Malicious actors trying to probe for vulnerabilities
-- Fake agents attempting to impersonate legitimate services
-- Spammers/abusers targeting the registration or contact forms
-- Competitors scraping content
+### Who attacks websites?
+- Bot networks scanning for vulnerabilities
+- Credential stuffing attacks
+- XSS/Injection attempts
+- DDoS attacks
+- Malicious agent scripts
 
-### What attacks?
-- DDoS/Brute force attempts
-- XSS/CSRF in user-generated content
-- SQL injection in search/query functions
-- Credential stuffing on admin login
-- API abuse from agent integrations
+### What needs protection?
+- Public website/dashboard (WordPress, custom)
+- Admin interfaces
+- API endpoints
+- User authentication
 
 ## Security Controls
 
-### 1. HTTPS & TLS
-```nginx
-# Force HTTPS
-ssl_protocols TLSv1.2 TLSv1.3;
-ssl_ciphers HIGH:!aNULL:!MD5;
-```
+### 1. HTTPS Enforcement
+- TLS 1.3 minimum
+- Strong cipher suites
+- HSTS enabled
+- Certificate rotation
 
 ### 2. Web Application Firewall
-- Rate limiting on forms (10 req/min)
-- Bot detection / CAPTCHA on contact forms
-- Block known malicious IPs
-
-### 3. Hardened Docker Stack
 ```yaml
-services:
-  wordpress:
-    read_only: true
-    security_opt:
-      - no-new-privileges:true
-    cap_drop:
-      - ALL
+# nginx.conf security headers
+add_header X-Frame-Options "SAMEORIGIN" always;
+add_header X-Content-Type-Options "nosniff" always;
+add_header X-XSS-Protection "1; mode=block" always;
+add_header Referrer-Policy "no-referrer-when-downgrade" always;
 ```
 
-### 4. Integration with ASF Tools
-- Run `fake-agent-detector.sh` on any agent registration
-- Log to `port-scan-detector.sh` for anomaly detection
-- Use YARA rules for uploaded file scanning
+### 3. Rate Limiting
+```nginx
+limit_req_zone $binary_remote_addr zone=api:10m rate=10r/s;
+limit_req_zone $binary_remote_addr zone=login:10m rate=1r/s;
+```
 
-## Existing Resources
-- ASF-26-URGENT-WEBSITE-UPDATE.md
+### 4. Bot Detection
+- CAPTCHA on sensitive forms
+- User-Agent filtering
+- Behavioral analysis
+- JS challenge for suspicious clients
+
+### 5. Authentication
+- OIDC/SAML integration for enterprise
+- mTLS for agent-to-website communication
+- API keys with expiration
+- JWT with short expiry
+
+### 6. Protection Against Agent Threats
+- Fake-agent-detector.sh integration
+- Prompt injection detection
+- Malicious skill blocking
+
+## Docker Hardening
+
+### docker-compose.yml
+```yaml
+services:
+  web:
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp:exec,size=100m
+    cap_drop:
+      - ALL
+    networks:
+      - internal
+```
+
+## Integration with ASF Tools
+
+| Tool | Integration |
+|------|-------------|
+| fake-agent-detector.sh | Scan before page render |
+| port-scan-detector.sh | Monitor for reconnaissance |
+| infrastructure-security-check.sh | Daily healthcheck |
+
+## Deployment Checklist
+
+- [ ] HTTPS with valid cert
+- [ ] Security headers configured
+- [ ] Rate limiting enabled
+- [ ] Bot detection active
+- [ ] WAF rules applied
+- [ ] Logging to central system
+- [ ] Backup & recovery tested
+- [ ] Penetration tested
+
+## Related ASF Stories
+- ASF-2: Docker templates (container hardening)
+- ASF-5: YARA rules (malware scanning)
+- ASF-22: Spam monitoring (content protection)
+- ASF-20: Enterprise integration (SSO/SAML)
 
 ---
-*Last Updated: 2026-02-23*
+**Status:** Ready for Review
+**Version:** 1.0.0
