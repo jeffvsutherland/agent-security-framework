@@ -1,65 +1,70 @@
-# ASF-20 Enterprise Integration Package
+# ASF-20: Enterprise Integration
 
 ## Overview
+Enterprise-grade security, compliance, and scalability features for ASF deployments.
 
-Comprehensive enterprise-grade Agent Security Framework integration package for organizations deploying AI agents at scale.
+## Core Coverage
 
-## Contents
+### Authentication & Authorization
+- SSO/SAML/OIDC federation for agent & admin access
+- RBAC + least-privilege for agents
+- Secrets management via Docker secrets or Vault
 
-### Core Integrations
-- `ASF-17-DISCORD-INTEGRATION.md` - Discord bot for fake agent detection
-- `ASF-17-SLACK-INTEGRATION.md` - Slack app for workspace verification
-- `ASF-17-REST-API.md` - REST API with authentication and rate limiting
-- `ASF-17-ENTERPRISE-DASHBOARD.md` - Web dashboard for security monitoring
+### Observability
+- Centralized logging (ELK, Splunk)
+- Metrics collection (Prometheus)
+- Container log forwarding
 
-### Enterprise Features
-- `ASF-ENTERPRISE-INTEGRATION-GUIDE.md` - Complete integration guide (44KB)
-- `ASF-ENTERPRISE-PRICING-LICENSING.md` - Licensing and pricing structure
-- `ASF-ENTERPRISE-API-ENDPOINTS.md` - API endpoint documentation
-- `ASF-ENTERPRISE-DEMO-MATERIALS.md` - Sales and demo materials
-- `ASF-15-PLATFORM-SDK.md` - Platform SDK
-
-## Key Features
-
-### Security
-- SSO/SAML/OIDC federation
-- RBAC + least-privilege
-- Secrets management (Docker secrets/Vault)
-- CI/CD pipeline security
+### Compliance
+- Audit trails
+- Data residency controls
 - Compliance hooks
 
+### Security
+- CI/CD pipeline security
+- Image signing
+- Vulnerability scanning
+
 ### Scalability
-- Kubernetes readiness
+- Kubernetes readiness probes
 - Multi-tenant isolation
 - Horizontal scaling patterns
 
-### Observability
-- Prometheus metrics
-- ELK/Splunk logging
-- Centralized audit trails
+## Available Resources
+
+| Document | Description |
+|----------|-------------|
+| [ASF-ENTERPRISE-INTEGRATION-GUIDE.md](./ASF-ENTERPRISE-INTEGRATION-GUIDE.md) | Primary enterprise integration guide |
+| [ASF-ENTERPRISE-API-ENDPOINTS.md](./ASF-ENTERPRISE-API-ENDPOINTS.md) | REST/gRPC webhook interfaces |
+| [ASF-ENTERPRISE-DEMO-MATERIALS.md](./ASF-ENTERPRISE-DEMO-MATERIALS.md) | Slides, videos, PoC scripts |
+| [ASF-ENTERPRISE-PRICING-LICENSING.md](./ASF-ENTERPRISE-PRICING-LICENSING.md) | Commercial/usage model |
+| [ASF-17-ENTERPRISE-DASHBOARD.md](./ASF-17-ENTERPRISE-DASHBOARD.md) | Enterprise dashboard |
+| [ASF-19-ENTERPRISE-PITCH-DECK.md](./ASF-19-ENTERPRISE-PITCH-DECK.md) | Sales engineering pitch |
 
 ## Reference Architectures
 
 ### AWS EKS + Secrets Manager + GuardDuty
-See integration guide for deployment patterns.
-
-### SSO Integration
-```yaml
-# OIDC configuration
-services:
-  gateway:
-    environment:
-      - OIDC_ISSUER=https://sso.company.com
-      - OIDC_CLIENT_ID=asf-gateway
 ```
+┌────────────────────────────────────────────────────                  ─┐
+│ AWS Cloud                         │
+│  ┌─────────────┐  ┌─────────────┐  ┌───────────┐ │
+│  │   EKS       │  │ Secrets     │  │ GuardDuty │ │
+│  │   Cluster  │  │ Manager     │  │           │ │
+│  └─────────────┘  └─────────────┘  └───────────┘ │
+└─────────────────────────────────────────────────────┘
+```
+
+### SSO + Agent Deployment Flow
+1. Configure OIDC provider (Auth0, Okta, Azure AD)
+2. Set up RBAC policies
+3. Deploy agents with JWT tokens
+4. Configure secrets injection
 
 ## Next Steps
 
-1. Review integration guide
-2. Deploy trial environment
-3. Configure SSO
-4. Set up monitoring
+1. Add integration tests for SSO + agent deployment
+2. Create reference architecture for major cloud providers
+3. Expand compliance mappings (SOC2, GDPR, HIPAA)
 
-## Contact
-
-enterprise@agentsecurityframework.com
+---
+*Last Updated: 2026-02-23*
