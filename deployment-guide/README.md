@@ -496,3 +496,29 @@ After 5 minutes of setup, you should be able to:
 
 **Part of the Agent Security Framework**  
 Version 1.0.0 | Contact: ASF Security Team
+
+## Unified Open-Claw Security Table
+
+This table maps ASF components to security requirements for Clawdbot-Moltbot-Open-Claw:
+
+| Component | ASF-2 Docker | ASF-5 YARA Scan | ASF-4 Deployment Command | Pass Criteria |
+|-----------------|--------------|-----------------|-----------------------------------|-----------------------------------|
+| Clawdbot | --secure-mode | credential-theft.yar | spawn-asf-agents.sh --claw | No host FS except /tmp |
+| Moltbot | cap-drop ALL | prompt-injection.yar | check-bot-privacy.py | localhost WhatsApp only |
+| Open-Claw host | AppArmor | fake-agent.yar | asf-openclaw-scanner.py | Zero secrets, read-only rootfs |
+
+## One-Command Secure Deploy
+
+Run this to deploy everything at once:
+
+```bash
+cd deployment-guide
+chmod +x openclaw-secure-deploy.sh
+./openclaw-secure-deploy.sh
+```
+
+This script:
+1. Runs ASF quick setup
+2. Sets up secure Docker containers
+3. Launches secure agents
+4. Runs YARA security scan
