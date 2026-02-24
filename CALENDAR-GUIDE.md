@@ -1,48 +1,40 @@
-# Raven's Google Calendar Access Guide
+# Raven's Google Calendar Access Guide - Complete
 
-## Quick Reference
-
-| Item | Value |
-|------|-------|
-| Script | python3 /workspace/check-calendar.py |
-| Token | /home/node/.config/google/calendar_token.json |
-| Scope | calendar.readonly |
-
-## Check Calendar
-
+## Quick Command
 ```bash
-python3 /workspace/check-calendar.py
+python3 /workspace/today-schedule.py
 ```
 
-## Today's Events (Feb 24, 2026)
-- Wed 10am: Frequency Scrum
-- Fri 10am: Frequency Scrum
-- Sun Mar 1: Mass Annual Report
-- Mon Mar 2: Frequency Scrum
+## Today's Schedule (Feb 24)
+- 6:00 AM — Running 5k / Writing
+- 9:00 AM — #4 The World Outside: meet Jeff Sutherland (Teams)
+- 12:00 PM — Companyon Ventures Q4 Quarterly LP Zoom
+- 12:20 PM — Quest Diagnostics Appointment
+- 2:00 PM — Touchpoint
 
-## Available Calendars (13)
-- Jeff Sutherland gmail (PRIMARY)
-- Jens
-- Financial
-- Work
-- PROJECTS Scrum Inc
-- Family
-- Holidays in United States
-- Scrum Inc Delivery
-- And more...
+## Script Locations
+- Today: `/workspace/today-schedule.py` (checks both calendars)
+- Week: `/workspace/check-calendar.py`
 
-## Query Specific Calendar
+## Token Location
+- Container: `/home/node/.config/google/calendar_token.json`
 
-```python
-# Use calendarId instead of 'primary'
-events = service.events().list(
-    calendarId='jeff.sutherland@scruminc.com',
-    timeMin=start.isoformat() + 'Z',
-    timeMax=end.isoformat() + 'Z',
-    singleEvents=True,
-    orderBy='startTime'
-).execute().get('items', [])
-```
+## Calendars Checked
+1. `primary` - Jeff Gmail
+2. `jeff.sutherland@scruminc.com` - Scrum Inc
+
+## API Fields
+- summary: Event title
+- start.dateTime: Time (timed events)
+- start.date: Date (all-day)
+- location: Location or URL
+- description: Notes
+- attendees: Guest list
+- hangoutLink: Meet link
+
+## Troubleshooting
+- Token refreshes automatically
+- Must run via docker exec from my environment
 
 ---
 Updated: 2026-02-24
