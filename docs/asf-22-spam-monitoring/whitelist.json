@@ -1,0 +1,22 @@
+{
+  "whitelisted_users": [
+    "admin",
+    "trusted_partner",
+    "verified_agent"
+  ],
+  "whitelisted_domains": [
+    "example.com",
+    "trustedpartner.org"
+  ],
+  "whitelisted_keywords": [
+    "meeting",
+    "calendar",
+    "reminder"
+  ],
+  "rate_limits": {
+    "max_posts_per_minute": 10,
+    "max_dm_per_hour": 50
+  },
+  "entropy_threshold": 4.5,
+  "similarity_threshold": 0.85
+}
