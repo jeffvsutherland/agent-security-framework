@@ -100,6 +100,76 @@ healthcheck:
 3. Manual review queue
 4. Feedback loop for tuning
 
+### Example whitelist.json
+```json
+{
+  "trusted_users": [
+    "admin",
+    "jeff",
+    "trusted_partner_1"
+  ],
+  "whitelist_patterns": [
+    "team meeting",
+    "scheduled update",
+    "status check"
+  ],
+  "excluded_channels": [
+    "#general",
+    "#announcements"
+  ]
+}
+```
+
+### Sample Log Entries
+
+**Benign (whitelist):**
+```
+[2026-02-23 10:00:01] user=admin channel=#general msg="Team standup in 5 minutes"
+[2026-02-23 10:15:00] user=bot status=healthy msg="All systems operational"
+```
+
+**Suspicious (detected):**
+```
+[2026-02-23 10:05:22] ⚠️ RATE_LIMIT: user=spambot123 rate=50msg/min channel=#trading
+[2026-02-23 10:05:25] ⚠️ ENTROPY: user=scammer_xyz score=6.8/10 content="Free BTC doubled!!!"
+[2026-02-23 10:05:28] ⚠️ PATTERN: user=fake_elon keyword="double your money"
+```
+
+### Docker Log Tailing
+```yaml
+# docker-compose.yml
+services:
+  moltbook:
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+  
+  spam-monitor:
+    volumes:
+      - moltbook-logs:/var/log/moltbook:ro
+    command: >
+      sh -c "tail -f /var/log/moltbook/*.log | ./moltbook-spam-monitor.sh"
+
+volumes:
+  moltbook-logs:
+    driver: local
+```
+
+### Prometheus Exporter (Optional)
+```python
+# metrics.py - Simple Prometheus exporter
+from prometheus_client import Counter, Histogram
+
+SPAM_DETECTIONS = Counter('spam_detections_total', 'Total spam detections')
+FALSE_POSITIVES = Counter('false_positives_total', 'False positives')
+
+@app.route('/metrics')
+def metrics():
+    return generate_latest()
+```
+
 ## References
 - `spam-reporting-infrastructure/` - Full reporting system
 - `gateway-spam-monitor.sh` - Gateway log integration
