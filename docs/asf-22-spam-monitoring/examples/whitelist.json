@@ -1,0 +1,18 @@
+# Example whitelist.json
+
+{
+  "whitelisted_users": [
+    "admin",
+    "trusted_agent_1",
+    "trusted_agent_2"
+  ],
+  "whitelisted_domains": [
+    "trusted-domain.com",
+    "internal.company.com"
+  ],
+  "whitelisted_keywords": [
+    "meeting",
+    "standup",
+    "daily"
+  ]
+}
