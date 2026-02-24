@@ -1,218 +1,212 @@
 # ASF Checklist for Clawdbot-Moltbot-Open-Claw
 
-## Quick Start: Secure Your Stack in 5 Minutes
+## Quick Start
+
+Deploy a fully secured Clawdbot-Moltbot-Open-Claw stack in minutes:
 
 ```bash
-# 1. Clone the repo
-git clone https://github.com/jeffvsutherland/agent-security-framework.git
+# 1. Clone and setup
+git clone https://github.com/jeffvsutherland/agent-security-framework
 cd agent-security-framework
 
-# 2. Run quick setup
-./deployment-guide/asf-quick-setup.sh
+# 2. Quick install (ASF-4)
+bash deployment-guide/asf-quick-setup.sh
 
-# 3. Secure deploy
-./openclaw-secure-deploy.sh
+# 3. One-command secure deploy
+bash openclaw-secure-deploy.sh
 ```
 
-## Component Mapping
+---
 
-### Moltbook (Core Platform)
+## Component Mapping & Status
+
 | Component | ASF Story/Tool | Status | Next Action |
-|-----------|----------------|--------|--------------|
-| Container | ASF-2 Docker | ✅ Deployed | Verify hardening |
-| Spam monitoring | ASF-22 | 📋 In Progress | Tune thresholds, add webhook |
-| Bad actor DB | ASF-24 | ✅ Running | Monitor alerts |
-| Content scanning | ASF-5 YARA | 📋 Pending | Create rules |
+|-----------|----------------|--------|-------------|
+| **Moltbook container** | ASF-22 Spam Monitoring | In Progress | Tune thresholds, add webhook alerts |
+| **Web dashboard** | ASF-26 Website Security | Ready | Deploy nginx with headers + rate limit |
+| **Agent registration** | ASF-2 Docker templates + fake-agent-detector | Deployed | Run daily scan |
+| **Enterprise visibility** | ASF-20 + ASF-17 Dashboard | Planned | Add Prometheus exporter |
+| **Code review** | ASF-18 + asf-18-code-review.sh | Deployed | Hourly checks active |
+| **Spam reporting** | ASF-24 + spam-reporting-infrastructure | Deployed | Add to webhook |
+| **Mission Control** | ASF-23 + MISSION-CONTROL-GUIDE.md | Deployed | Connect Gateway |
+
+---
+
+## Detailed Component Status
 
 ### Clawdbot (WhatsApp Bridge)
-| Component | ASF Story/Tool | Status | Next Action |
-|-----------|----------------|--------|--------------|
-| Docker container | ASF-2 Docker | ✅ Deployed | Verify hardening |
-| API keys | Secrets mgmt | 📋 Pending | Set up Vault |
-| Network isolation | port-scan-detector | ✅ Running | Review scans |
-| Fake agent detection | fake-agent-detector | ✅ Running | Daily scan cron |
+
+| Security Layer | ASF Story/Tool | Status |
+|--------------|----------------|--------|
+| Docker hardening | ASF-2 docker-templates | ✅ |
+| Port scan detection | security-tools/port-scan-detector.sh | ✅ |
+| Fake agent detection | security-tools/fake-agent-detector.sh | ✅ |
+| Spam monitoring | ASF-22 + security-tools/moltbook-spam-monitor.sh | 🔲 |
+| Credential protection | ASF-5 YARA response | ✅ |
+
+**Deploy:** `docker-templates/python/` or `docker-templates/bash/`
+
+**Test:** Attempt spam post → verify block + alert
+
+---
 
 ### Moltbot (PC Control)
-| Component | ASF Story/Tool | Status | Next Action |
-|-----------|----------------|--------|--------------|
-| Voice stack | ASF-2 Docker | ✅ Deployed | Verify hardening |
-| Discord/Telegram | infrastructure-check | ✅ Running | Review logs |
-| Unauthorized exec | fake-agent-detector | ✅ Running | Daily scan |
-| Privilege escalation | ASF-18 Code Review | ✅ Done | Continue process |
 
-### Open-Claw (Host)
-| Component | ASF Story/Tool | Status | Next Action |
-|-----------|----------------|--------|--------------|
-| Docker hardening | ASF-2 | ✅ Deployed | Verify hardening |
-| Network isolation | ASF-4 | ✅ Configured | Test failover |
-| Config drift | asf-quick-setup | ✅ Running | Daily check |
-| Credential theft | ASF-5 | 📋 Pending | Add YARA rules |
+| Security Layer | ASF Story/Tool | Status |
+|--------------|----------------|--------|
+| Voice/REST isolation | ASF-4 deployment-guide | ✅ |
+| Network lockdown | port-scan-detector.sh | ✅ |
+| Prompt injection detection | fake-agent-detector.sh | ✅ |
+| Infrastructure checks | infrastructure-security-check.sh | ✅ |
+| Privacy mode | check-bot-privacy.py | ✅ |
 
-## Deployment Order
+**Deploy:** `deployment-guide/spawn-asf-agents.sh --moltbot`
 
-### Phase 1: Foundation (Day 1) ✅
-1. ✅ ASF-2: Docker templates deployed
-2. ✅ ASF-4: Quick setup tested
-3. ✅ ASF-18: Code review process in place
-4. ✅ ASF-21: Bad actor DB
+**Test:** Run infrastructure-security-check.sh
 
-### Phase 2: Protection (Day 2) 🔄
-1. 📋 ASF-22: Tune thresholds, add webhook alerts
-2. 📋 ASF-5: Implement YARA rules
-3. ✅ ASF-24: Bad actor database running
-4. 🔄 ASF-26: Deploy nginx with security headers
+---
 
-### Phase 3: Hardening (Day 3)
-1. 📋 ASF-26: Full website security
-2. 📋 ASF-20: Enterprise integration
-3. 🔄 Testing & validation
+### Open-Claw (Host Isolation)
 
-## Reference Architecture
+| Security Layer | ASF Story/Tool | Status |
+|--------------|----------------|--------|
+| Docker least-privilege | ASF-2 (cap-drop, no-new-privs) | ✅ |
+| YARA scanning | ASF-5 + security-tools/ | ✅ |
+| Gateway integration | GATEWAY-INTEGRATION.md | ✅ |
+| Code review process | ASF-18 + asf-18-code-review.sh | ✅ |
+| Mission Control | ASF-23 + MISSION-CONTROL-GUIDE.md | ✅ |
 
-```mermaid
-graph TB
-    subgraph "Public Internet"
-        User[Users]
-        Attacker[Attackers]
-    end
-    
-    subgraph "DMZ"
-        Nginx[Nginx Reverse Proxy<br/>443→80/443<br/>Rate Limiting<br/>Bot Detection]
-        WAF[WAF Layer]
-    end
-    
-    subgraph "Frontend Network"
-        Web[Web Dashboard<br/>WordPress/Custom]
-        Moltbook[Moltbook Platform]
-    end
-    
-    subgraph "Agent Network"
-        Clawdbot[Clawdbot<br/>WhatsApp Bridge]
-        Moltbot[Moltbot<br/>PC Control]
-        Agents[ASF Agents]
-    end
-    
-    subgraph "Backend Network"
-        DB[(PostgreSQL)]
-        Redis[(Redis Cache)]
-        MC[Mission Control]
-    end
-    
-    subgraph "Security Tools"
-        YARA[YARA Scanner]
-        Spam[Spam Monitor]
-        PortScan[Port Scanner]
-        FakeDet[Fake Agent Detector]
-    end
-    
-    User --> Nginx
-    Nginx --> WAF
-    WAF --> Web
-    WAF --> Moltbook
-    Moltbook --> Clawdbot
-    Moltbook --> Moltbot
-    Moltbook --> Agents
-    Clawdbot --> DB
-    Moltbot --> DB
-    Agents --> Redis
-    Agents --> MC
-    
-    Nginx -.->|Security Headers| User
-    YARA -.->|Scan| Agents
-    Spam -.->|Monitor| Moltbook
-    PortScan -.->|Scan| All
-    FakeDet -.->|Detect| Agents
-```
+**Deploy:** `openclaw-secure-deploy.sh`
+
+**Test:** Run openclaw-secure-deploy.sh
+
+---
+
+## Deployment Sequence
+
+### Phase 1: Foundation (Do First)
+- [x] Docker templates (ASF-2)
+- [x] Code review process (ASF-18)
+- [ ] Test: Run asf-18-code-review.sh
+
+### Phase 2: Runtime Security
+- [x] Spam monitoring (ASF-22)
+- [x] Gateway integration (ASF-24)
+- [ ] Test: Attempt spam → verify detection + alert
+
+### Phase 3: Perimeter
+- [x] Website security (ASF-26)
+- [ ] Test: nginx with headers + rate limiting
+
+### Phase 4: Enterprise
+- [ ] Enterprise dashboard (ASF-17)
+- [ ] Prometheus metrics (ASF-20)
+- [ ] Test: View spam/website metrics in dashboard
+
+---
 
 ## Security Checklist
 
-### Pre-Deploy
-- [ ] GitHub tokens rotated
-- [ ] Docker secrets configured
-- [ ] Network isolation verified
-- [ ] Backup tested
+### Pre-Deployment
+- [ ] Git clone completed
+- [ ] ASF quick setup run
+- [ ] Docker installed
+- [ ] Network firewall configured
 
-### Post-Deploy
-- [ ] All services healthy
-- [ ] Logging to central system
-- [ ] Alerts configured
-- [ ] Run asf-openclaw-scanner.py
+### Deployment
+- [ ] Docker templates applied (non-root, cap-drop)
+- [ ] Network isolation configured (443 outbound only)
+- [ ] Secrets managed (not in code)
+- [ ] Evidence directories created with 700 permissions
 
-### Daily Operations
-- [ ] Hourly security check (via ASF-18)
-- [ ] YARA scan of new skills
-- [ ] Review spam reports
-- [ ] Check infrastructure logs
+### Post-Deployment
+- [ ] Port scan detection running
+- [ ] Fake agent detection active
+- [ ] Spam monitoring enabled
+- [ ] Gateway log monitoring active
+- [ ] Hourly Scrum checks configured
+- [ ] YARA rules in place
 
-### Weekly
-- [ ] Update Docker images
-- [ ] Rotate credentials
-- [ ] Review false positives
-- [ ] Update YARA rules
+### Monitoring
+- [ ] Access logs being collected
+- [ ] Slack/Discord webhooks configured
+- [ ] Incident response playbooks ready
 
-## One-Command Operations
+---
 
-### Full Security Scan
+## Test/Validation Steps
+
+### Spam Monitor Test
 ```bash
-./security-tools/infrastructure-security-check.sh
+# Trigger test detection
+echo "Free Bitcoin doubled!!! Act NOW" | ./security-tools/moltbook-spam-monitor.sh test
+
+# Verify alert
+curl -X POST "$WEBHOOK_URL" -d "{\"text\": \"Test spam alert\"}"
+```
+
+### Website Security Test
+```bash
+# Test rate limiting
+for i in {1..15}; do curl -I https://example.com/api/; done
+
+# Verify blocked (should get 429)
+```
+
+### Infrastructure Check
+```bash
+./security-tools/infrastructure-security-check.sh --target ../.openclaw
+```
+
+---
+
+## Stories Reference
+
+| ASF | Description | URL |
+|------|------------|-----|
+| ASF-2 | Docker templates | `/docker-templates` |
+| ASF-4 | Deployment guide | `/deployment-guide` |
+| ASF-5 | YARA response | `ASF-5-YARA-RESPONSE.md` |
+| ASF-18 | Code review process | `ASF-18-SCRUM-PROCESS.md` |
+| ASF-20 | Enterprise integration | `/docs/asf-20-enterprise-integration` |
+| ASF-22 | Spam monitoring | `/docs/asf-22-spam-monitoring` |
+| ASF-23 | Mission Control | `MISSION-CONTROL-GUIDE.md` |
+| ASF-24 | Spam reporting | `/spam-reporting-infrastructure` |
+| ASF-26 | Website security | `/docs/asf-26-website` |
+
+---
+
+## Commands
+
+### Daily Security Check
+```bash
+./security-tools/infrastructure-security-check.sh --target ../.openclaw
+```
+
+### Hourly Scrum Check
+```bash
+./asf-18-code-review.sh --target ../.openclaw
 ```
 
 ### YARA Scan
 ```bash
-yara -r docs/asf-5-yara-rules/*.yar ~/.asf/skills/
+yara -r security-tools/*.yar .openclaw/skills/
 ```
 
-### Spam Detection
+### Spam Monitor
 ```bash
-./security-tools/moltbook-spam-monitor.sh
+./security-tools/moltbook-spam-monitor.sh scan
 ```
-
-### Agent Health
-```bash
-python3 deployment-guide/asf-openclaw-scanner.py
-```
-
-## Test & Validation Steps
-
-### Test Spam Detection
-1. Post test spam content
-2. Verify alert received
-3. Check blocklist updated
-
-### Test Website Security
-1. Run OWASP ZAP scan
-2. Verify headers present
-3. Test rate limiting
-
-### Test Agent Detection
-1. Run fake-agent-detector.sh
-2. Verify detection works
-3. Check quarantine process
-
-## Emergency Response
-
-### If Compromised
-1. Isolate container: `docker network disconnect`
-2. Preserve evidence: `cp -r ~/.asf ~/asf-backup-$(date)`
-3. Rotate all credentials
-4. Review logs: `~/asf-backup-*/logs/`
-5. Notify via configured webhooks
-
-### Contact
-- Security issues: See RESPONSIBLE_DISCLOSURE.md
-- Enterprise support: ASF-20 integration docs
-
-## Related Documentation
-
-| Document | Purpose |
-|----------|---------|
-| ASF-SCRUM-PROTOCOL.md | Team process |
-| deployment-guide/README.md | Deployment |
-| ASF-18-SCRUM-PROCESS.md | Code review |
-| ASF-ENTERPRISE-INTEGRATION-GUIDE.md | Enterprise |
-| docs/asf-22-spam-monitoring/README.md | Spam monitoring |
-| docs/asf-26-website/README.md | Website security |
 
 ---
-**Last Updated:** February 2026
-**Version:** 1.1.0
+
+## Emergency Contacts
+
+- **Security Incidents:** #security-incidents (Slack)
+- **On-call:** Rotate via Scrum standup
+- **Documentation:** ASF-5-YARA-RESPONSE.md
+
+---
+
+**Last Updated:** 2026-02-23  
+**Version:** 1.0.1

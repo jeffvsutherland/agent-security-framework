@@ -1,119 +1,182 @@
 # ASF-20: Enterprise Integration
 
-## Overview
-Enterprise-grade integration for scaling ASF to production organizations.
+> **High-level index/roadmap for enterprise deployment of Agent Security Framework**
 
-## Features
+## Quick Links to Enterprise Docs
 
-### SSO/SAML/OIDC
-- OIDC provider integration
-- SAML federation
-- LDAP/Active Directory support
-- Short-lived JWT tokens
+| Document | Description |
+|----------|-------------|
+| [ASF-ENTERPRISE-INTEGRATION-GUIDE.md](../ASF-ENTERPRISE-INTEGRATION-GUIDE.md) | Primary enterprise deployment guide |
+| [ASF-ENTERPRISE-API-ENDPOINTS.md](../ASF-ENTERPRISE-API-ENDPOINTS.md) | REST/gRPC API definitions |
+| [ASF-ENTERPRISE-DEMO-MATERIALS.md](../ASF-ENTERPRISE-DEMO-MATERIALS.md) | Demo scripts, slides, PoC |
+| [ASF-ENTERPRISE-PRICING-LICENSING.md](../ASF-ENTERPRISE-PRICING-LICENSING.md) | Commercial model |
+| [ASF-17-ENTERPRISE-DASHBOARD.md](../ASF-17-ENTERPRISE-DASHBOARD.md) | Enterprise dashboard |
 
-### Centralized Logging
-- Prometheus metrics
-- ELK stack integration
-- Splunk forwarding
-- CloudWatch (AWS)
-- Azure Monitor
+## Cross-Linking: ASF-22 & ASF-26
 
-### RBAC & Least Privilege
-- Role-based access control
-- Docker secrets management
-- Vault integration
-- Agent-specific permissions
-
-### CI/CD Pipeline Security
-- Image signing (cosign)
-- Vulnerability scanning (Trivy)
-- Provenance attestations
-- Non-root runner enforcement
-
-### Compliance
-- Audit trails
-- Data residency options
-- GDPR compliance
-- SOC 2 / ISO 27001 hooks
-
-## Architecture
-
+### Spam Alerts in Enterprise Dashboard
 ```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   Agents    │────▶│  Gateway    │────▶│   Mission   │
-│             │     │  (OAuth)    │     │  Control    │
-└─────────────┘     └─────────────┘     └─────────────┘
-                           │                    │
-                           ▼                    ▼
-                    ┌─────────────┐     ┌─────────────┐
-                    │    SSO      │     │   Logging   │
-                    │  Provider   │     │   (ELK)     │
-                    └─────────────┘     └─────────────┘
+┌─────────────────────────────────────────────────────┐
+│              Enterprise Dashboard                    │
+│  ┌──────────────┐  ┌──────────────┐               │
+│  │ ASF-22 Spam  │─▶│ Alert        │─▶ Slack/     │
+│  │ Monitoring   │  │ Aggregator    │  │ PagerDuty   │
+│  └──────────────┘  └──────────────┘               │
+│         │                                    │
+│         ▼                                    │
+│  ┌──────────────────────────────────────────┐   │
+│  │ Metrics: spam_detections_total          │   │
+│  │         false_positives_total           │   │
+│  │         blocked_agents_total            │   │
+│  └──────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────┘
 ```
 
-## Deployment
+### Website Security in Enterprise Dashboard
+```
+┌─────────────────────────────────────────────────────┐
+│              Enterprise Dashboard                    │
+│  ┌──────────────┐  ┌──────────────┐               │
+│  │ ASF-26 Web   │─▶│ Threat       │─▶ Security   │
+│  │ Security     │  │ Intel         │  │ Team        │
+│  └──────────────┘  └──────────────┘               │
+│         │                                    │
+│         ▼                                    │
+│  ┌──────────────────────────────────────────┐   │
+│  │ Metrics: blocked_requests_total          │   │
+│  │         xss_attempts_total              │   │
+│  │         rate_limited_total              │   │
+│  └──────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────┘
+```
 
-### Kubernetes Example
+## Enterprise Docker Patterns
+
+### Vault Sidecar
 ```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: openclaw-agent
-spec:
-  replicas: 3
-  template:
-    spec:
-      serviceAccountName: openclaw
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        fsGroup: 1000
-      containers:
-      - name: agent
-        image: openclaw/agent:latest
-        securityContext:
-          allowPrivilegeEscalation: false
-          readOnlyRootFilesystem: true
-          capabilities:
-            drop:
-            - ALL
+services:
+  agent:
+    image: openclaw/agent:latest
+    volumes:
+      - vault-secrets:/run/secrets:ro
+
+  vault-agent:
+    image: hashicorp/vault:1.14
+    volumes:
+      - vault-config:/vault/config
+      - vault-secrets:/run/secrets
+    environment:
+      - VAULT_ADDR=http://vault:8200
+    command: agent -config=/vault/config/agent.hcl
 ```
 
-### Secrets Management
+### Prometheus Federation
 ```yaml
-# Use external secrets operator
-apiVersion: external-secrets.io/v1beta1
-kind: ExternalSecret
-metadata:
-  name: openclaw-secrets
-spec:
-  secretStoreRef:
-    name: vault-backend
-    kind: SecretStore
-  target:
-    name: openclaw-secrets
-    creationPolicy: Owner
-  data:
-  - secretKey: API_KEY
-    remoteRef:
-      key: openclaw/api-key
-      property: value
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--storage.tsdb.retention.time=30d'
+      - '--storage.tsdb.path=/prometheus'
 ```
 
-## API Endpoints
+### Fluentd Logging Forwarder
+```yaml
+services:
+  fluentd:
+    image: fluent/fluentd:v1.16
+    volumes:
+      - ./fluent.conf:/etc/fluent/fluent.conf
+      - /var/log:/var/log
+    environment:
+      - FLUENTD_CONF=fluent.conf
+```
 
-See: `ASF-ENTERPRISE-API-ENDPOINTS.md`
+## Reference Architecture: EKS/GKE
 
-## Pricing & Licensing
+### AWS EKS Deployment
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        AWS Cloud                                 │
+│                                                                  │
+│  ┌─────────────┐     ┌─────────────┐     ┌─────────────┐      │
+│  │   Route 53  │────▶│  CloudFront │────▶│    ALB      │      │
+│  │   (DNS)     │     │    (CDN)    │     │ (WAF/Rate)  │      │
+│  └─────────────┘     └─────────────┘     └──────┬──────┘      │
+│                                                  │              │
+│                                                  ▼              │
+│  ┌─────────────────────────────────────────────────────────┐    │
+│  │                    EKS Cluster                          │    │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐    │    │
+│  │  │  Gateway    │  │   Mission   │  │   Agents   │    │    │
+│  │  │  (OAuth)    │  │   Control   │  │  (Deploy)  │    │    │
+│  │  └─────────────┘  └─────────────┘  └─────────────┘    │    │
+│  │        │                │                │            │    │
+│  │        ▼                ▼                ▼            │    │
+│  │  ┌─────────────────────────────────────────────┐      │    │
+│  │  │           Vault (Secrets)                    │      │    │
+│  │  └─────────────────────────────────────────────┘      │    │
+│  └─────────────────────────────────────────────────────────┘    │
+│        │                  │                  │                  │
+│        ▼                  ▼                  ▼                  │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐           │
+│  │  CloudWatch │  │    ELK      │  │  GuardDuty │           │
+│  │  (Metrics)  │  │   (Logs)   │  │  (Security)│           │
+│  └─────────────┘  └─────────────┘  └─────────────┘           │
+└─────────────────────────────────────────────────────────────────┘
+```
 
-See: `ASF-ENTERPRISE-PRICING-LICENSING.md`
+### GKE Deployment
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        GCP Cloud                                 │
+│                                                                  │
+│  ┌─────────────┐     ┌─────────────┐     ┌─────────────┐      │
+│  │ Cloud DNS   │────▶│  Cloud CDN   │────▶│    GCLB     │      │
+│  └─────────────┘     └─────────────┘     └──────┬──────┘      │
+│                                                  │              │
+│                                                  ▼              │
+│  ┌─────────────────────────────────────────────────────────┐    │
+│  │                    GKE Cluster                          │    │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐      │    │
+│  │  │  Gateway    │  │   Mission   │  │   Agents   │      │    │
+│  │  │  (OAuth)   │  │   Control   │  │  (Deploy)  │      │    │
+│  │  └─────────────┘  └─────────────┘  └─────────────┘       │    │
+│  │        │                │                │                 │    │
+│  │        ▼                ▼                ▼                 │    │
+│  │  ┌─────────────────────────────────────────────┐         │    │
+│  │  │           Secret Manager                     │         │    │
+│  │  └─────────────────────────────────────────────┘         │    │
+│  └─────────────────────────────────────────────────────────┘    │
+│        │                  │                  │                  │
+│        ▼                  ▼                  ▼                  │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐           │
+│  │  Prometheus │  │    Cloud    │  │   Security │           │
+│  │  (Metrics) │  │   Logging   │  │  Command   │           │
+│  └─────────────┘  └─────────────┘  └─────────────┘           │
+└─────────────────────────────────────────────────────────────────┘
+```
 
-## Demo Materials
+## Implementation Checklist
 
-See: `ASF-ENTERPRISE-DEMO-MATERIALS.md`
+| Component | Status | Next Action |
+|-----------|--------|-------------|
+| SSO/OIDC | ✅ Ready | Configure provider |
+| Vault Secrets | ✅ Ready | Deploy sidecar |
+| Prometheus | ✅ Ready | Add federation |
+| Fluentd Logging | ✅ Ready | Configure forwarder |
+| EKS/GKE Arch | ✅ Ready | Deploy template |
+| Spam Alerts → Dashboard | 🔲 Link ASF-22 | Add exporter |
+| Web Alerts → Dashboard | 🔲 Link ASF-26 | Add exporter |
 
 ---
 
+**Related Stories:**
+- [ASF-22: Spam Monitoring](../docs/asf-22-spam-monitoring/README.md)
+- [ASF-26: Website Security](../docs/asf-26-website/README.md)
+
 **Story:** ASF-20  
 **Status:** Ready for Review  
-**Version:** 1.0.0
+**Version:** 1.0.1
