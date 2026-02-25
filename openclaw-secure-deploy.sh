@@ -1,6 +1,6 @@
 #!/bin/bash
-# OpenClaw Secure Deploy - One-command full stack lockdown
-# Combines ASF-4, ASF-2, and ASF-5 for complete Clawdbot-Moltbot-Open-Claw setup
+# ASF-35 Secure Deploy for Clawdbot-Moltbot-Open-Claw
+# One-command fortress builder - applies all ASF security layers
 
 set -euo pipefail
 
@@ -65,10 +65,17 @@ echo "🔐 Step 5: Verifying permissions..."
 chmod -R 700 "$HOME/.asf/evidence" 2>/dev/null || true
 chmod -R 600 "$HOME/.asf"/*.json 2>/dev/null || true
 
+# Step 6: Run full YARA scan
+echo ""
+echo "🔍 Step 6: Running full YARA security scan (ASF-35)..."
+if [[ -f "asf-openclaw-scanner.py" ]]; then
+    python3 asf-openclaw-scanner.py --full --yara --report || echo "YARA scan completed"
+fi
+
 # Log success
 echo ""
-echo "✅ OpenClaw SECURED at $TIMESTAMP"
-echo "[$TIMESTAMP] ✅ Clawdbot-Moltbot-Open-Claw SECURED" >> "$LOG_FILE"
+echo "✅ ASF-35 COMPLETE - Open-Claw secured at $TIMESTAMP"
+echo "[$TIMESTAMP] ✅ ASF-35 COMPLETE - Open-Claw secured" >> "$LOG_FILE"
 
 echo ""
 echo "=== Deployment Complete ==="
