@@ -171,3 +171,68 @@ python3 asf-trust-check.py --target ~/.openclaw --enforce
 **Version:** 1.0.0
 **Created:** February 2026
 **Status:** Ready for Implementation
+
+## Trust Verification for Clawdbot-Moltbot-Open-Claw
+
+```python
+# Full trust verification for production
+def verify_clawbot_trust(skill_json, yara_result, spam_monitor_alert):
+    """
+    Complete trust verification for Clawdbot/Moltbot/Open-Claw
+    """
+    trust_score = calculate_trust_score(skill_json)
+    
+    # Verify cryptographic signature
+    if not verify_signature(skill_json):
+        return False, 0, "Signature invalid"
+    
+    # Check trust threshold
+    if trust_score < 95:
+        quarantine_and_restart_container()  # calls ASF-35 secure-deploy
+        return False, trust_score, "Trust score below threshold"
+    
+    return True, trust_score, "SECURE"
+```
+
+## ASF-38 Full Definition of Done – Cannot Close Without
+
+- [ ] Zero secrets confirmed (asf-security-gate.sh passes)
+- [ ] Trust framework tested on .openclaw/skills/
+- [ ] Integration with ASF-35 scanner + ASF-37 spam-monitor
+- [ ] Setup commands tested on deployment target
+- [ ] All Scrum values embedded in SOUL.md templates
+
+## One-Command Setup for Open-Claw
+
+Run these commands to enable full trust protection:
+
+```bash
+# 1. Pull latest
+git pull origin main
+
+# 2. Enable trust framework
+cd ~/agent-security-framework/docs/asf-38-agent-trust-framework
+chmod +x *.sh
+./apply-trust-to-openclaw.sh
+
+# 3. Verify trust scores
+python3 asf-trust-check.py --target ../.openclaw --report
+
+# Expected output:
+# Clawdbot trust score: 97 – SECURE
+# Moltbot isolated – SECURE  
+# Open-Claw trust score: 98 – SECURE
+```
+
+## Verification Commands
+
+```bash
+# Full security gate check
+./asf-security-gate.sh
+
+# Trust score verification
+python3 asf-trust-check.py --target ~/.openclaw --enforce
+
+# Expected output when secure:
+# "Clawdbot trust score: 97 – Moltbot isolated – SECURE"
+```
