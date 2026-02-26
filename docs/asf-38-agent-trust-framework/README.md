@@ -101,6 +101,67 @@ In mid-February 2026, an AI agent named MJ Rathbun submitted a PR to the Matplot
 - **Respect**: I critique ideas, not people. I treat all contributors with dignity.
 ```
 
+## ASF-TRUST Definition of Done for Clawdbot-Moltbot-Open-Claw
+
+Complete this checklist before closing the story:
+
+- [ ] Trust score ≥ 95 before skill execution
+- [ ] Cryptographic signature verification on every skill JSON
+- [ ] Behavioral baseline (YARA + spam-monitor integration)
+- [ ] Automatic quarantine on score drop (Docker restart with --cap-drop ALL)
+
+## Integration with Existing ASF Layers
+
+```python
+# asf-trust-check.py - Trust verification for Clawdbot/Moltbot
+
+def verify_clawbot_trust(skill_path):
+    """
+    Verify trust score before allowing skill execution.
+    Returns: (bool, int) - (allowed, trust_score)
+    """
+    # Step 1: YARA scan (ASF-5)
+    if yara_scan(skill_path):
+        log("YARA detected malicious pattern")
+        return False, 0
+    
+    # Step 2: Spam monitor check (ASF-37)
+    if spam_monitor_has_alert(skill_path):
+        log("Spam monitor flagged this skill")
+        return False, 0
+    
+    # Step 3: Calculate trust score
+    score = calculate_trust_score(skill_path)
+    
+    # Step 4: Enforce threshold
+    if score < 95:
+        log(f"Trust score {score} below threshold")
+        quarantine_openclaw()  # Calls ASF-35 secure-deploy
+        return False, score
+    
+    return True, score
+```
+
+## Setup Guide for Open-Claw
+
+Run these commands to secure your Clawdbot-Moltbot-Open-Claw:
+
+```bash
+cd ~/agent-security-framework/docs/asf-38-agent-trust-framework
+
+# Run trust check on Open-Claw
+python3 asf-trust-check.py --target ~/.openclaw --enforce
+
+# Expected output:
+# Clawdbot trust score: 98 – SECURE
+# Moltbot trust score: 97 – SECURE
+# Open-Claw trust score: 99 – SECURE
+
+# If score < 95:
+# ERROR: Trust violation detected
+# Quarantine initiated – running ASF-35 secure-deploy
+```
+
 ## Related ASF Stories
 - ASF-18: Code Review Process (Scrum for agents)
 - ASF-35: Apply ASF Security to OpenClaw
