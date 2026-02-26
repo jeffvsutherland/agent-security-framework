@@ -24,7 +24,7 @@ This document contains all stories that have been reviewed by Grok Heavy and mov
 | ASF-35 | Security Scan Report | https://github.com/jeffvsutherland/agent-security-framework/blob/main/ASF-35-SECURITY-SCAN-REPORT.md | 2026-02-24 |
 | ASF-36 | nginx Deployment | https://github.com/jeffvsutherland/agent-security-framework/blob/main/ASF-26-WEBSITE-SECURITY.md | 2026-02-23 |
 | ASF-37 | Configure Spam Monitor | https://github.com/jeffvsutherland/agent-security-framework/blob/main/ASF-22-SPAM-MONITORING.md | 2026-02-23 |
-| ASF-38 | Agent Security Trust Framework | https://github.com/jeffvsutherland/agent-security-framework/blob/main/ASF-38-TRUST-FRAMEWORK.md | 2026-02-26 |
+| ASF-38 | Agent Trust Framework | https://github.com/jeffvsutherland/agent-security-framework/blob/main/docs/asf-38-agent-trust-framework/ASF-38-AGENT-TRUST-FRAMEWORK.md | 2026-02-26 |
 
 ---
 
