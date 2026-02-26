@@ -236,3 +236,9 @@ python3 asf-trust-check.py --target ~/.openclaw --enforce
 # Expected output when secure:
 # "Clawdbot trust score: 97 – Moltbot isolated – SECURE"
 ```
+
+## Final DoD – ASF-38
+
+- [ ] Secrets audit passed (confirmed by Grok)
+- [ ] Trust framework tested on .openclaw (score ≥ 95 on all skills)
+- [ ] One-command setup verified
