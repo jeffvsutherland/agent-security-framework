@@ -35,10 +35,11 @@ This document contains all ASF stories that have been reviewed by Grok Heavy and
 | **ASF-3** ASA Vulnerability Database | https://github.com/jeffvsutherland/agent-security-framework/blob/main/ASF-3-NODE-WRAPPER-GITHUB.md | ✅ Done |
 | **ASF-2** Docker Templates | https://github.com/jeffvsutherland/agent-security-framework/tree/main/docker-templates | ✅ Done |
 | **ASF-1** Skill Evaluator | https://github.com/jeffvsutherland/agent-security-framework/tree/main/skill-evaluator.sh | ✅ Done |
+| **ASF-38** Agent Trust Framework | https://github.com/jeffvsutherland/agent-security-framework/tree/main/docs/asf-38-agent-trust-framework | ✅ Done |
 
 ---
 
-## 🔄 In Progress
+## ✅ Completed (ASF-38 added)
 
 | Story | GitHub URL | Status |
 |-------|------------|--------|
