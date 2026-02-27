@@ -1,0 +1,14 @@
+=== Restarting Raven's Sessions ===
+
+  product-owner restart signal: rc=0
+  mc-3634c19a-9174-4f23-b03a-0d451f5de6be restart signal: rc=0
+
+  WS restart: SENT
+
+--- Restarting gateway ---
+  docker restart: rc=0
+  Waiting 30s for startup...
+
+  mc-api health: {"ok":true}
+  mc-api tasks: {"items":[{"title":"[ASF-42] Implement Docker Syscall Monitoring","description":"Add syscall interce
+  which mc-api: /usr/local/bin/mc-api

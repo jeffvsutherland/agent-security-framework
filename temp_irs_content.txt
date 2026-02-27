@@ -1,0 +1,22 @@
+20260208 JVS Management
+
+3 pts IRS template and plan 
+Scheduling - 
+Calls - 
+Billing - 
+Financial - 
+Lab - 
+Publish - 
+Freq - Paweł order 
+1. Tick-borne encephalitis virus - done 
+2. Powassan virus - done 
+3. Japanese encephalitis virus - done
+4. Dengue virus 
+5. St. Louis encephalitis virus 
+6. Yellow fever virus 
+
+18 pts Frequency sets for arteriosclerosis, artery plaque, blood pressure management and benign prostate hyperplasia improvement. Run on client. 
+18 pts extensive development with AgentFriday of security infrastructure for OpenClaw and deployment to agent community on Moltbook
+6 pts Ankle treatment and Covid for Ron and Karen Elkins
+3 pts Watch half of latest Moonshot podcast on Moltbot. Submit security concerns to AgentFriday for development and posting of port scan on Moltbook
+3 pts Testing of new port scan security script on lab computer

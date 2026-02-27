@@ -1,0 +1,350 @@
+{
+  "meta": {
+    "lastTouchedVersion": "2026.2.19",
+    "lastTouchedAt": "2026-02-20T22:14:43.773Z"
+  },
+  "wizard": {
+    "lastRunAt": "2026-02-14T21:56:25.970Z",
+    "lastRunVersion": "2026.1.24-3",
+    "lastRunCommand": "doctor",
+    "lastRunMode": "local"
+  },
+  "update": {
+    "channel": "beta"
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "anthropic/claude-opus-4-20250514"
+      },
+      "models": {
+        "anthropic/claude-opus-4-20250514": {
+          "params": {
+            "max_tokens": 8192,
+            "cacheControlTtl": "1h",
+            "cacheRetention": "short"
+          }
+        }
+      },
+      "workspace": "/workspace",
+      "contextPruning": {
+        "mode": "cache-ttl",
+        "ttl": "1h"
+      },
+      "compaction": {
+        "mode": "safeguard"
+      },
+      "heartbeat": {
+        "every": "30m"
+      },
+      "maxConcurrent": 4,
+      "subagents": {
+        "maxConcurrent": 8
+      }
+    },
+    "list": [
+      {
+        "id": "main"
+      },
+      {
+        "id": "research",
+        "name": "research",
+        "workspace": "/workspace/agents/research",
+        "agentDir": "/home/node/.openclaw/agents/research/agent"
+      },
+      {
+        "id": "social",
+        "name": "social",
+        "workspace": "/workspace/agents/social",
+        "agentDir": "/home/node/.openclaw/agents/social/agent"
+      },
+      {
+        "id": "deploy",
+        "name": "deploy",
+        "workspace": "/workspace/agents/deploy",
+        "agentDir": "/home/node/.openclaw/agents/deploy/agent"
+      },
+      {
+        "id": "sales",
+        "name": "sales",
+        "workspace": "/workspace/agents/sales",
+        "agentDir": "/home/node/.openclaw/agents/sales/agent"
+      },
+      {
+        "id": "product-owner",
+        "name": "product-owner",
+        "workspace": "/workspace/agents/product-owner",
+        "agentDir": "/home/node/.openclaw/agents/product-owner/agent"
+      },
+      {
+        "id": "mc-gateway-c3ff9d87-8e4d-47a8-b162-ef7b2285fb91",
+        "name": "Main Agent (jeffsutherlandbot)",
+        "workspace": "/workspace/workspace-gateway-c3ff9d87-8e4d-47a8-b162-ef7b2285fb91",
+        "agentDir": "/home/node/.openclaw/agents/mc-gateway-c3ff9d87-8e4d-47a8-b162-ef7b2285fb91/agent",
+        "heartbeat": {
+          "every": "10m",
+          "includeReasoning": false,
+          "target": "last"
+        }
+      },
+      {
+        "id": "mc-3634c19a-9174-4f23-b03a-0d451f5de6be",
+        "name": "Raven (Product Owner)",
+        "workspace": "/workspace/workspace-mc-3634c19a-9174-4f23-b03a-0d451f5de6be",
+        "agentDir": "/home/node/.openclaw/agents/mc-3634c19a-9174-4f23-b03a-0d451f5de6be/agent",
+        "heartbeat": {
+          "every": "10m",
+          "includeReasoning": false,
+          "target": "last"
+        }
+      },
+      {
+        "id": "mc-f231fd0f-6004-4268-8dc9-d7013fcb23e9",
+        "name": "Sales Agent",
+        "workspace": "/workspace/workspace-mc-f231fd0f-6004-4268-8dc9-d7013fcb23e9",
+        "agentDir": "/home/node/.openclaw/agents/mc-f231fd0f-6004-4268-8dc9-d7013fcb23e9/agent",
+        "heartbeat": {
+          "every": "10m",
+          "includeReasoning": false,
+          "target": "last"
+        }
+      },
+      {
+        "id": "mc-c7466164-4d69-4bc1-a58e-71f37bb7ccb2",
+        "name": "Research Agent",
+        "workspace": "/workspace/workspace-mc-c7466164-4d69-4bc1-a58e-71f37bb7ccb2",
+        "agentDir": "/home/node/.openclaw/agents/mc-c7466164-4d69-4bc1-a58e-71f37bb7ccb2/agent"
+      },
+      {
+        "id": "mc-b9efac34-d836-4505-b123-130502e6f42b",
+        "name": "Social Agent",
+        "workspace": "/workspace/workspace-mc-b9efac34-d836-4505-b123-130502e6f42b",
+        "agentDir": "/home/node/.openclaw/agents/mc-b9efac34-d836-4505-b123-130502e6f42b/agent",
+        "heartbeat": {
+          "every": "10m",
+          "includeReasoning": false,
+          "target": "last"
+        }
+      },
+      {
+        "id": "mc-a752e9fc-8c0d-4a12-b455-de0a322c142f",
+        "name": "Research Agent",
+        "workspace": "/workspace/workspace-mc-a752e9fc-8c0d-4a12-b455-de0a322c142f",
+        "agentDir": "/home/node/.openclaw/agents/mc-a752e9fc-8c0d-4a12-b455-de0a322c142f/agent",
+        "heartbeat": {
+          "every": "10m",
+          "includeReasoning": false,
+          "target": "last"
+        }
+      },
+      {
+        "id": "mc-30374dc0-f90b-4291-bda3-99e8db3424db",
+        "name": "Deploy Agent",
+        "workspace": "/workspace/workspace-mc-30374dc0-f90b-4291-bda3-99e8db3424db",
+        "agentDir": "/home/node/.openclaw/agents/mc-30374dc0-f90b-4291-bda3-99e8db3424db/agent",
+        "heartbeat": {
+          "every": "10m",
+          "includeReasoning": false,
+          "target": "last"
+        }
+      }
+    ]
+  },
+  "messages": {
+    "ackReactionScope": "group-mentions"
+  },
+  "commands": {
+    "native": "auto",
+    "nativeSkills": "auto",
+    "restart": true
+  },
+  "channels": {
+    "defaults": {
+      "heartbeat": {
+        "showOk": false,
+        "showAlerts": true,
+        "useIndicator": true
+      }
+    },
+    "telegram": {
+      "enabled": true,
+      "dmPolicy": "pairing",
+      "botToken": "8262532044:AAFo2MOi61bZL3rCK_zX7t_e7PyIDHYNhTE",
+      "groups": {
+        "-1003887253177": {
+          "enabled": true
+        }
+      },
+      "allowFrom": [
+        "1510884737",
+        "-1003887253177"
+      ],
+      "groupPolicy": "allowlist",
+      "streamMode": "partial",
+      "accounts": {
+        "default": {
+          "enabled": true,
+          "dmPolicy": "pairing",
+          "botToken": "8262532044:AAFo2MOi61bZL3rCK_zX7t_e7PyIDHYNhTE",
+          "groups": {
+            "-1003887253177": {
+              "enabled": true
+            }
+          },
+          "allowFrom": [
+            "1510884737",
+            "-1003887253177"
+          ],
+          "groupPolicy": "allowlist",
+          "streamMode": "partial"
+        },
+        "research": {
+          "enabled": true,
+          "dmPolicy": "pairing",
+          "botToken": "8371607764:AAEsQCxbZLi-gcDfcrc4otTg7Tj5wtVTI74",
+          "allowFrom": [
+            "1510884737",
+            "-1003887253177"
+          ],
+          "groupPolicy": "allowlist",
+          "streamMode": "partial",
+          "groups": {
+            "-1003887253177": {
+              "enabled": true
+            }
+          }
+        },
+        "social": {
+          "enabled": true,
+          "dmPolicy": "pairing",
+          "botToken": "8363670185:AAF87g3nBTkhsQ4O1TIEq1lxiRRQ7_G1BQ4",
+          "allowFrom": [
+            "1510884737",
+            "-1003887253177"
+          ],
+          "groupPolicy": "allowlist",
+          "streamMode": "partial",
+          "groups": {
+            "-1003887253177": {
+              "enabled": true
+            }
+          }
+        },
+        "deploy": {
+          "enabled": true,
+          "dmPolicy": "pairing",
+          "botToken": "8562304149:AAGG8z9voTN0UO8zfI1AjKX5z7K7mQp21ok",
+          "allowFrom": [
+            "1510884737",
+            "-1003887253177"
+          ],
+          "groupPolicy": "allowlist",
+          "streamMode": "partial",
+          "groups": {
+            "-1003887253177": {
+              "enabled": true
+            }
+          }
+        },
+        "sales": {
+          "enabled": true,
+          "dmPolicy": "pairing",
+          "botToken": "8049864989:AAHdP9iDsSpQWiQ5sKFZGJD060WLbmG5aAM",
+          "allowFrom": [
+            "1510884737",
+            "-1003887253177"
+          ],
+          "groupPolicy": "allowlist",
+          "streamMode": "partial",
+          "groups": {
+            "-1003887253177": {
+              "enabled": true
+            }
+          }
+        },
+        "product-owner": {
+          "name": "ASF Product Owner - Agent Saturday",
+          "enabled": true,
+          "dmPolicy": "pairing",
+          "botToken": "8319192848:AAFMgnWa0ozOu0YC0EEcDHkRxAHlhIpEveo",
+          "allowFrom": [
+            "1510884737",
+            "-1003887253177"
+          ],
+          "groupPolicy": "allowlist",
+          "streamMode": "partial",
+          "groups": {
+            "-1003887253177": {
+              "enabled": true
+            }
+          }
+        }
+      }
+    },
+    "slack": {
+      "mode": "socket",
+      "webhookPath": "/slack/events",
+      "enabled": false,
+      "botToken": "REPLACE_WITH_YOUR_BOT_TOKEN",
+      "userTokenReadOnly": true,
+      "groupPolicy": "allowlist"
+    }
+  },
+  "gateway": {
+    "port": 18789,
+    "mode": "local",
+    "bind": "lan",
+    "controlUi": {
+      "allowedOrigins": [
+        "http://127.0.0.1:18789",
+        "http://localhost:18789",
+        "http://openclaw-gateway:18789",
+        "http://localhost:3001",
+        "http://127.0.0.1:3001",
+        "http://localhost:8001",
+        "http://127.0.0.1:8001"
+      ],
+      "allowInsecureAuth": true,
+      "dangerouslyDisableDeviceAuth": true
+    },
+    "auth": {
+      "mode": "token",
+      "token": "uuI7HDktGsmbKPLeyJOCOib607dJoKWQybTXuGYMRm0"
+    },
+    "trustedProxies": [
+      "127.0.0.1",
+      "::1",
+      "172.18.0.0/16"
+    ],
+    "tailscale": {
+      "mode": "off",
+      "resetOnExit": false
+    }
+  },
+  "skills": {
+    "install": {
+      "nodeManager": "npm"
+    },
+    "entries": {
+      "goplaces": {
+        "apiKey": "AIzaSyDl4JuGb33YizJN7UsZLuIiS1p-M2nvT0E"
+      },
+      "local-places": {
+        "apiKey": "AIzaSyDl4JuGb33YizJN7UsZLuIiS1p-M2nvT0E"
+      }
+    }
+  },
+  "plugins": {
+    "entries": {
+      "whatsapp": {
+        "enabled": false
+      },
+      "telegram": {
+        "enabled": true
+      },
+      "slack": {
+        "enabled": true
+      }
+    }
+  }
+}

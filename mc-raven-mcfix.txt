@@ -1,0 +1,58 @@
+=== Fix Raven MC Visibility ===
+
+--- API Discovery ---
+API paths:
+
+--- Finding cards endpoint ---
+  /api/v1/boards/agent-security-framework/cards: FAIL — {"detail":"Not Found","request_id":"74b6ce160e8c42e48736aab17b3bace9"}
+  /api/v1/boards/agent-security-framework/tasks: FAIL — {"detail":"Internal Server Error","request_id":"a27d5cdae4dd40b1a5cb9d9bfdf4c20c"}
+  /api/v1/cards: FAIL — {"detail":"Not Found","request_id":"d9bef3c069f641f5bf57f90f23e18e67"}
+  /api/v1/tasks: FAIL — {"detail":"Not Found","request_id":"efe7911e745a44329deecb31ffb4ff7a"}
+  /api/v1/boards/24394a90-a74e-479c-95e8/cards: FAIL — {"detail":"Not Found","request_id":"32bf94ca2b3643feb85ea9de6bc9cbbd"}
+
+  Board: Agent Security Framework id=24394a90-a74e-479c-95e8-e5d24c7b4a40 slug=agent-security-framework gateway_id=c3ff9d87-8e4d-47a8-b162-ef7b2285fb91
+
+--- Cards with board ID 24394a90-a74e-479c-95e8-e5d24c7b4a40 ---
+  /api/v1/boards/24394a90-a74e-479c-95e8-e5d24c7b4a40/cards: {"detail":"Not Found","request_id":"de0c520bdd5e469d9f565b4dc56c1ea5"}
+  /api/v1/boards/24394a90-a74e-479c-95e8-e5d24c7b4a40/tasks: {"items":[{"title":"[ASF-42] Implement Docker Syscall Monitoring","description":"Add syscall interception to monitor Coder agent for unauthorized network requests or sensitive env var access. Enforce 
+
+--- All API routes ---
+GET /health
+GET /healthz
+GET /readyz
+POST /api/v1/auth/bootstrap
+GET /api/v1/agent/healthz
+GET /api/v1/agent/boards
+GET /api/v1/agent/boards/{board_id}
+GET /api/v1/agent/agents
+POST /api/v1/agent/agents
+GET /api/v1/agent/boards/{board_id}/tasks
+POST /api/v1/agent/boards/{board_id}/tasks
+GET /api/v1/agent/boards/{board_id}/tags
+PATCH /api/v1/agent/boards/{board_id}/tasks/{task_id}
+DELETE /api/v1/agent/boards/{board_id}/tasks/{task_id}
+GET /api/v1/agent/boards/{board_id}/tasks/{task_id}/comments
+POST /api/v1/agent/boards/{board_id}/tasks/{task_id}/comments
+GET /api/v1/agent/boards/{board_id}/memory
+POST /api/v1/agent/boards/{board_id}/memory
+GET /api/v1/agent/boards/{board_id}/approvals
+POST /api/v1/agent/boards/{board_id}/approvals
+POST /api/v1/agent/boards/{board_id}/onboarding
+POST /api/v1/agent/boards/{board_id}/agents/{agent_id}/nudge
+POST /api/v1/agent/heartbeat
+GET /api/v1/agent/boards/{board_id}/agents/{agent_id}/soul
+PUT /api/v1/agent/boards/{board_id}/agents/{agent_id}/soul
+DELETE /api/v1/agent/boards/{board_id}/agents/{agent_id}
+POST /api/v1/agent/boards/{board_id}/gateway/main/ask-user
+POST /api/v1/agent/gateway/boards/{board_id}/lead/message
+POST /api/v1/agent/gateway/leads/broadcast
+GET /api/v1/agents
+POST /api/v1/agents
+GET /api/v1/agents/stream
+GET /api/v1/agents/{agent_id}
+PATCH /api/v1/agents/{agent_id}
+DELETE /api/v1/agents/{agent_id}
+POST /api/v1/agents/{agent_id}/heartbeat
+POST /api/v1/agents/heartbeat
+GET /api/v1/activity
+GET /api/v1/activity/task-comments

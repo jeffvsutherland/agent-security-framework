@@ -1,0 +1,46 @@
+{
+  "channels": {
+    "telegram": {
+      "enabled": true,
+      "accounts": [
+        {
+          "accountId": "main",
+          "botToken": "YOUR_EXISTING_MAIN_BOT_TOKEN_HERE",
+          "dmPolicy": "allowlist",
+          "allowFrom": ["1510884737"]
+        },
+        {
+          "accountId": "research",
+          "botToken": "8371607764:AAEsQCxbZLi-gcDfcrc4otTg7Tj5wtVTI74",
+          "dmPolicy": "allowlist", 
+          "allowFrom": ["1510884737"]
+        },
+        {
+          "accountId": "social",
+          "botToken": "8363670185:AAF87g3nBTkhsQ4O1TIEq1lxiRRQ7_G1BQ4",
+          "dmPolicy": "allowlist",
+          "allowFrom": ["1510884737"]  
+        },
+        {
+          "accountId": "deploy",
+          "botToken": "8562304149:AAGG8z9voTN0UO8zfI1AjKX5z7K7mQp21ok",
+          "dmPolicy": "allowlist",
+          "allowFrom": ["1510884737"]
+        },
+        {
+          "accountId": "sales", 
+          "botToken": "8049864989:AAHdP9iDsSpQWiQ5sKFZGJD060WLbmG5aAM",
+          "dmPolicy": "allowlist",
+          "allowFrom": ["1510884737"]
+        }
+      ]
+    }
+  },
+  "bindings": {
+    "telegram:main": "agent:default",
+    "telegram:research": "agent:asf_research",
+    "telegram:social": "agent:asf_social", 
+    "telegram:deploy": "agent:asf_deploy",
+    "telegram:sales": "agent:asf_sales"
+  }
+}

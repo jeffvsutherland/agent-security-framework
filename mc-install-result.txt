@@ -1,0 +1,9 @@
+docker cp: rc=0 
+chmod: rc=0
+copied to /workspace/agents/product-owner/mc-api.sh
+copied to /workspace/workspace-mc-3634c19a-9174-4f23-b03a-0d451f5de6be/mc-api.sh
+copied to /workspace/mc-api.sh
+mc-api health: {"ok":true}
+which: /usr/local/bin/mc-api
+mc-api boards: {"items":[{"name":"Agent Security Framework","slug":"agent-security-framework","description":"ASF Te
+./mc-api.sh health (product-owner): {"ok":true}

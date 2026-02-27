@@ -1,0 +1,50 @@
+=== Step 1: Update board max_agents to 10 ===
+  Board updated: max_agents=10, name=Agent Security Framework
+
+=== Step 2: Get all agents ===
+  Deploy Agent: status=provisioning, board=24394a90-a74e-479c-95e8-e5d24c7b4a40, lead=False
+  Research Agent: status=provisioning, board=24394a90-a74e-479c-95e8-e5d24c7b4a40, lead=False
+  Social Agent: status=provisioning, board=24394a90-a74e-479c-95e8-e5d24c7b4a40, lead=False
+  Sales Agent: status=provisioning, board=24394a90-a74e-479c-95e8-e5d24c7b4a40, lead=False
+  Raven (Product Owner): status=provisioning, board=24394a90-a74e-479c-95e8-e5d24c7b4a40, lead=False
+  ASF Gateway Gateway Agent: status=online, board=None, lead=False
+
+=== Step 3: Set all agents to active + on board ===
+
+  Updating Deploy Agent: {'status': 'active'}
+  ERROR 403: {"detail":"status is controlled by agent heartbeat","request_id":"4d059734201f4ca895f454da779aa897"}
+    FAILED
+
+  Updating Research Agent: {'status': 'active'}
+  ERROR 403: {"detail":"status is controlled by agent heartbeat","request_id":"503fe0a3cfdb4b559408de16833a16a4"}
+    FAILED
+
+  Updating Social Agent: {'status': 'active'}
+  ERROR 403: {"detail":"status is controlled by agent heartbeat","request_id":"206d27386fce4a91b24156d92d9e1f64"}
+    FAILED
+
+  Updating Sales Agent: {'status': 'active'}
+  ERROR 403: {"detail":"status is controlled by agent heartbeat","request_id":"d9bacc38255e403f990621b812596aba"}
+    FAILED
+
+  Updating Raven (Product Owner): {'status': 'active', 'is_board_lead': True}
+  ERROR 403: {"detail":"status is controlled by agent heartbeat","request_id":"b5c21f32ef074980ac7d1e56018c63ed"}
+    FAILED
+
+  Updating ASF Gateway Gateway Agent: {'board_id': '24394a90-a74e-479c-95e8-e5d24c7b4a40'}
+    OK: status=online, board=None, lead=False
+
+=== Step 4: Final verification ===
+  Deploy Agent: status=provisioning, board=24394a90-a74e-479c-95e8-e5d24c7b4a40, lead=False, seen=None
+  Research Agent: status=provisioning, board=24394a90-a74e-479c-95e8-e5d24c7b4a40, lead=False, seen=None
+  Social Agent: status=provisioning, board=24394a90-a74e-479c-95e8-e5d24c7b4a40, lead=False, seen=None
+  Sales Agent: status=provisioning, board=24394a90-a74e-479c-95e8-e5d24c7b4a40, lead=False, seen=None
+  Raven (Product Owner): status=provisioning, board=24394a90-a74e-479c-95e8-e5d24c7b4a40, lead=False, seen=None
+  ASF Gateway Gateway Agent: status=online, board=None, lead=False, seen=2026-02-20T21:46:02.954454
+
+Total agents: 6
+
+=== Board status ===
+  Name: Agent Security Framework
+  max_agents: 10
+  gateway: c3ff9d87-8e4d-47a8-b162-ef7b2285fb91

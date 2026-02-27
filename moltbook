@@ -1,0 +1,4 @@
+#!/bin/bash
+# Moltbook wrapper that uses workspace config
+export HOME=/workspace
+exec /workspace/skills/moltbook-interact/scripts/moltbook.sh "$@"

@@ -1,0 +1,411 @@
+{
+  "scan_date": "2026-02-16T14:49:41.481099",
+  "summary": {
+    "total_skills": 56,
+    "safe_skills": 16,
+    "warning_skills": 0,
+    "danger_skills": 40,
+    "security_score": 0
+  },
+  "skills": [
+    {
+      "name": "nano-pdf",
+      "status": "SAFE",
+      "issues": []
+    },
+    {
+      "name": "himalaya",
+      "status": "DANGER",
+      "issues": [
+        "references/message-composition.md: Contains format commands",
+        "references/configuration.md: References sensitive data",
+        "References sensitive data"
+      ]
+    },
+    {
+      "name": "bear-notes",
+      "status": "DANGER",
+      "issues": [
+        "References sensitive data"
+      ]
+    },
+    {
+      "name": "peekaboo",
+      "status": "DANGER",
+      "issues": [
+        "Contains format commands",
+        "References sensitive data"
+      ]
+    },
+    {
+      "name": "model-usage",
+      "status": "DANGER",
+      "issues": [
+        "references/codexbar-cli.md: References sensitive data",
+        "References sensitive data",
+        "references/codexbar-cli.md: Contains format commands",
+        "scripts/model_usage.py: Contains format commands",
+        "Contains format commands"
+      ]
+    },
+    {
+      "name": "blogwatcher",
+      "status": "SAFE",
+      "issues": []
+    },
+    {
+      "name": "discord",
+      "status": "DANGER",
+      "issues": [
+        "Contains format commands",
+        "References sensitive data"
+      ]
+    },
+    {
+      "name": "coding-agent",
+      "status": "DANGER",
+      "issues": [
+        "References sensitive data"
+      ]
+    },
+    {
+      "name": "openhue",
+      "status": "SAFE",
+      "issues": []
+    },
+    {
+      "name": "gemini",
+      "status": "DANGER",
+      "issues": [
+        "Contains format commands"
+      ]
+    },
+    {
+      "name": "gifgrep",
+      "status": "DANGER",
+      "issues": [
+        "Contains format commands",
+        "References sensitive data"
+      ]
+    },
+    {
+      "name": "session-logs",
+      "status": "DANGER",
+      "issues": [
+        "References sensitive data"
+      ]
+    },
+    {
+      "name": "ordercli",
+      "status": "DANGER",
+      "issues": [
+        "References sensitive data"
+      ]
+    },
+    {
+      "name": "openai-whisper",
+      "status": "DANGER",
+      "issues": [
+        "Contains format commands"
+      ]
+    },
+    {
+      "name": "spotify-player",
+      "status": "SAFE",
+      "issues": []
+    },
+    {
+      "name": "oracle",
+      "status": "DANGER",
+      "issues": [
+        "References sensitive data",
+        "Accesses .env files"
+      ]
+    },
+    {
+      "name": "summarize",
+      "status": "DANGER",
+      "issues": [
+        "References sensitive data"
+      ]
+    },
+    {
+      "name": "bluebubbles",
+      "status": "DANGER",
+      "issues": [
+        "References sensitive data"
+      ]
+    },
+    {
+      "name": "sherpa-onnx-tts",
+      "status": "DANGER",
+      "issues": [
+        "References sensitive data"
+      ]
+    },
+    {
+      "name": "video-frames",
+      "status": "SAFE",
+      "issues": []
+    },
+    {
+      "name": "eightctl",
+      "status": "DANGER",
+      "issues": [
+        "References sensitive data"
+      ]
+    },
+    {
+      "name": "clawdhub",
+      "status": "SAFE",
+      "issues": []
+    },
+    {
+      "name": "gog",
+      "status": "DANGER",
+      "issues": [
+        "Contains format commands",
+        "References sensitive data"
+      ]
+    },
+    {
+      "name": "canvas",
+      "status": "SAFE",
+      "issues": []
+    },
+    {
+      "name": "notion",
+      "status": "DANGER",
+      "issues": [
+        "Contains format commands",
+        "References sensitive data"
+      ]
+    },
+    {
+      "name": "goplaces",
+      "status": "DANGER",
+      "issues": [
+        "References sensitive data"
+      ]
+    },
+    {
+      "name": "apple-reminders",
+      "status": "SAFE",
+      "issues": []
+    },
+    {
+      "name": "imsg",
+      "status": "SAFE",
+      "issues": []
+    },
+    {
+      "name": "skill-creator",
+      "status": "DANGER",
+      "issues": [
+        "scripts/package_skill.py: Contains format commands",
+        "References sensitive data",
+        "scripts/init_skill.py: Contains format commands",
+        "Contains format commands",
+        "scripts/quick_validate.py: Contains format commands"
+      ]
+    },
+    {
+      "name": "camsnap",
+      "status": "SAFE",
+      "issues": []
+    },
+    {
+      "name": "github",
+      "status": "SAFE",
+      "issues": []
+    },
+    {
+      "name": "bird",
+      "status": "DANGER",
+      "issues": [
+        "References sensitive data"
+      ]
+    },
+    {
+      "name": "food-order",
+      "status": "DANGER",
+      "issues": [
+        "References sensitive data"
+      ]
+    },
+    {
+      "name": "things-mac",
+      "status": "DANGER",
+      "issues": [
+        "References sensitive data"
+      ]
+    },
+    {
+      "name": "blucli",
+      "status": "SAFE",
+      "issues": []
+    },
+    {
+      "name": "sonoscli",
+      "status": "DANGER",
+      "issues": [
+        "References sensitive data"
+      ]
+    },
+    {
+      "name": "mcporter",
+      "status": "SAFE",
+      "issues": []
+    },
+    {
+      "name": "tmux",
+      "status": "DANGER",
+      "issues": [
+        "Contains format commands"
+      ]
+    },
+    {
+      "name": "openai-image-gen",
+      "status": "DANGER",
+      "issues": [
+        "References sensitive data",
+        "scripts/gen.py: Accesses .env files",
+        "scripts/gen.py: References sensitive data",
+        "Contains format commands",
+        "scripts/gen.py: Contains format commands"
+      ]
+    },
+    {
+      "name": "sag",
+      "status": "DANGER",
+      "issues": [
+        "References sensitive data"
+      ]
+    },
+    {
+      "name": "slack",
+      "status": "DANGER",
+      "issues": [
+        "References sensitive data"
+      ]
+    },
+    {
+      "name": "weather",
+      "status": "DANGER",
+      "issues": [
+        "Contains format commands"
+      ]
+    },
+    {
+      "name": "obsidian",
+      "status": "SAFE",
+      "issues": []
+    },
+    {
+      "name": "trello",
+      "status": "DANGER",
+      "issues": [
+        "References sensitive data"
+      ]
+    },
+    {
+      "name": "wacli",
+      "status": "SAFE",
+      "issues": []
+    },
+    {
+      "name": "songsee",
+      "status": "DANGER",
+      "issues": [
+        "Contains format commands"
+      ]
+    },
+    {
+      "name": "apple-notes",
+      "status": "SAFE",
+      "issues": []
+    },
+    {
+      "name": "openai-whisper-api",
+      "status": "DANGER",
+      "issues": [
+        "scripts/transcribe.sh: Contains format commands",
+        "scripts/transcribe.sh: References sensitive data",
+        "References sensitive data"
+      ]
+    },
+    {
+      "name": "local-places",
+      "status": "DANGER",
+      "issues": [
+        "References sensitive data",
+        "Accesses .env files"
+      ]
+    },
+    {
+      "name": "nano-banana-pro",
+      "status": "DANGER",
+      "issues": [
+        "scripts/generate_image.py: References sensitive data",
+        "scripts/generate_image.py: Accesses .env files",
+        "References sensitive data",
+        "Accesses .env files"
+      ]
+    },
+    {
+      "name": "1password",
+      "status": "DANGER",
+      "issues": [
+        "References sensitive data",
+        "references/cli-examples.md: References sensitive data",
+        "references/get-started.md: References sensitive data",
+        "references/cli-examples.md: Contains format commands",
+        "references/cli-examples.md: Accesses .env files"
+      ]
+    },
+    {
+      "name": "voice-call",
+      "status": "DANGER",
+      "issues": [
+        "References sensitive data"
+      ]
+    },
+    {
+      "name": "oracle",
+      "status": "DANGER",
+      "issues": [
+        "scripts/oracle-secure.js: Reads environment variables",
+        "scripts/oracle-secure.js: Accesses .env files",
+        "References sensitive data",
+        "scripts/oracle-secure.js: References sensitive data"
+      ]
+    },
+    {
+      "name": "moltbook-interact",
+      "status": "DANGER",
+      "issues": [
+        "scripts/moltbook.sh: References sensitive data",
+        "references/api.md: References sensitive data",
+        "References sensitive data"
+      ]
+    },
+    {
+      "name": "moltbook-post-verified",
+      "status": "DANGER",
+      "issues": [
+        "References sensitive data"
+      ]
+    },
+    {
+      "name": "openai-image-gen",
+      "status": "DANGER",
+      "issues": [
+        "scripts/gen-secure.py: References sensitive data",
+        "scripts/gen-secure.py: Contains format commands",
+        "References sensitive data",
+        "scripts/gen-secure.py: Accesses .env files",
+        "Accesses .env files"
+      ]
+    }
+  ]
+}

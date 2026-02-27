@@ -1,0 +1,95 @@
+=== Starting OpenClaw Browser Relay ===
+
+Step 1: Check if openclaw CLI can start browser relay on host...
+  browser status stdout: │
+◇  Doctor changes ────────────────────────────────────────────────╮
+│                                                                 │
+│  - State dir: /Users/jeffsutherland/.clawdbot →                 │
+│    /Users/jeffsutherland/.openclaw (legacy path now symlinked)  │
+│                                                                 │
+├─────────────────────────────────────────────────────────────────╯
+│
+◇  Doctor changes ─────────────────────────────────────╮
+│                              
+  browser status stderr: Error: gateway closed (1006 abnormal closure (no close frame)): no close reason
+Gateway target: ws://127.0.0.1:18789
+Source: local loopback
+Config: /Users/jeffsutherland/.openclaw/openclaw.json
+Bind: loopback
+  rc: 1
+
+Step 2: Get current gateway container config...
+  Mounts: 15
+    /Users/jeffsutherland/.gitconfig -> /home/node/.gitconfig (bind)
+    /Users/jeffsutherland/.ssh -> /home/node/.ssh (bind)
+    /Users/jeffsutherland/check_anthropic_key.py -> /home/node/check_anthropic_key.py (bind)
+    /Users/jeffsutherland/run_clawdbot_robust.sh -> /home/node/run_clawdbot_robust.sh (bind)
+    /Users/jeffsutherland/.clawdbot -> /home/node/.clawdbot-host (bind)
+    /Users/jeffsutherland/.config/himalaya -> /home/node/.config/himalaya (bind)
+    /Users/jeffsutherland/clawd/ASF-15-docker/openclaw-state -> /home/node/.openclaw (bind)
+    /Users/jeffsutherland/fix_clawdbot_auth.sh -> /home/node/fix_clawdbot_auth.sh (bind)
+    /Users/jeffsutherland/start_clawdbot.sh -> /home/node/start_clawdbot.sh (bind)
+    /Users/jeffsutherland/clawd -> /workspace (bind)
+    /Users/jeffsutherland/.jira-config -> /home/node/.jira-config (bind)
+    /Users/jeffsutherland/clawdbot_service.sh -> /home/node/clawdbot_service.sh (bind)
+    /Users/jeffsutherland/.config/google -> /home/node/.config/google (bind)
+    /Users/jeffsutherland/agent-security-framework -> /home/node/agent-security-framework (bind)
+    /Users/jeffsutherland/clawdbot-gmail -> /home/node/clawdbot-gmail (bind)
+  Networks: ['asf-network']
+  Env count: 12
+  Restart: {'Name': 'unless-stopped', 'MaximumRetryCount': 0}
+  Image: openclaw-extended:2026.2.19
+  Hostname: e9814b2c4991
+  Current port bindings: {"18789/tcp": [{"HostIp": "", "HostPort": "18789"}]}
+  Extra hosts: ['host.docker.internal:host-gateway']
+
+Step 3: Recreate gateway with port 18792 exposed...
+  Volume flags: 
+  Env vars: 12
+
+=== RECREATION COMMAND ===
+Run these commands to fix:
+
+docker stop openclaw-gateway
+docker rm openclaw-gateway
+
+docker run -d --name openclaw-gateway \
+  --restart unless-stopped \
+  -p 18789:18789 \
+  -p 18792:18792 \
+  -v /Users/jeffsutherland/.gitconfig:/home/node/.gitconfig \
+  -v /Users/jeffsutherland/.ssh:/home/node/.ssh \
+  -v /Users/jeffsutherland/check_anthropic_key.py:/home/node/check_anthropic_key.py \
+  -v /Users/jeffsutherland/run_clawdbot_robust.sh:/home/node/run_clawdbot_robust.sh \
+  -v /Users/jeffsutherland/.clawdbot:/home/node/.clawdbot-host \
+  -v /Users/jeffsutherland/.config/himalaya:/home/node/.config/himalaya \
+  -v /Users/jeffsutherland/clawd/ASF-15-docker/openclaw-state:/home/node/.openclaw \
+  -v /Users/jeffsutherland/fix_clawdbot_auth.sh:/home/node/fix_clawdbot_auth.sh \
+  -v /Users/jeffsutherland/start_clawdbot.sh:/home/node/start_clawdbot.sh \
+  -v /Users/jeffsutherland/clawd:/workspace \
+  -v /Users/jeffsutherland/.jira-config:/home/node/.jira-config \
+  -v /Users/jeffsutherland/clawdbot_service.sh:/home/node/clawdbot_service.sh \
+  -v /Users/jeffsutherland/.config/google:/home/node/.config/google \
+  -v /Users/jeffsutherland/agent-security-framework:/home/node/agent-security-framework \
+  -v /Users/jeffsutherland/clawdbot-gmail:/home/node/clawdbot-gmail \
+  -e "AGENT_BROWSER_ARGS=--no-sandbox,--disable-dev-shm-usage,--disable-gpu" \
+  -e "ANTHROPIC_API_KEY=sk-cp-XxgKSU-NF_4Hut66fKFInC-Rn-BNAYt1K5Qy-sfexE0TVOk12ofFDNaHEX11ZWtfEAeBOFzUJEJLZ8G0BHwZXoxqtu8XMSZJ3HL9wFW2D1yJ4t08bcObcQo" \
+  -e "ANTHROPIC_BASE_URL=https://api.minimax.io/anthropic" \
+  -e "PATH=/root/.bun/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
+  -e "NODE_VERSION=22.22.0" \
+  -e "YARN_VERSION=1.22.22" \
+  -e "OPENCLAW_PREFER_PNPM=1" \
+  -e "NODE_ENV=production" \
+  -e "PLAYWRIGHT_BROWSERS_PATH=/opt/playwright" \
+  -e "SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt" \
+  -e "SSL_CERT_DIR=/etc/ssl/certs" \
+  -e "REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt" \
+  --network asf-network \
+  --add-host host.docker.internal:host-gateway \
+  openclaw-extended:2026.2.19 \
+  node \
+  openclaw.mjs \
+  gateway \
+  --allow-unconfigured
+
+=== DONE ===

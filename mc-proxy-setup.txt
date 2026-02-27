@@ -1,0 +1,22 @@
+=== Setting up internal proxy for gateway access ===
+
+socat inside container: ''
+socat not found, trying to install...
+Install result: 
+Install stderr: E: List directory /var/lib/apt/lists/partial is missing. - Acquire (13: Permission denied)
+socat available: False
+
+No socat. Using node proxy inside container...
+Wrote proxy script: rc=0
+Started proxy: rc=0
+Internal test on 18790: <!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+
+Testing from host on port 18790...
+Error from host: ConnectionRefusedError: [Errno 61] Connection refused
+
+=== DONE ===

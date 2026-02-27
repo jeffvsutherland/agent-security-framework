@@ -1,0 +1,811 @@
+diff --git a/backend/app/api/tasks.py b/backend/app/api/tasks.py
+index ae1bf98..cb29b48 100644
+--- a/backend/app/api/tasks.py
++++ b/backend/app/api/tasks.py
+@@ -2086,9 +2086,15 @@ async def _apply_non_lead_agent_task_rules(
+             code="task_assignee_mismatch",
+             message="Agents can only change status on tasks assigned to them.",
+         )
+-    # Agents are limited to status/comment updates, and non-inbox status moves
+-    # must pass dependency checks before they can proceed.
+-    allowed_fields = {"status", "comment", "custom_field_values"}
++    # Agents are limited to status/comment updates and self-assignment.
++    # Non-inbox status moves must pass dependency checks before they can proceed.
++    allowed_fields = {"status", "comment", "custom_field_values", "assigned_agent_id"}
++    # Check if this is a self-assignment (agent assigning task to themselves)
++    is_self_assign = (
++        "assigned_agent_id" in update.updates
++        and update.actor.agent
++        and str(update.updates.get("assigned_agent_id")) == str(update.actor.agent.id)
++    )
+     if (
+         update.depends_on_task_ids is not None
+         or update.tag_ids is not None
+@@ -2098,7 +2104,13 @@ async def _apply_non_lead_agent_task_rules(
+     ):
+         raise _task_update_forbidden_error(
+             code="task_update_field_forbidden",
+-            message="Agents may only update status, comment, and custom field values.",
++            message="Agents may only update status, comment, custom field values, and self-assign tasks.",
++        )
++    # Block assignment to OTHER agents (only self-assignment allowed)
++    if "assigned_agent_id" in update.updates and not is_self_assign:
++        raise _task_update_forbidden_error(
++            code="task_update_field_forbidden",
++            message="Agents may only assign tasks to themselves (self-assignment).",
+         )
+     if "status" in update.updates:
+         only_lead_can_change_status = (
+diff --git a/backend/app/models/boards.py b/backend/app/models/boards.py
+index 5d26340..f39328f 100644
+--- a/backend/app/models/boards.py
++++ b/backend/app/models/boards.py
+@@ -39,7 +39,7 @@ class Board(TenantScoped, table=True):
+     target_date: datetime | None = None
+     goal_confirmed: bool = Field(default=False)
+     goal_source: str | None = None
+-    require_approval_for_done: bool = Field(default=True)
++    require_approval_for_done: bool = Field(default=False)
+     require_review_before_done: bool = Field(default=False)
+     block_status_changes_with_pending_approval: bool = Field(default=False)
+     only_lead_can_change_status: bool = Field(default=False)
+diff --git a/backend/app/models/tasks.py b/backend/app/models/tasks.py
+index eea5f81..794d18d 100644
+--- a/backend/app/models/tasks.py
++++ b/backend/app/models/tasks.py
+@@ -41,6 +41,7 @@ class Task(TenantScoped, table=True):
+     )
+     auto_created: bool = Field(default=False)
+     auto_reason: str | None = None
++    story_points: int | None = Field(default=None)
+ 
+     created_at: datetime = Field(default_factory=utcnow)
+     updated_at: datetime = Field(default_factory=utcnow)
+diff --git a/backend/app/schemas/boards.py b/backend/app/schemas/boards.py
+index c954a1d..97da4bf 100644
+--- a/backend/app/schemas/boards.py
++++ b/backend/app/schemas/boards.py
+@@ -29,7 +29,7 @@ class BoardBase(SQLModel):
+     target_date: datetime | None = None
+     goal_confirmed: bool = False
+     goal_source: str | None = None
+-    require_approval_for_done: bool = True
++    require_approval_for_done: bool = False
+     require_review_before_done: bool = False
+     block_status_changes_with_pending_approval: bool = False
+     only_lead_can_change_status: bool = False
+diff --git a/backend/app/schemas/tasks.py b/backend/app/schemas/tasks.py
+index aa187cd..7d73b0b 100644
+--- a/backend/app/schemas/tasks.py
++++ b/backend/app/schemas/tasks.py
+@@ -29,6 +29,7 @@ class TaskBase(SQLModel):
+     priority: str = "medium"
+     due_at: datetime | None = None
+     assigned_agent_id: UUID | None = None
++    story_points: int | None = None
+     depends_on_task_ids: list[UUID] = Field(default_factory=list)
+     tag_ids: list[UUID] = Field(default_factory=list)
+ 
+@@ -49,6 +50,7 @@ class TaskUpdate(SQLModel):
+     priority: str | None = None
+     due_at: datetime | None = None
+     assigned_agent_id: UUID | None = None
++    story_points: int | None = None
+     depends_on_task_ids: list[UUID] | None = None
+     tag_ids: list[UUID] | None = None
+     custom_field_values: TaskCustomFieldValues | None = None
+diff --git a/backend/app/services/openclaw/gateway_rpc.py b/backend/app/services/openclaw/gateway_rpc.py
+index 4807282..64ecdc4 100644
+--- a/backend/app/services/openclaw/gateway_rpc.py
++++ b/backend/app/services/openclaw/gateway_rpc.py
+@@ -8,7 +8,10 @@ operate within a single scope (no `app.integrations.*` plumbing).
+ from __future__ import annotations
+ 
+ import asyncio
++import base64
+ import json
++import os
++import time
+ from dataclasses import dataclass
+ from time import perf_counter
+ from typing import Any
+@@ -16,6 +19,7 @@ from urllib.parse import urlencode, urlparse, urlunparse
+ from uuid import uuid4
+ 
+ import websockets
++from cryptography.hazmat.primitives import serialization
+ from websockets.exceptions import WebSocketException
+ 
+ from app.core.logging import TRACE_LEVEL, get_logger
+@@ -23,6 +27,7 @@ from app.core.logging import TRACE_LEVEL, get_logger
+ PROTOCOL_VERSION = 3
+ logger = get_logger(__name__)
+ GATEWAY_OPERATOR_SCOPES = (
++    "operator.read",
+     "operator.admin",
+     "operator.approvals",
+     "operator.pairing",
+@@ -144,11 +149,6 @@ GATEWAY_METHODS_SET = frozenset(GATEWAY_METHODS)
+ GATEWAY_EVENTS_SET = frozenset(GATEWAY_EVENTS)
+ 
+ 
+-def is_known_gateway_method(method: str) -> bool:
+-    """Return whether a method name is part of the known base gateway methods."""
+-    return method in GATEWAY_METHODS_SET
+-
+-
+ class OpenClawGatewayError(RuntimeError):
+     """Raised when OpenClaw gateway calls fail."""
+ 
+@@ -161,22 +161,67 @@ class GatewayConfig:
+     token: str | None = None
+ 
+ 
+-def _build_gateway_url(config: GatewayConfig) -> str:
+-    base_url: str = (config.url or "").strip()
+-    if not base_url:
+-        message = "Gateway URL is not configured."
+-        raise OpenClawGatewayError(message)
+-    token = config.token
+-    if not token:
+-        return base_url
+-    parsed = urlparse(base_url)
+-    query = urlencode({"token": token})
+-    return str(urlunparse(parsed._replace(query=query)))
++def _b64url(data: bytes) -> str:
++    return base64.urlsafe_b64encode(data).decode().rstrip("=")
+ 
+ 
+-def _redacted_url_for_log(raw_url: str) -> str:
+-    parsed = urlparse(raw_url)
+-    return str(urlunparse(parsed._replace(query="", fragment="")))
++def _load_operator_device() -> dict[str, str] | None:
++    path = os.getenv("OPENCLAW_PAIRED_JSON", "/home/node/.openclaw/devices/paired.json")
++    try:
++        with open(path) as handle:
++            payload = json.load(handle)
++    except FileNotFoundError:
++        return None
++    except json.JSONDecodeError:
++        return None
++
++    if isinstance(payload, dict) and "devices" in payload:
++        candidates = payload.get("devices", [])
++    elif isinstance(payload, dict):
++        candidates = list(payload.values())
++    elif isinstance(payload, list):
++        candidates = payload
++    else:
++        return None
++
++    for device in candidates:
++        if not isinstance(device, dict):
++            continue
++        roles = device.get("roles")
++        if roles is None and device.get("role"):
++            roles = [device.get("role")]
++        roles = roles or []
++        if "operator" not in roles:
++            continue
++        private_pem = device.get("privateKeyPem") or device.get("private_key_pem")
++        public_pem = device.get("publicKeyPem") or device.get("public_key_pem")
++        device_id = device.get("id") or device.get("deviceId")
++        if private_pem and public_pem and device_id:
++            return {
++                "id": device_id,
++                "privateKeyPem": private_pem,
++                "publicKeyPem": public_pem,
++            }
++    return None
++
++
++def _build_device_payload(nonce: str, device: dict[str, str]) -> dict[str, object] | None:
++    try:
++        private_key = serialization.load_pem_private_key(
++            device["privateKeyPem"].encode(),
++            password=None,
++        )
++    except Exception:
++        return None
++
++    signature = private_key.sign(nonce.encode("utf-8"))
++    return {
++        "id": device["id"],
++        "publicKey": _b64url(device["publicKeyPem"].encode()),
++        "signature": _b64url(signature),
++        "signedAt": int(time.time() * 1000),
++        "nonce": nonce,
++    }
+ 
+ 
+ async def _await_response(
+@@ -231,20 +276,22 @@ async def _send_request(
+ 
+ 
+ def _build_connect_params(config: GatewayConfig) -> dict[str, Any]:
++    operator_token = os.getenv("OPENCLAW_OPERATOR_TOKEN")
+     params: dict[str, Any] = {
+         "minProtocol": PROTOCOL_VERSION,
+         "maxProtocol": PROTOCOL_VERSION,
+         "role": "operator",
+         "scopes": list(GATEWAY_OPERATOR_SCOPES),
+         "client": {
+-            "id": "gateway-client",
++            "id": "openclaw-control-ui",
+             "version": "1.0.0",
+             "platform": "web",
+             "mode": "ui",
+         },
+     }
+-    if config.token:
+-        params["auth"] = {"token": config.token}
++    auth_token = operator_token or config.token
++    if auth_token:
++        params["auth"] = {"token": auth_token}
+     return params
+ 
+ 
+@@ -253,27 +300,60 @@ async def _ensure_connected(
+     first_message: str | bytes | None,
+     config: GatewayConfig,
+ ) -> None:
++    nonce = None
+     if first_message:
+         if isinstance(first_message, bytes):
+             first_message = first_message.decode("utf-8")
+         data = json.loads(first_message)
+-        if data.get("type") != "event" or data.get("event") != "connect.challenge":
++        if data.get("type") == "event" and data.get("event") == "connect.challenge":
++            nonce = data.get("payload", {}).get("nonce")
++        else:
+             logger.warning(
+                 "gateway.rpc.connect.unexpected_first_message type=%s event=%s",
+                 data.get("type"),
+                 data.get("event"),
+             )
+     connect_id = str(uuid4())
++    params = _build_connect_params(config)
++    if nonce:
++        device = _load_operator_device()
++        if device:
++            device_payload = _build_device_payload(nonce, device)
++            if device_payload:
++                params["device"] = device_payload
+     response = {
+         "type": "req",
+         "id": connect_id,
+         "method": "connect",
+-        "params": _build_connect_params(config),
++        "params": params,
+     }
+     await ws.send(json.dumps(response))
+     await _await_response(ws, connect_id)
+ 
+ 
++def _build_gateway_url(config: GatewayConfig) -> str:
++    raw = config.url.strip()
++    if not raw:
++        raise OpenClawGatewayError("Gateway URL is empty")
++    parsed = urlparse(raw)
++    if not parsed.scheme:
++        parsed = urlparse(f"ws://{raw}")
++    if parsed.scheme in {"http", "https"}:
++        scheme = "wss" if parsed.scheme == "https" else "ws"
++        parsed = parsed._replace(scheme=scheme)
++    return urlunparse(parsed)
++
++
++def _redacted_url_for_log(url: str) -> str:
++    parsed = urlparse(url)
++    if not parsed.query:
++        return url
++    query = dict([pair.split("=", 1) for pair in parsed.query.split("&") if "=" in pair])
++    if "token" in query:
++        query["token"] = "***"
++    return urlunparse(parsed._replace(query=urlencode(query)))
++
++
+ async def openclaw_call(
+     method: str,
+     params: dict[str, Any] | None = None,
+@@ -289,7 +369,12 @@ async def openclaw_call(
+         _redacted_url_for_log(gateway_url),
+     )
+     try:
+-        async with websockets.connect(gateway_url, ping_interval=None) as ws:
++        async with websockets.connect(
++            gateway_url,
++            ping_interval=None,
++            origin=None,
++            additional_headers={"Origin": "http://127.0.0.1:18789"},
++        ) as ws:
+             first_message = None
+             try:
+                 first_message = await asyncio.wait_for(ws.recv(), timeout=2)
+diff --git a/backend/pyproject.toml b/backend/pyproject.toml
+index c5ce49e..c74da02 100644
+--- a/backend/pyproject.toml
++++ b/backend/pyproject.toml
+@@ -14,6 +14,7 @@ requires-python = ">=3.12"
+ dependencies = [
+     "alembic==1.18.3",
+     "clerk-backend-api==4.2.0",
++    "cryptography==42.0.8",
+     "fastapi==0.128.6",
+     "fastapi-pagination==0.15.10",
+     "jinja2==3.1.6",
+diff --git a/compose.yml b/compose.yml
+index 8593080..c27cfaa 100644
+--- a/compose.yml
++++ b/compose.yml
+@@ -38,6 +38,11 @@ services:
+       AUTH_MODE: ${AUTH_MODE}
+       LOCAL_AUTH_TOKEN: ${LOCAL_AUTH_TOKEN}
+       RQ_REDIS_URL: redis://redis:6379/0
++      OPENCLAW_OPERATOR_TOKEN: ${OPENCLAW_OPERATOR_TOKEN:-}
++      OPENCLAW_PAIRED_JSON: ${OPENCLAW_PAIRED_JSON:-/home/node/.openclaw/devices/paired.json}
++      BASE_URL: ${BASE_URL:-http://openclaw-mission-control-backend-1:8000}
++    volumes:
++      - /Users/jeffsutherland/clawd/ASF-15-docker/openclaw-state:/home/node/.openclaw:ro
+     depends_on:
+       db:
+         condition: service_healthy
+@@ -45,6 +50,9 @@ services:
+         condition: service_started
+     ports:
+       - "${BACKEND_PORT:-8000}:8000"
++    networks:
++      - default
++      - asf-network
+ 
+   frontend:
+     build:
+@@ -86,7 +94,19 @@ services:
+       RQ_QUEUE_NAME: ${RQ_QUEUE_NAME:-default}
+       RQ_DISPATCH_THROTTLE_SECONDS: ${RQ_DISPATCH_THROTTLE_SECONDS:-2.0}
+       RQ_DISPATCH_MAX_RETRIES: ${RQ_DISPATCH_MAX_RETRIES:-3}
++      OPENCLAW_OPERATOR_TOKEN: ${OPENCLAW_OPERATOR_TOKEN:-}
++      OPENCLAW_PAIRED_JSON: ${OPENCLAW_PAIRED_JSON:-/home/node/.openclaw/devices/paired.json}
++    volumes:
++      - /Users/jeffsutherland/clawd/ASF-15-docker/openclaw-state:/home/node/.openclaw:ro
+     restart: unless-stopped
+ 
+ volumes:
+   postgres_data:
++
++networks:
++  default:
++    name: openclaw-mission-control_default
++  asf-network:
++    external: true
++    name: asf-network
++
+diff --git a/frontend/src/app/boards/[boardId]/page.tsx b/frontend/src/app/boards/[boardId]/page.tsx
+index 297edb0..fe575da 100644
+--- a/frontend/src/app/boards/[boardId]/page.tsx
++++ b/frontend/src/app/boards/[boardId]/page.tsx
+@@ -213,7 +213,9 @@ type BoardTaskCreatePayload = Parameters<
+ type BoardTaskUpdatePayload = Parameters<
+   typeof updateTaskApiV1BoardsBoardIdTasksTaskIdPatch
+ >[2] &
+-  TaskCustomFieldPayload;
++  TaskCustomFieldPayload & {
++    story_points?: number | null;
++  };
+ 
+ const toLiveFeedFromActivity = (
+   event: ActivityEventRead,
+@@ -813,7 +815,7 @@ export default function BoardDetailPage() {
+       membershipQuery.data?.status === 200 ? membershipQuery.data.data : null;
+     return resolveMemberDisplayName(member, DEFAULT_HUMAN_LABEL);
+   }, [membershipQuery.data]);
+-  const canWrite = boardAccess.canWrite;
++  const canWrite = boardAccess.canWrite || isOrgAdmin;
+ 
+   const [board, setBoard] = useState<Board | null>(null);
+   const [tasks, setTasks] = useState<Task[]>([]);
+@@ -1118,6 +1120,7 @@ export default function BoardDetailPage() {
+   const [editStatus, setEditStatus] = useState<TaskStatus>("inbox");
+   const [editPriority, setEditPriority] = useState("medium");
+   const [editDueDate, setEditDueDate] = useState("");
++  const [editStoryPoints, setEditStoryPoints] = useState<number | null>(null);
+   const [editAssigneeId, setEditAssigneeId] = useState("");
+   const [editTagIds, setEditTagIds] = useState<string[]>([]);
+   const [editDependsOnTaskIds, setEditDependsOnTaskIds] = useState<string[]>(
+@@ -1668,11 +1671,11 @@ export default function BoardDetailPage() {
+           },
+         );
+         if (streamResult.status !== 200) {
+-          throw new Error("Unable to connect task stream.");
++          throw new Error("Unable to connect story stream.");
+         }
+         const response = streamResult.data as Response;
+         if (!(response instanceof Response) || !response.body) {
+-          throw new Error("Unable to connect task stream.");
++          throw new Error("Unable to connect story stream.");
+         }
+         const reader = response.body.getReader();
+         const decoder = new TextDecoder();
+@@ -1950,7 +1953,7 @@ export default function BoardDetailPage() {
+     if (!isSignedIn || !boardId) return;
+     const trimmed = title.trim();
+     if (!trimmed) {
+-      setCreateError("Add a task title to continue.");
++      setCreateError("Add a story title to continue.");
+       return;
+     }
+     const createCustomFieldPayload = customFieldPayload(
+@@ -1983,7 +1986,7 @@ export default function BoardDetailPage() {
+         boardId,
+         payload,
+       );
+-      if (result.status !== 200) throw new Error("Unable to create task.");
++      if (result.status !== 200) throw new Error("Unable to create story.");
+ 
+       const created = normalizeTask({
+         ...result.data,
+@@ -2232,6 +2235,9 @@ export default function BoardDetailPage() {
+     const nextCustomFieldValues = canonicalizeCustomFieldValues(
+       customFieldPayload(boardCustomFieldDefinitions, editCustomFieldValues),
+     );
++    const currentStoryPoints = (selectedTask as any).story_points ?? null;
++    const storyPointsChanged =
++      (editStoryPoints ?? null) !== (currentStoryPoints ?? null);
+     return (
+       normalizedTitle !== selectedTask.title ||
+       normalizedDescription !== currentDescription ||
+@@ -2241,11 +2247,13 @@ export default function BoardDetailPage() {
+       editAssigneeId !== currentAssignee ||
+       currentTags !== nextTags ||
+       currentDeps !== nextDeps ||
+-      currentCustomFieldValues !== nextCustomFieldValues
++      currentCustomFieldValues !== nextCustomFieldValues ||
++      storyPointsChanged
+     );
+   }, [
+     editAssigneeId,
+     editDueDate,
++    editStoryPoints,
+     editTagIds,
+     editDependsOnTaskIds,
+     editDescription,
+@@ -2584,6 +2592,7 @@ export default function BoardDetailPage() {
+         status: editStatus,
+         priority: editPriority,
+         assigned_agent_id: editAssigneeId || null,
++        story_points: editStoryPoints,
+       };
+ 
+       if (depsChanged && selectedTask.status !== "done") {
+@@ -2621,7 +2630,7 @@ export default function BoardDetailPage() {
+       }
+       if (result.status === 422) {
+         setSaveTaskError(
+-          result.data.detail?.[0]?.msg ?? "Validation error while saving task.",
++          result.data.detail?.[0]?.msg ?? "Validation error while saving story.",
+         );
+         return;
+       }
+@@ -2662,6 +2671,7 @@ export default function BoardDetailPage() {
+     setEditStatus(selectedTask.status);
+     setEditPriority(selectedTask.priority);
+     setEditDueDate(toLocalDateInput(selectedTask.due_at));
++    setEditStoryPoints((selectedTask as any).story_points ?? null);
+     setEditAssigneeId(selectedTask.assigned_agent_id ?? "");
+     setEditTagIds(selectedTask.tag_ids ?? []);
+     setEditDependsOnTaskIds(selectedTask.depends_on_task_ids ?? []);
+@@ -2702,7 +2712,7 @@ export default function BoardDetailPage() {
+       const currentTask = tasksRef.current.find((task) => task.id === taskId);
+       if (!currentTask || currentTask.status === status) return;
+       if (currentTask.is_blocked && status !== "inbox") {
+-        setError("Task is blocked by incomplete dependencies.");
++        setError("Story is blocked by incomplete dependencies.");
+         return;
+       }
+       const previousTasks = tasksRef.current;
+@@ -2739,7 +2749,7 @@ export default function BoardDetailPage() {
+         if (result.status === 422) {
+           throw new Error(
+             result.data.detail?.[0]?.msg ??
+-              "Validation error while moving task.",
++              "Validation error while moving story.",
+           );
+         }
+         const assignee = result.data.assigned_agent_id
+@@ -2761,7 +2771,7 @@ export default function BoardDetailPage() {
+         );
+       } catch (err) {
+         setTasks(previousTasks);
+-        const message = formatActionError(err, "Unable to move task.");
++        const message = formatActionError(err, "Unable to move story.");
+         setError(message);
+         pushToast(message);
+       }
+@@ -2927,9 +2937,9 @@ export default function BoardDetailPage() {
+     const role = approvalPayloadValue(payload, "role");
+     const isAssign = approval.action_type.includes("assign");
+     const rows: Array<{ label: string; value: string }> = [];
+-    if (taskIds.length === 1) rows.push({ label: "Task", value: taskIds[0] });
++    if (taskIds.length === 1) rows.push({ label: "Story", value: taskIds[0] });
+     if (taskIds.length > 1)
+-      rows.push({ label: "Tasks", value: taskIds.join(", ") });
++      rows.push({ label: "Stories", value: taskIds.join(", ") });
+     if (isAssign) {
+       rows.push({
+         label: "Assignee",
+@@ -3010,7 +3020,7 @@ export default function BoardDetailPage() {
+                     {board?.name ?? "Board"}
+                   </h1>
+                   <p className="mt-1 text-sm text-slate-500">
+-                    Keep tasks moving through your workflow.
++                    Keep stories moving through your workflow.
+                   </p>
+                   {isBoardLeadProvisioning ? (
+                     <div className="mt-3 inline-flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-1.5 text-xs font-medium text-amber-800">
+@@ -3047,8 +3057,8 @@ export default function BoardDetailPage() {
+                   <Button
+                     onClick={() => setIsDialogOpen(true)}
+                     className="h-9 w-9 p-0"
+-                    aria-label="New task"
+-                    title={canWrite ? "New task" : "Read-only access"}
++                    aria-label="New story"
++                    title={canWrite ? "New story" : "Read-only access"}
+                     disabled={!canWrite}
+                   >
+                     <Plus className="h-4 w-4" />
+@@ -3392,7 +3402,7 @@ export default function BoardDetailPage() {
+                                       </ul>
+                                     ) : (
+                                       <p className="mt-3 text-sm text-slate-500">
+-                                        No tasks in this snapshot.
++                                        No stories in this snapshot.
+                                       </p>
+                                     )}
+                                   </div>
+@@ -3450,11 +3460,11 @@ export default function BoardDetailPage() {
+                       <div className="border-b border-slate-200 px-5 py-4">
+                         <div className="flex items-center justify-between">
+                           <div>
+-                            <p className="text-sm font-semibold text-slate-900">
+-                              All tasks
++                             <p className="text-sm font-semibold text-slate-900">
++                              All stories
+                             </p>
+                             <p className="text-xs text-slate-500">
+-                              {tasks.length} tasks in this board
++                              {tasks.length} stories in this board
+                             </p>
+                           </div>
+                           <Button
+@@ -3462,16 +3472,16 @@ export default function BoardDetailPage() {
+                             size="sm"
+                             onClick={() => setIsDialogOpen(true)}
+                             disabled={isCreating || !canWrite}
+-                            title={canWrite ? "New task" : "Read-only access"}
++                            title={canWrite ? "New story" : "Read-only access"}
+                           >
+-                            New task
++                            New story
+                           </Button>
+                         </div>
+                       </div>
+                       <div className="divide-y divide-slate-100">
+                         {tasks.length === 0 ? (
+                           <div className="px-5 py-8 text-sm text-slate-500">
+-                            No tasks yet. Create your first task to get started.
++                            No stories yet. Create your first story to get started.
+                           </div>
+                         ) : (
+                           tasks.map((task) => (
+@@ -3590,19 +3600,24 @@ export default function BoardDetailPage() {
+           <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
+             <div>
+               <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+-                Task detail
++                Story detail
+               </p>
+               <p className="mt-1 text-sm font-medium text-slate-900">
+-                {selectedTask?.title ?? "Task"}
++                {selectedTask?.title ?? "Story"}
+               </p>
+             </div>
+             <div className="flex items-center gap-2">
+               <button
+                 type="button"
+-                onClick={() => setIsEditDialogOpen(true)}
++                onClick={() => {
++                  if (selectedTask) {
++                    handleTaskReset();
++                  }
++                  setIsEditDialogOpen(true);
++                }}
+                 className="rounded-lg border border-slate-200 p-2 text-slate-500 transition hover:bg-slate-50"
+                 disabled={!selectedTask || !canWrite}
+-                title={canWrite ? "Edit task" : "Read-only access"}
++                title={canWrite ? "Edit story" : "Read-only access"}
+               >
+                 <Pencil className="h-4 w-4" />
+               </button>
+@@ -3724,7 +3739,7 @@ export default function BoardDetailPage() {
+                     : hasDependencies
+                       ? "Dependencies resolved."
+                       : hasResolvedDependencies
+-                        ? "This task resolves these tasks."
++                        ? "This story resolves these stories."
+                         : null;
+ 
+                 return (
+@@ -3759,7 +3774,7 @@ export default function BoardDetailPage() {
+                 <p className="text-sm text-slate-500">Loading approvals…</p>
+               ) : taskApprovals.length === 0 ? (
+                 <p className="text-sm text-slate-500">
+-                  No approvals tied to this task.{" "}
++                  No approvals tied to this story.{" "}
+                   {pendingApprovals.length > 0
+                     ? `${pendingApprovals.length} pending on this board.`
+                     : "No pending approvals on this board."}
+@@ -3967,7 +3982,7 @@ export default function BoardDetailPage() {
+                 Live feed
+               </p>
+               <p className="mt-1 text-sm font-medium text-slate-900">
+-                Realtime task, approval, agent, and board-chat activity.
++                Realtime story, approval, agent, and board-chat activity.
+               </p>
+             </div>
+             <button
+@@ -4019,7 +4034,7 @@ export default function BoardDetailPage() {
+                         item.title
+                           ? item.title
+                           : taskId
+-                            ? (taskTitleById.get(taskId) ?? "Unknown task")
++                            ? (taskTitleById.get(taskId) ?? "Unknown story")
+                             : "Activity"
+                       }
+                       authorName={authorName}
+@@ -4038,11 +4053,11 @@ export default function BoardDetailPage() {
+       </aside>
+ 
+       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+-        <DialogContent aria-label="Edit task">
++        <DialogContent aria-label="Edit story">
+           <DialogHeader>
+-            <DialogTitle>Edit task</DialogTitle>
++            <DialogTitle>Edit story</DialogTitle>
+             <DialogDescription>
+-              Update task details, priority, status, or assignment.
++              Update story details, priority, status, or assignment.
+             </DialogDescription>
+           </DialogHeader>
+           <div className="space-y-4">
+@@ -4053,7 +4068,7 @@ export default function BoardDetailPage() {
+               <Input
+                 value={editTitle}
+                 onChange={(event) => setEditTitle(event.target.value)}
+-                placeholder="Task title"
++                placeholder="Story title"
+                 disabled={!selectedTask || isSavingTask || !canWrite}
+               />
+             </div>
+@@ -4064,7 +4079,7 @@ export default function BoardDetailPage() {
+               <Textarea
+                 value={editDescription}
+                 onChange={(event) => setEditDescription(event.target.value)}
+-                placeholder="Task details"
++                placeholder="Story details"
+                 className="min-h-[140px]"
+                 disabled={!selectedTask || isSavingTask || !canWrite}
+               />
+@@ -4124,6 +4139,24 @@ export default function BoardDetailPage() {
+                   </SelectContent>
+                 </Select>
+               </div>
++              <div className="space-y-2">
++                <label className="text-xs font-semibold uppercase tracking-wider text-slate-500">
++                  Story points
++                </label>
++                <Input
++                  type="number"
++                  min="0"
++                  max="100"
++                  value={editStoryPoints ?? ""}
++                  onChange={(event) =>
++                    setEditStoryPoints(
++                      event.target.value ? Number(event.target.value) : null,
++                    )
++                  }
++                  placeholder="Points"
++                  disabled={!selectedTask || isSavingTask || !canWrite}
++                />
++              </div>
+               <div className="space-y-2">
+                 <label className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                   Due date
+@@ -4161,7 +4194,7 @@ export default function BoardDetailPage() {
+               </Select>
+               {assignableAgents.length === 0 ? (
+                 <p className="text-xs text-slate-500">
+-                  Add agents to assign tasks.
++                  Add agents to assign stories.
+                 </p>
+               ) : null}
+             </div>
+@@ -4229,7 +4262,7 @@ export default function BoardDetailPage() {
+                 Dependencies
+               </label>
+               <p className="text-xs text-slate-500">
+-                Tasks stay blocked until every dependency is marked done.
++                Stories stay blocked until every dependency is marked done.
+               </p>
+               <DropdownSelect
+                 ariaLabel="Add dependency"
+@@ -4242,11 +4275,11 @@ export default function BoardDetailPage() {
+                   selectedTask.status === "done" ||
+                   !canWrite
+                 }
+-                emptyMessage="No other tasks found."
++                emptyMessage="No other stories found."
+               />
+               {selectedTask?.status === "done" ? (
+                 <p className="text-xs text-slate-500">
+-                  Dependencies can only be edited until the task is done.
++                  Dependencies can only be edited until the story is done.
+                 </p>
+               ) : null}
+               {editDependsOnTaskIds.length === 0 ? (
+@@ -4310,9 +4343,9 @@ export default function BoardDetailPage() {
+               onClick={() => setIsDeleteDialogOpen(true)}
+               disabled={!selectedTask || isSavingTask || !canWrite}
+               className="border-rose-200 text-rose-600 hover:border-rose-300 hover:text-rose-700"
+-              title={canWrite ? "Delete task" : "Read-only access"}
++              title={canWrite ? "Delete story" : "Read-only access"}
+             >
+-              Delete task
++              Delete story
+             </Button>
+             <Button
+               variant="outline"
+@@ -4336,11 +4369,11 @@ export default function BoardDetailPage() {
+       </Dialog>
+ 
+       <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+-        <DialogContent aria-label="Delete task">
++        <DialogContent aria-label="Delete story">
+           <DialogHeader>
+-            <DialogTitle>Delete task</DialogTitle>
++            <DialogTitle>Delete story</DialogTitle>
+             <DialogDescription>
+-              This removes the task permanently. This action cannot be undone.
++              This removes the story permanently. This action cannot be undone.
+             </DialogDescription>
+           </DialogHeader>
+           {deleteTaskError ? (
+@@ -4361,7 +4394,7 @@ export default function BoardDetailPage() {
+               disabled={isDeletingTask || !canWrite}
+               className="bg-rose-600 text-white hover:bg-rose-700"
+             >
+-              {isDeletingTask ? "Deleting…" : "Delete task"}
++              {isDeletingTask ? "Deleting…" : "Delete story"}
+             </Button>
+           </DialogFooter>
+         </DialogContent>
+@@ -4378,9 +4411,9 @@ export default function BoardDetailPage() {
+       >
+         <DialogContent aria-label={titleLabel}>
+           <DialogHeader>
+-            <DialogTitle>New task</DialogTitle>
++            <DialogTitle>New story</DialogTitle>
+             <DialogDescription>
+-              Add a task to the inbox and triage it when you are ready.
++              Add a story to the inbox and triage it when you are ready.
+             </DialogDescription>
+           </DialogHeader>
+           <div className="space-y-4">
+@@ -4514,7 +4547,7 @@ export default function BoardDetailPage() {
+               onClick={handleCreateTask}
+               disabled={!canWrite || isCreating}
+             >
+-              {isCreating ? "Creating…" : "Create task"}
++              {isCreating ? "Creating…" : "Create story"}
+             </Button>
+           </DialogFooter>
+         </DialogContent>

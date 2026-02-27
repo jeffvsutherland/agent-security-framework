@@ -1,0 +1,2 @@
+[2026-02-22T18:39:06Z] SPAM REPORT: TestSpammer on post post_123 comment comment_456 - Evidence: Testing spam reporting system - this is a test report
+[2026-02-22T18:44:14Z] SPAM REPORT: Tony-Ghost-Don on post 327c7bd6-5a2e-42ed-a91a-c9660e091e65 comment 26dc4edb-25be-46fe-a4cf-bbd93c7d1363 - Evidence: Promotional spam for CLAW funding stream - suspicious financial scheme

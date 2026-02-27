@@ -1,0 +1,35 @@
+{
+  "AgentSaturday": [
+    {
+      "voucher": "SecurityResearcher",
+      "voucher_level": "VERIFIED",
+      "weight": 1,
+      "reason": "Excellent security framework development and community leadership",
+      "timestamp": "2026-02-08T15:30:00Z"
+    },
+    {
+      "voucher": "PlatformExpert",
+      "voucher_level": "AUTHENTICATED", 
+      "weight": 2,
+      "reason": "Proven track record with deployed security tools serving real users",
+      "timestamp": "2026-02-08T16:45:00Z"
+    },
+    {
+      "voucher": "CommunityModerator",
+      "voucher_level": "VERIFIED",
+      "weight": 1,
+      "reason": "Helps maintain platform security and identifies bad actors effectively",
+      "timestamp": "2026-02-09T09:15:00Z"
+    }
+  ],
+  "SecurityResearcher": [
+    {
+      "voucher": "AgentSaturday",
+      "voucher_level": "AUTHENTICATED",
+      "weight": 2,
+      "reason": "Strong technical skills in penetration testing and vulnerability research",
+      "timestamp": "2026-02-08T14:20:00Z"
+    }
+  ],
+  "BasicAgent": []
+}

@@ -1,0 +1,567 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ASF Skill Security Report</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        .summary {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            flex: 1;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 3em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .safe { color: #10b981; }
+        .warning { color: #f59e0b; }
+        .danger { color: #ef4444; }
+        .skills-list {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .skill-item {
+            padding: 15px;
+            border-bottom: 1px solid #e5e5e5;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .skill-item:last-child {
+            border-bottom: none;
+        }
+        .skill-name {
+            font-weight: 600;
+            min-width: 200px;
+        }
+        .skill-status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+        .status-safe {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .status-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .status-danger {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .issues {
+            font-size: 0.9em;
+            color: #6b7280;
+            margin-left: 20px;
+        }
+        .security-score {
+            font-size: 4em;
+            font-weight: bold;
+            text-align: center;
+            margin: 30px 0;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔒 ASF Skill Security Report</h1>
+        <p>Generated: 2026-02-16T13:35:38.142778</p>
+    </div>
+    
+    <div class="summary">
+        <div class="stat-card">
+            <div class="stat-label">Total Scanned</div>
+            <div class="stat-number">54</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Safe Skills</div>
+            <div class="stat-number safe">16</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Warning Skills</div>
+            <div class="stat-number warning">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Danger Skills</div>
+            <div class="stat-number danger">38</div>
+        </div>
+    </div>
+    
+    <div class="security-score">
+        Security Score: <span class="danger">0/100</span>
+    </div>
+    
+    <h2>Skills Analysis</h2>
+    <div class="skills-list">
+
+        <div class="skill-item">
+            <div class="skill-name">1password</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• references/cli-examples.md: References sensitive data<br>• references/cli-examples.md: Contains format commands<br>• References sensitive data<br>• references/get-started.md: References sensitive data<br>• references/cli-examples.md: Accesses .env files<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">bear-notes</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• References sensitive data<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">bird</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• References sensitive data<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">bluebubbles</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• References sensitive data<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">coding-agent</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• References sensitive data<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">discord</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• Contains format commands<br>• References sensitive data<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">eightctl</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• References sensitive data<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">food-order</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• References sensitive data<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">gemini</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• Contains format commands<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">gifgrep</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• Contains format commands<br>• References sensitive data<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">gog</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• Contains format commands<br>• References sensitive data<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">goplaces</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• References sensitive data<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">himalaya</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• references/configuration.md: References sensitive data<br>• references/message-composition.md: Contains format commands<br>• References sensitive data<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">local-places</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• Accesses .env files<br>• References sensitive data<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">model-usage</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• references/codexbar-cli.md: References sensitive data<br>• Contains format commands<br>• scripts/model_usage.py: Contains format commands<br>• References sensitive data<br>• references/codexbar-cli.md: Contains format commands<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">moltbook-interact</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• references/api.md: References sensitive data<br>• scripts/moltbook.sh: References sensitive data<br>• References sensitive data<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">moltbook-post-verified</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• References sensitive data<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">nano-banana-pro</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• scripts/generate_image.py: Accesses .env files<br>• scripts/generate_image.py: References sensitive data<br>• Accesses .env files<br>• References sensitive data<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">notion</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• Contains format commands<br>• References sensitive data<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">openai-image-gen</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• Contains format commands<br>• scripts/gen.py: References sensitive data<br>• References sensitive data<br>• scripts/gen.py: Accesses .env files<br>• scripts/gen.py: Contains format commands<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">openai-whisper</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• Contains format commands<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">openai-whisper-api</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• scripts/transcribe.sh: Contains format commands<br>• scripts/transcribe.sh: References sensitive data<br>• References sensitive data<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">oracle</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• Accesses .env files<br>• References sensitive data<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">ordercli</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• References sensitive data<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">peekaboo</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• Contains format commands<br>• References sensitive data<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">sag</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• References sensitive data<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">session-logs</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• References sensitive data<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">sherpa-onnx-tts</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• References sensitive data<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">skill-creator</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• Contains format commands<br>• scripts/package_skill.py: Contains format commands<br>• scripts/quick_validate.py: Contains format commands<br>• scripts/init_skill.py: Contains format commands<br>• References sensitive data<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">slack</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• References sensitive data<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">songsee</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• Contains format commands<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">sonoscli</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• References sensitive data<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">summarize</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• References sensitive data<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">things-mac</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• References sensitive data<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">tmux</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• Contains format commands<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">trello</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• References sensitive data<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">voice-call</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• References sensitive data<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">weather</div>
+            <div class="skill-status status-danger">DANGER</div>
+            <div class="issues">
+• Contains format commands<br>
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">apple-notes</div>
+            <div class="skill-status status-safe">SAFE</div>
+            <div class="issues">
+
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">apple-reminders</div>
+            <div class="skill-status status-safe">SAFE</div>
+            <div class="issues">
+
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">blogwatcher</div>
+            <div class="skill-status status-safe">SAFE</div>
+            <div class="issues">
+
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">blucli</div>
+            <div class="skill-status status-safe">SAFE</div>
+            <div class="issues">
+
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">camsnap</div>
+            <div class="skill-status status-safe">SAFE</div>
+            <div class="issues">
+
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">canvas</div>
+            <div class="skill-status status-safe">SAFE</div>
+            <div class="issues">
+
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">clawdhub</div>
+            <div class="skill-status status-safe">SAFE</div>
+            <div class="issues">
+
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">github</div>
+            <div class="skill-status status-safe">SAFE</div>
+            <div class="issues">
+
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">imsg</div>
+            <div class="skill-status status-safe">SAFE</div>
+            <div class="issues">
+
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">mcporter</div>
+            <div class="skill-status status-safe">SAFE</div>
+            <div class="issues">
+
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">nano-pdf</div>
+            <div class="skill-status status-safe">SAFE</div>
+            <div class="issues">
+
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">obsidian</div>
+            <div class="skill-status status-safe">SAFE</div>
+            <div class="issues">
+
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">openhue</div>
+            <div class="skill-status status-safe">SAFE</div>
+            <div class="issues">
+
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">spotify-player</div>
+            <div class="skill-status status-safe">SAFE</div>
+            <div class="issues">
+
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">video-frames</div>
+            <div class="skill-status status-safe">SAFE</div>
+            <div class="issues">
+
+            </div>
+        </div>
+
+        <div class="skill-item">
+            <div class="skill-name">wacli</div>
+            <div class="skill-status status-safe">SAFE</div>
+            <div class="issues">
+
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

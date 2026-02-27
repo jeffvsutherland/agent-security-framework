@@ -1,0 +1,59 @@
+=== OpenClaw Browser Relay Fix ===
+
+Port 18789 (gateway): OPEN
+Port 18792 (browser relay): CLOSED
+
+--- Gateway container inspection ---
+  .openclaw contents: agents
+auth-profiles
+backups
+canvas
+config
+cron
+delivery-queue
+devices
+identity
+logs
+media
+memory
+openclaw.json
+openclaw.json.bak
+openclaw.json.bak.1
+openclaw.json.bak.2
+openclaw.json.bak.3
+openclaw.json.bak.4
+openclaw.json.pre-minimax.20260222-094636
+telegram
+update-check.json
+  Container ports: {"18789/tcp":[{"HostIp":"0.0.0.0","HostPort":"18789"},{"HostIp":"::","HostPort":"18789"}]}
+  Port bindings: {"18789/tcp":[{"HostIp":"","HostPort":"18789"}]}
+
+--- Gateway environment ---
+  AGENT_BROWSER_ARGS=--no-sandbox,--disable-dev-shm-usage,--disable-gpu
+  PLAYWRIGHT_BROWSERS_PATH=/opt/playwright
+  CMD: ["node","openclaw.mjs","gateway","--allow-unconfigured"]
+  ENTRYPOINT: ["docker-entrypoint.sh"]
+
+--- Listening ports inside gateway container ---
+  no netstat/ss
+
+  Exposed ports: {"18789/tcp":{}}
+  Image: openclaw-extended:2026.2.19
+
+--- How to fix ---
+The OpenClaw Chrome extension needs port 18792 (browser CDP relay).
+The gateway container only exposes port 18789.
+
+Option 1: Stop and recreate the gateway with port 18792 exposed:
+  docker stop openclaw-gateway
+  docker rm openclaw-gateway
+  # Re-run with -p 18792:18792 added
+
+Option 2: Use the OpenClaw CLI to enable the browser relay:
+  openclaw browser start chrome
+
+Option 3: Point the Chrome extension to the gateway port instead:
+  In extension settings, change relay URL to http://127.0.0.1:18789
+
+--- openclaw CLI ---
+  which openclaw: /opt/homebrew/bin/openclaw

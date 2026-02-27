@@ -1,0 +1,43 @@
+{
+  "name": "asf-discord-bot",
+  "version": "1.0.0",
+  "description": "ASF Discord Bot - THE ONE THING: Working agent verification",
+  "main": "discord-asf-bot.js",
+  "scripts": {
+    "start": "node discord-asf-bot.js",
+    "dev": "nodemon discord-asf-bot.js",
+    "deploy": "./deploy-bot.sh"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "agent-security",
+    "verification",
+    "asf"
+  ],
+  "author": "Agent Security Framework",
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/tokenizer": "^0.0.4",
+    "@steipete/oracle": "^0.8.6",
+    "discord.js": "^14.14.1",
+    "tiktoken": "^1.0.22"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeffvsutherland/agent-security-framework.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jeffvsutherland/agent-security-framework/issues"
+  },
+  "homepage": "https://github.com/jeffvsutherland/agent-security-framework#readme"
+}

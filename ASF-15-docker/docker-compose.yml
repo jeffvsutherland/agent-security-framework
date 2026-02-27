@@ -1,0 +1,143 @@
+services:
+  # API Service Container
+  asf-api:
+    build: 
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: asf-api-service
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://asf:asf_secure@postgres:5432/asf_db
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=${JWT_SECRET:-your-secret-key}
+      - API_KEY_SALT=${API_KEY_SALT:-your-salt}
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./api/logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Dashboard Container
+  asf-dashboard:
+    build:
+      context: ./dashboard
+      dockerfile: Dockerfile
+    container_name: asf-dashboard
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://asf-api:8080
+      - NODE_ENV=production
+    depends_on:
+      - asf-api
+    restart: unless-stopped
+
+  # OpenClaw Gateway
+  openclaw:
+    build:
+      context: .
+      dockerfile: Dockerfile.openclaw
+    image: openclaw-extended:2026.2.19
+    container_name: openclaw-gateway
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+    shm_size: '512mb'
+    environment:
+      - ANTHROPIC_API_KEY=sk-cp-XxgKSU-NF_4Hut66fKFInC-Rn-BNAYt1K5Qy-sfexE0TVOk12ofFDNaHEX11ZWtfEAeBOFzUJEJLZ8G0BHwZXoxqtu8XMSZJ3HL9wFW2D1yJ4t08bcObcQo
+      - ANTHROPIC_BASE_URL=https://api.minimax.io/anthropic
+      - AGENT_BROWSER_ARGS=--no-sandbox,--disable-dev-shm-usage,--disable-gpu
+    volumes:
+      - ./openclaw-state:/home/node/.openclaw
+      - ${HOME}/clawd:/workspace
+      - ${HOME}/.jira-config:/home/node/.jira-config:ro
+      - ${HOME}/.clawdbot:/home/node/.clawdbot-host:ro
+      - ${HOME}/.config/himalaya:/home/node/.config/himalaya:ro
+      - ${HOME}/.config/google:/home/node/.config/google
+      - ${HOME}/.ssh:/home/node/.ssh:ro
+      - ${HOME}/.gitconfig:/home/node/.gitconfig:ro
+      - ${HOME}/agent-security-framework:/home/node/agent-security-framework:ro
+      - ${HOME}/clawdbot-gmail:/home/node/clawdbot-gmail:ro
+      - ${HOME}/check_anthropic_key.py:/home/node/check_anthropic_key.py:ro
+      - ${HOME}/clawdbot_service.sh:/home/node/clawdbot_service.sh:ro
+      - ${HOME}/fix_clawdbot_auth.sh:/home/node/fix_clawdbot_auth.sh:ro
+      - ${HOME}/run_clawdbot_robust.sh:/home/node/run_clawdbot_robust.sh:ro
+      - ${HOME}/start_clawdbot.sh:/home/node/start_clawdbot.sh:ro
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: asf-postgres
+    environment:
+      - POSTGRES_DB=asf_db
+      - POSTGRES_USER=asf
+      - POSTGRES_PASSWORD=asf_secure
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: asf-redis
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  # SDK Build Environment
+  sdk-builder:
+    build:
+      context: ./sdk-builder
+      dockerfile: Dockerfile
+    container_name: asf-sdk-builder
+    volumes:
+      - ./sdks:/workspace/sdks
+      - ./build-artifacts:/workspace/artifacts
+    environment:
+      - NPM_TOKEN=${NPM_TOKEN:-}
+      - PYPI_TOKEN=${PYPI_TOKEN:-}
+    profiles:
+      - build
+
+  # Webhook Service
+  webhook-service:
+    build:
+      context: ./webhook
+      dockerfile: Dockerfile
+    container_name: asf-webhook-service
+    ports:
+      - "8081:8081"
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=postgresql://asf:asf_secure@postgres:5432/asf_db
+    depends_on:
+      - redis
+      - postgres
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  default:
+    name: asf-network

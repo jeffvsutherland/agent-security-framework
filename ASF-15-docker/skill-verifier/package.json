@@ -1,0 +1,32 @@
+{
+  "name": "asf-skill-verifier",
+  "version": "1.0.0",
+  "description": "ASF Skill Security Verification System for Discord",
+  "main": "discord-skill-bot.js",
+  "scripts": {
+    "start": "node discord-skill-bot.js",
+    "dev": "nodemon discord-skill-bot.js",
+    "test": "bash skill-checker.sh https://github.com/openclaw/skill-weather"
+  },
+  "keywords": [
+    "asf",
+    "security",
+    "openclaw",
+    "clawdbot",
+    "skill-verification",
+    "discord-bot"
+  ],
+  "author": "Agent Saturday (ASF Product Owner)",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "axios": "^1.6.7",
+    "dotenv": "^16.4.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,0 +1,50 @@
+Fix: Use wss:// for the gateway URL, or connect via SSH tunnel to localhost.
+2026-02-20T21:05:47.212Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 30s.
+2026-02-20T21:05:47.272Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 30s.
+2026-02-20T21:05:47.343Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 30s.
+2026-02-20T21:06:06.252Z [gateway] drain timeout reached; proceeding with restart
+2026-02-20T21:06:06.293Z [gmail-watcher] gmail watcher stopped
+2026-02-20T21:06:06.490Z [gateway] restart mode: full process restart (spawned pid 156)
+2026-02-20T21:06:18.480Z [canvas] host mounted at http://0.0.0.0:18789/__openclaw__/canvas/ (root /home/node/.openclaw/canvas)
+2026-02-20T21:06:18.541Z [heartbeat] started
+2026-02-20T21:06:18.546Z [health-monitor] started (interval: 300s, grace: 60s)
+2026-02-20T21:06:18.552Z [gateway] agent model: anthropic/claude-opus-4-20250514
+2026-02-20T21:06:18.553Z [gateway] listening on ws://0.0.0.0:18789 (PID 14)
+2026-02-20T21:06:18.555Z [gateway] log file: /tmp/openclaw/openclaw-2026-02-20.log
+2026-02-20T21:06:18.578Z [browser/service] Browser control service ready (profiles=2)
+2026-02-20T21:06:19.027Z [telegram] [deploy] starting provider (@ASFDeployBot)
+2026-02-20T21:06:19.036Z [telegram] autoSelectFamily=true (default-node22)
+2026-02-20T21:06:19.121Z [telegram] [sales] starting provider (@ASFSalesBot)
+2026-02-20T21:06:19.123Z [telegram] [research] starting provider (@ASFResearchBot)
+2026-02-20T21:06:19.124Z [telegram] [social] starting provider (@ASFSocialBot)
+2026-02-20T21:06:19.322Z [telegram] [product-owner] starting provider (@AgentSaturdayASFBot)
+2026-02-20T21:06:19.324Z [telegram] [default] starting provider (@jeffsutherlandbot)
+2026-02-20T21:06:30.053Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 2.36s.
+2026-02-20T21:06:32.053Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 2.22s.
+2026-02-20T21:06:49.714Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 2.31s.
+2026-02-20T21:06:49.719Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 2.29s.
+2026-02-20T21:06:50.026Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 2.21s.
+2026-02-20T21:06:50.104Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 2.35s.
+2026-02-20T21:07:05.897Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 4.23s.
+2026-02-20T21:07:07.756Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 4.39s.
+2026-02-20T21:07:25.443Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 3.8s.
+2026-02-20T21:07:25.450Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 4.38s.
+2026-02-20T21:07:25.650Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 4.09s.
+2026-02-20T21:07:25.913Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 4.03s.
+2026-02-20T21:07:42.609Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 7.27s.
+2026-02-20T21:07:59.694Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 6.55s.
+2026-02-20T21:08:00.292Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 7.12s.
+2026-02-20T21:08:00.400Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 7.81s.
+2026-02-20T21:08:00.626Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 7.12s.
+2026-02-20T21:08:20.514Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 12.87s.
+2026-02-20T21:08:37.861Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 13.94s.
+2026-02-20T21:08:38.390Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 12.23s.
+2026-02-20T21:08:38.859Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 12.99s.
+2026-02-20T21:08:41.348Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 7.88s.
+2026-02-20T21:09:04.063Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 21.62s.
+2026-02-20T21:09:07.003Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 13.53s.
+2026-02-20T21:09:19.890Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 12.82s.
+2026-02-20T21:09:21.092Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 24.6s.
+2026-02-20T21:09:22.473Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 23.01s.
+2026-02-20T21:09:22.490Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 26.17s.
+2026-02-20T21:09:50.963Z [telegram] getUpdates conflict: Call to 'getUpdates' failed! (409: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running); retrying in 26s.

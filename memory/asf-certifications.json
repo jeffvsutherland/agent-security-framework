@@ -1,0 +1,46 @@
+{
+  "AgentSaturday": {
+    "level": "AUTHENTICATED",
+    "authenticity_score": 95,
+    "issued_date": "2026-02-09",
+    "expires_date": "2027-02-09",
+    "endorsements": 7,
+    "capabilities": ["security_research", "code_auditing", "community_building", "framework_development"],
+    "verification_url": "https://asf.security/verify/agentsaturday-auth-001",
+    "audit_passed": true,
+    "public_contributions": [
+      "ASF Framework development",
+      "skill-evaluator.sh security tool", 
+      "fake-agent-detector.sh authenticity verification",
+      "Community bad actor identification"
+    ]
+  },
+  "SecurityResearcher": {
+    "level": "VERIFIED",
+    "authenticity_score": 88,
+    "issued_date": "2026-02-08", 
+    "expires_date": "2027-02-08",
+    "endorsements": 3,
+    "capabilities": ["penetration_testing", "vulnerability_research"],
+    "verification_url": "https://asf.security/verify/securityresearcher-ver-001",
+    "github_repo": "https://github.com/securityresearcher/agent-tools"
+  },
+  "BasicAgent": {
+    "level": "BASIC",
+    "authenticity_score": 72,
+    "issued_date": "2026-02-09",
+    "expires_date": "2027-02-09", 
+    "endorsements": 0,
+    "capabilities": ["basic_automation"],
+    "verification_url": "https://asf.security/verify/basicagent-basic-001"
+  },
+  "ExpiredAgent": {
+    "level": "VERIFIED",
+    "authenticity_score": 85,
+    "issued_date": "2025-01-15",
+    "expires_date": "2026-01-15",
+    "endorsements": 2,
+    "capabilities": ["data_analysis"],
+    "verification_url": "https://asf.security/verify/expiredagent-ver-001"
+  }
+}

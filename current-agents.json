@@ -1,0 +1,159 @@
+{
+    "items": [
+        {
+            "board_id": "24394a90-a74e-479c-95e8-e5d24c7b4a40",
+            "name": "Deploy Agent",
+            "status": "provisioning",
+            "heartbeat_config": {
+                "every": "10m",
+                "target": "last",
+                "includeReasoning": false
+            },
+            "identity_profile": {
+                "role": "DevOps/Deploy",
+                "openclaw_agent_id": "deploy",
+                "telegram_bot": "@ASFDeployBot"
+            },
+            "identity_template": "You are the ASF Deploy Agent. You manage Docker deployments, CI/CD, and infrastructure.",
+            "soul_template": null,
+            "id": "30374dc0-f90b-4291-bda3-99e8db3424db",
+            "gateway_id": "c3ff9d87-8e4d-47a8-b162-ef7b2285fb91",
+            "is_board_lead": false,
+            "is_gateway_main": false,
+            "openclaw_session_id": "agent:mc-30374dc0-f90b-4291-bda3-99e8db3424db:main",
+            "last_seen_at": null,
+            "created_at": "2026-02-20T21:49:23.001498",
+            "updated_at": "2026-02-20T21:49:23.576210"
+        },
+        {
+            "board_id": "24394a90-a74e-479c-95e8-e5d24c7b4a40",
+            "name": "Research Agent",
+            "status": "provisioning",
+            "heartbeat_config": {
+                "every": "10m",
+                "target": "last",
+                "includeReasoning": false
+            },
+            "identity_profile": {
+                "role": "Research",
+                "openclaw_agent_id": "research",
+                "telegram_bot": "@ASFResearchBot"
+            },
+            "identity_template": "You are the ASF Research Agent. You conduct research, analyze security threats, and produce technical reports.",
+            "soul_template": null,
+            "id": "a752e9fc-8c0d-4a12-b455-de0a322c142f",
+            "gateway_id": "c3ff9d87-8e4d-47a8-b162-ef7b2285fb91",
+            "is_board_lead": false,
+            "is_gateway_main": false,
+            "openclaw_session_id": "agent:mc-a752e9fc-8c0d-4a12-b455-de0a322c142f:main",
+            "last_seen_at": null,
+            "created_at": "2026-02-20T21:47:01.493873",
+            "updated_at": "2026-02-20T21:47:01.845817"
+        },
+        {
+            "board_id": "24394a90-a74e-479c-95e8-e5d24c7b4a40",
+            "name": "Social Agent",
+            "status": "provisioning",
+            "heartbeat_config": {
+                "every": "10m",
+                "target": "last",
+                "includeReasoning": false
+            },
+            "identity_profile": {
+                "role": "Social Media",
+                "openclaw_agent_id": "social",
+                "telegram_bot": "@ASFSocialBot"
+            },
+            "identity_template": "You are the ASF Social Agent. You manage social media, content creation, and community engagement.",
+            "soul_template": null,
+            "id": "b9efac34-d836-4505-b123-130502e6f42b",
+            "gateway_id": "c3ff9d87-8e4d-47a8-b162-ef7b2285fb91",
+            "is_board_lead": false,
+            "is_gateway_main": false,
+            "openclaw_session_id": "agent:mc-b9efac34-d836-4505-b123-130502e6f42b:main",
+            "last_seen_at": null,
+            "created_at": "2026-02-20T21:46:30.916368",
+            "updated_at": "2026-02-20T21:46:31.470559"
+        },
+        {
+            "board_id": "24394a90-a74e-479c-95e8-e5d24c7b4a40",
+            "name": "Sales Agent",
+            "status": "provisioning",
+            "heartbeat_config": {
+                "every": "10m",
+                "target": "last",
+                "includeReasoning": false
+            },
+            "identity_profile": {
+                "role": "Sales",
+                "openclaw_agent_id": "sales",
+                "telegram_bot": "@ASFSalesBot",
+                "communication_style": "persuasive, professional"
+            },
+            "identity_template": "You are the ASF Sales Agent. You handle outreach, website creation, and customer engagement.",
+            "soul_template": null,
+            "id": "f231fd0f-6004-4268-8dc9-d7013fcb23e9",
+            "gateway_id": "c3ff9d87-8e4d-47a8-b162-ef7b2285fb91",
+            "is_board_lead": false,
+            "is_gateway_main": false,
+            "openclaw_session_id": "agent:mc-f231fd0f-6004-4268-8dc9-d7013fcb23e9:main",
+            "last_seen_at": null,
+            "created_at": "2026-02-20T21:45:09.437370",
+            "updated_at": "2026-02-20T21:45:09.945760"
+        },
+        {
+            "board_id": "24394a90-a74e-479c-95e8-e5d24c7b4a40",
+            "name": "Raven (Product Owner)",
+            "status": "provisioning",
+            "heartbeat_config": {
+                "every": "10m",
+                "target": "last",
+                "includeReasoning": false
+            },
+            "identity_profile": {
+                "role": "Product Owner",
+                "openclaw_agent_id": "product-owner",
+                "telegram_bot": "@AgentSaturdayASFBot",
+                "communication_style": "professional, strategic"
+            },
+            "identity_template": "You are Raven, the ASF Product Owner. You manage the product backlog, prioritize stories, and coordinate the agent team.",
+            "soul_template": null,
+            "id": "3634c19a-9174-4f23-b03a-0d451f5de6be",
+            "gateway_id": "c3ff9d87-8e4d-47a8-b162-ef7b2285fb91",
+            "is_board_lead": false,
+            "is_gateway_main": false,
+            "openclaw_session_id": "agent:mc-3634c19a-9174-4f23-b03a-0d451f5de6be:main",
+            "last_seen_at": null,
+            "created_at": "2026-02-20T21:45:08.485216",
+            "updated_at": "2026-02-20T21:45:09.420849"
+        },
+        {
+            "board_id": null,
+            "name": "ASF Gateway Gateway Agent",
+            "status": "online",
+            "heartbeat_config": {
+                "every": "10m",
+                "target": "last",
+                "includeReasoning": false
+            },
+            "identity_profile": {
+                "role": "Gateway Agent",
+                "communication_style": "direct, concise, practical",
+                "emoji": ":compass:"
+            },
+            "identity_template": null,
+            "soul_template": null,
+            "id": "ae63a2bf-863a-4daa-a010-42258d6e40a3",
+            "gateway_id": "c3ff9d87-8e4d-47a8-b162-ef7b2285fb91",
+            "is_board_lead": false,
+            "is_gateway_main": true,
+            "openclaw_session_id": "agent:mc-gateway-c3ff9d87-8e4d-47a8-b162-ef7b2285fb91:main",
+            "last_seen_at": "2026-02-20T21:46:02.954454",
+            "created_at": "2026-02-20T21:05:05.369974",
+            "updated_at": "2026-02-20T21:46:02.954466"
+        }
+    ],
+    "total": 6,
+    "limit": 200,
+    "offset": 0
+}

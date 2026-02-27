@@ -1,0 +1,4 @@
+      - ANTHROPIC_API_KEY=sk-cp-XxgKSU-NF_4Hut66fKFInC-Rn-BNAYt1K5Qy-sfexE0TVOk12ofFDNaHEX11ZWtfEAeBOFzUJEJLZ8G0BHwZXoxqtu8XMSZJ3HL9wFW2D1yJ4t08bcObcQo
+      - ANTHROPIC_BASE_URL=https://api.minimax.io/anthropic
+    volumes:
+      - ./openclaw-state:/home/node/.openclaw

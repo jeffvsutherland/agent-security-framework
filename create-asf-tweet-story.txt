@@ -1,0 +1,21 @@
+@jeffsutherlandbot Please create a new Jira story in the ASF project:
+
+Title: Post ASF v2.0 Self-Healing Security Scanner announcement on Twitter/X
+
+Description:
+Post announcement tweet about ASF Security Scanner v2.0 upgrade that now provides self-healing capabilities. Highlight the three key improvements and responsible disclosure approach.
+
+Acceptance Criteria:
+- Post main tweet with ASF v2.0 announcement
+- Include GitHub repository link
+- Emphasize self-healing capabilities  
+- Mention responsible disclosure timeline (14 days)
+- Optional: Add follow-up tweet with examples
+- Monitor engagement for first hour
+
+Priority: High
+Story Points: 2
+Sprint: ASF Sprint 2
+Assignee: Jeff Sutherland
+
+The approved tweet content is in /workspace/asf-announcement-tweet.md

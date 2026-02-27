@@ -1,0 +1,35 @@
+=== FULL RESTART ===
+
+1. Killing proxies...
+   Done
+2. Stopping gateway...
+   stop: rc=0
+3. Removing gateway...
+   rm: rc=0
+4. Creating gateway...
+   create: rc=0
+5. Waiting 35s for gateway startup...
+6. Gateway status: Up 35 seconds
+7. Installing mc-api...
+   docker cp: rc=0
+   Installed + backed up
+8. Fixing file ownership...
+   Done
+9. Starting gateway proxy on 18793...
+   Proxy 18793: OPEN
+
+10. VERIFICATION:
+   mc-api health: {"ok":true}
+   ✅ mc-api boards: {"items":[{"name":"Agent Security Framework","slug":"agent-security-framework","description":"ASF Te
+   ✅ mc-api tasks: {"items":[{"title":"[ASF-42] Implement Docker Syscall Monitoring","description":"Add syscall interce
+   ✅ mc-api agents: {"items":[{"board_id":"24394a90-a74e-479c-95e8-e5d24c7b4a40","name":"Deploy Agent","status":"offline
+
+   Gateway logs:
+   
+
+   Ports:
+   8001 (MC Backend): ✅ OPEN
+   18789 (Gateway): ✅ OPEN
+   18793 (GW Proxy): ✅ OPEN
+
+=== FULL RESTART COMPLETE ===
