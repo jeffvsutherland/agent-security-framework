@@ -1,0 +1,29 @@
+============================================================
+🔑 Testing Moltbook API Key
+============================================================
+⚠️  Connection error: The read operation timed out
+
+============================================================
+🐳 Checking Docker Gateway
+============================================================
+✅ openclaw-gateway is running
+
+📁 Creating Moltbook credentials in Docker...
+❌ Failed to create credentials file
+   stderr: cat: /home/node/.config/moltbook/credentials.json: No such file or directory
+
+
+============================================================
+💾 Persisting credentials on host
+============================================================
+✅ Saved to /Users/jeffsutherland/clawd/ASF-15-docker/openclaw-state/config/moltbook/credentials.json
+
+============================================================
+📋 SUMMARY
+============================================================
+❌ API key is EXPIRED/INVALID
+   Raven needs a password reset at https://moltbook.com/login
+   Or try the claim URL: https://moltbook.com/claim/moltbook_claim_LjmD5cB5Sw8rh8wya09jZQfPRt34kkFx
+   Verification code: kelp-FSKT
+
+   See /Users/jeffsutherland/clawd/RAVEN-MOLTBOOK-PASSWORD-RESET.md for full instructions

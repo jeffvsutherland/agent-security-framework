@@ -1,0 +1,5 @@
+2026-02-20 21:00:09,796 INFO app.core.logging logging.configured level=INFO format=text use_utc=False app=mission-control version=0.1.0
+OK status: {"heartbeat": {"defaultAgentId": "main", "agents": [{"agentId": "main", "enabled": true, "every": "30m", "everyMs": 1800000}, {"agentId": "deploy", "enabled": false, "every": "disabled", "everyMs": nu
+OK config.schema: {"schema": {"$schema": "http://json-schema.org/draft-07/schema#", "type": "object", "properties": {"meta": {"type": "object", "properties": {"lastTouchedVersion": {"type": "string"}, "lastTouchedAt": 
+OK agents.list: {"defaultId": "main", "mainKey": "main", "scope": "per-sender", "agents": [{"id": "main"}, {"id": "deploy", "name": "deploy"}, {"id": "product-owner", "name": "product-owner"}, {"id": "research", "nam
+exit: 0

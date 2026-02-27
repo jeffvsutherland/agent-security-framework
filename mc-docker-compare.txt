@@ -1,0 +1,53 @@
+=== Docker Networking Comparison ===
+
+--- openclaw-mission-control-backend-1 ---
+Ports: {"8000/tcp":[{"HostIp":"0.0.0.0","HostPort":"8001"},{"HostIp":"::","HostPort":"8001"}]}
+Bindings: {"8000/tcp":[{"HostIp":"","HostPort":"8001"}]}
+NetworkMode: asf-network
+Networks: {"asf-network":{"IPAMConfig":null,"Links":null,"Aliases":["openclaw-mission-control-backend-1","backend"],"DriverOpts":null,"GwPriority":0,"NetworkID":"9bffb1e7960f12b85261f94033bc4a8398ddc051c365a3e9461b1bdefa9041f1","EndpointID":"255b473fd3fd8e9bfb1dd62d760b6f73160d9f89959e16e697fd7073a2d3b3c1","Gateway":"172.18.0.1","IPAddress":"172.18.0.8","MacAddress":"ca:58:54:e3:65:37","IPPrefixLen":16,"IPv6Gateway":"","GlobalIPv6Address":"","GlobalIPv6PrefixLen":0,"DNSNames":["openclaw-mission-control-backend-1","backend","5d538243df73"]},"openclaw-mission-control_default":{"IPAMConfig":null,"Links":null,"Aliases":["openclaw-mission-control-backend-1","backend"],"DriverOpts":null,"GwPriority":0,"NetworkID":"84646ff9345270d949d90b6c92aceb7d88f3a998bd19ecafb532ea0962ce0bf2","EndpointID":"cd2c35841581e6bef5db96809
+
+--- openclaw-gateway ---
+Ports: {"18789/tcp":[{"HostIp":"0.0.0.0","HostPort":"18789"},{"HostIp":"::","HostPort":"18789"}],"18792/tcp":[{"HostIp":"0.0.0.0","HostPort":"18792"},{"HostIp":"::","HostPort":"18792"}]}
+Bindings: {"18789/tcp":[{"HostIp":"","HostPort":"18789"}],"18792/tcp":[{"HostIp":"","HostPort":"18792"}]}
+NetworkMode: asf-network
+Networks: {"asf-network":{"IPAMConfig":null,"Links":null,"Aliases":null,"DriverOpts":null,"GwPriority":0,"NetworkID":"9bffb1e7960f12b85261f94033bc4a8398ddc051c365a3e9461b1bdefa9041f1","EndpointID":"cf3ab0709612d64a99a4a374314bcc424d5740f468cf3d8b7436639aaa7343e1","Gateway":"172.18.0.1","IPAddress":"172.18.0.4","MacAddress":"e2:cb:3d:67:64:e1","IPPrefixLen":16,"IPv6Gateway":"","GlobalIPv6Address":"","GlobalIPv6PrefixLen":0,"DNSNames":["openclaw-gateway","698be431b806"]}}
+
+
+Docker networks: asf-network
+bridge
+host
+none
+openclaw-mission-control_default
+
+asf-network driver: bridge
+asf-network IPAM: {
+  "Driver": "default",
+  "Options": null,
+  "Config": [
+    {
+      "Subnet": "172.18.0.0/16",
+      "Gateway": "172.18.0.1"
+    }
+  ]
+}
+  Container: asf-webhook-service IP: 172.18.0.6/16
+  Container: asf-postgres IP: 172.18.0.5/16
+  Container: asf-api-service IP: 172.18.0.3/16
+  Container: openclaw-mission-control-backend-1 IP: 172.18.0.8/16
+  Container: openclaw-gateway IP: 172.18.0.4/16
+  Container: asf-dashboard IP: 172.18.0.2/16
+  Container: asf-redis IP: 172.18.0.7/16
+
+Backend network mode: asf-network
+Gateway network mode: asf-network
+
+Backend /proc/net/tcp:   sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode                                                     
+   0: 00000000:1F40 00000000:0000 0A 00000000:00000000 00:00000000 00000000     0        0 2474111 1 000000006117458d 100 0 0 10 0                   
+   1: 0B00007F:842D 00000000:0000 0A 00000000:00000000 00:00000000 00000000     0        0 2476037 1 0000000004167352 100 0 0 10 0                   
+   2: 040013AC:A1B0 030013AC:1538 01 00000000:0000
+Gateway /proc/net/tcp:   sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode                                                     
+   0: 0B00007F:B3E1 00000000:0000 0A 00000000:00000000 00:00000000 00000000     0        0 2533904 1 00000000c17f9942 100 0 0 10 0                   
+   1: 00000000:4966 00000000:0000 0A 00000000:00000000 00:00000000 00000000  1000        0 2568963 1 00000000a8a85620 100 0 0 10 0                   
+   2: 0100007F:4968 00000000:0000 0A 00000000:0000
+
+=== DONE ===

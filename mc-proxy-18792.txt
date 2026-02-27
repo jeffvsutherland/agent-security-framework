@@ -1,0 +1,13 @@
+=== Setting up proxy on 18792 -> 18789 inside container ===
+
+Wrote script: rc=0
+Started proxy: rc=0
+Internal test: INTERNAL OK status=200
+Internal WS test: WS_ERR: Unexpected server response: 404
+
+--- Testing from host ---
+Port 18792 from host: OPEN
+HTTP error: ConnectionResetError: [Errno 54] Connection reset by peer
+HOST WS error: ConnectionResetError: [Errno 54] Connection reset by peer
+
+=== DONE ===

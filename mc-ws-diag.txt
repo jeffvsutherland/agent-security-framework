@@ -1,0 +1,60 @@
+=== WebSocket Gateway Diagnostic ===
+
+Port 18789: CLOSED
+
+--- Gateway logs (stdout, last 40) ---
+│
+◇  Config ───────────────────────────────────────────────────╮
+│                                                            │
+│  Config invalid; doctor will run with best-effort config.  │
+│                                                            │
+├────────────────────────────────────────────────────────────╯
+│
+◇  Config ───────────────────────────────────────────────────╮
+│                                                            │
+│  Config invalid; doctor will run with best-effort config.  │
+│                                                            │
+├────────────────────────────────────────────────────────────╯
+│
+◇  Config ───────────────────────────────────────────────────╮
+│                                                            │
+│  Config invalid; doctor will run with best-effort config.  │
+│                                                            │
+├────────────────────────────────────────────────────────────╯
+
+
+--- Gateway logs (stderr) ---
+Run: openclaw doctor --fix
+Invalid config at /home/node/.openclaw/openclaw.json:\n- gateway.bind: Invalid input
+Config invalid
+File: ~/.openclaw/openclaw.json
+Problem:
+  - gateway.bind: Invalid input
+
+Run: openclaw doctor --fix
+Invalid config at /home/node/.openclaw/openclaw.json:\n- gateway.bind: Invalid input
+Config invalid
+File: ~/.openclaw/openclaw.json
+Problem:
+  - gateway.bind: Invalid input
+
+Run: openclaw doctor --fix
+Invalid config at /home/node/.openclaw/openclaw.json:\n- gateway.bind: Invalid input
+Config invalid
+File: ~/.openclaw/openclaw.json
+Problem:
+  - gateway.bind: Invalid input
+
+Run: openclaw doctor --fix
+
+
+--- Raw HTTP to 18789 ---
+  Error: ConnectionRefusedError: [Errno 61] Connection refused
+
+--- Plain GET to 18789 ---
+  Error: ConnectionRefusedError: [Errno 61] Connection refused
+
+--- WebSocket upgrade with allowed origin ---
+  Error: ConnectionRefusedError: [Errno 61] Connection refused
+
+=== DONE ===

@@ -1,0 +1,9 @@
+docker cp: rc=0
+Installed everywhere
+
+--- Tests ---
+  ✅ health: {"ok":true}
+  ✅ boards: {"items":[{"name":"Agent Security Framework","slug":"agent-security-framework","description":"ASF Team","gateway_id":"c3
+  ✅ tasks: {"items":[{"title":"[ASF-42] Implement Docker Syscall Monitoring","description":"Add syscall interception to monitor Cod
+  ✅ agents: {"items":[{"board_id":"24394a90-a74e-479c-95e8-e5d24c7b4a40","name":"Deploy Agent","status":"offline","heartbeat_config"
+  ❌ tags: []

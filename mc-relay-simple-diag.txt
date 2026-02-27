@@ -1,0 +1,18 @@
+=== Simple Relay Diagnostic ===
+
+127.0.0.1:18789 = OPEN
+127.0.0.1:18792 = OPEN
+
+--- HTTP to 18792 ---
+  http://127.0.0.1:18792/ -> ConnectionResetError: [Errno 54] Connection reset by peer
+  http://127.0.0.1:18792/json -> ConnectionResetError: [Errno 54] Connection reset by peer
+  http://127.0.0.1:18792/json/version -> ConnectionResetError: [Errno 54] Connection reset by peer
+
+--- HTTP to 18789 ---
+  http://127.0.0.1:18789/ -> ConnectionResetError: [Errno 54] Connection reset by peer
+  http://127.0.0.1:18789/healthz -> ConnectionResetError: [Errno 54] Connection reset by peer
+
+--- Browser config ---
+  browser: NOT SET
+
+=== DONE ===

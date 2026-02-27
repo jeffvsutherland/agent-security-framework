@@ -1,0 +1,72 @@
+=== Host-side Relay Setup ===
+
+openclaw CLI: /opt/homebrew/bin/openclaw
+version: 2026.2.15 
+Host config exists: True
+  gateway.port: 18789
+  gateway.bind: loopback
+  ~/.openclaw is a directory (not symlink)
+
+--- openclaw node status ---
+stdout: │
+◇  Doctor changes ─────────────────────────────╮
+│                                              │
+│  Discord configured, enabled automatically.  │
+│                                              │
+├──────────────────────────────────────────────╯
+│
+◇  Doctor warnings ────────────────────────────────────────────────────────╮
+│                                                                          │
+│  - Telegram allowFrom contains 2 non-numeric entries (e.g.               │
+│    -1003887253177)
+stderr: 
+rc: 0
+
+--- openclaw browser status ---
+stdout: │
+◇  Doctor changes ─────────────────────────────╮
+│                                              │
+│  Discord configured, enabled automatically.  │
+│                                              │
+├──────────────────────────────────────────────╯
+│
+◇  Doctor warnings ────────────────────────────────────────────────────────╮
+│                                                                          │
+│  - Telegram allowFrom contains 2 non-numeric entries (e.g.               │
+│    -1003887253177)
+stderr: Error: gateway closed (1006 abnormal closure (no close frame)): no close reason
+Gateway target: ws://127.0.0.1:18789
+Source: local loopback
+Config: /Users/jeffsutherland/.openclaw/openclaw.json
+Bind: loopback
+rc: 1
+
+--- openclaw help ---
+
+🦞 OpenClaw 2026.2.15 (3fe22ea) — Welcome to the command line: where dreams compile and confidence segfaults.
+
+Usage: openclaw [options] [command]
+
+Options:
+  --dev             Dev profile: isolate state under ~/.openclaw-dev, default
+                    gateway port 19001, and shift derived ports (browser/canvas)
+  -h, --help        display help for command
+  --no-color        Disable ANSI colors
+  --profile <name>  Use a named profile (isolates
+                    OPENCLAW_STATE_DIR/OPENCLAW_CONFIG_PATH under
+                    ~/.openclaw-<name>)
+  -V, --version     output the version number
+
+Commands:
+  acp               Agent Control Protocol tools
+  agent             Agent commands
+  agents            Manage isolated agents
+  approvals         Exec approvals
+  browser           Browser tools
+  channels          Channel management
+  completion        Generate shell completion script
+  config            Config helpers
+  configure         Configure wizard
+  cron              Cron s
+
+=== DONE ===

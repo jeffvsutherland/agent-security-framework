@@ -1,0 +1,34 @@
+=== Raven Status Check ===
+
+Gateway container: Up About an hour
+  8001 (MC Backend): OPEN
+  18789 (Gateway Docker fwd): OPEN
+  18792 (Browser Relay): CLOSED
+  18793 (GW Proxy): OPEN
+
+MC health (from container): {"ok":true}
+which mc-api: /usr/local/bin/mc-api
+mc-api health: {"ok":true}
+mc-api boards: {"items":[{"name":"Agent Security Framework","slug":"agent-security-framework","description":"ASF Team","gateway_id":"c3ff9d87-8e4d-47a8-b162-ef7b2285
+
+--- Raven PO recent messages ---
+"text":"10AM-STATUS-REPORT.md\n10am-compliance-check.sh\nAGENT-COMMUNICATION-LOG.md\nAGENT-CONTACT-TRACKING.md\nAGENT-MESSAGES-TO-SEND.md\nAGENTS.md\nAPI-COST-OPTIMIZATION-PLAN.md\nASF-1-DELIVERABLE.md\nASF-12-COMPLETION-SUMMARY.md\nASF-12-DEMO-SCRIPT.md\nASF-12-DEMO-VIDEO-SCRIPT.md\nASF-12-DEPLOYMENT-PACKAGE.md\nASF-12-DOCUMENTATION.md\nASF-12-DOD-STATUS.md\nASF-12-JIRA-COMMENT.md\nASF-12-MOLTBOOK-POST.md\nASF-12-MOLTBOOK-SHORT.md\nASF-12-TWITTER-TEMPLATE.md\nASF-13-DEPLOYMENT-PACKAGE.md\nASF-13-LINKEDIN-CONTENT.md\nASF-13-MEDIA-INTERVIEWS.md\nASF-13-PLATFORM-OUTREACH.md\nASF-13-PRESS-RELEASE.md\nASF-14-CERTIFICATION-FRAMEWORK.md\nASF-14-COMMUNITY-DEPLOYMENT.md\nASF-15-DOCKER-COMPLETE.md\nASF-15-JIRA-STORY.md\nASF-15-PLATFORM-SDK.md\nASF-15-docker\nASF-17-COMPLETE-DELIVERABLE.md\nASF-17-COMPLETION-REPORT.md\nASF-17-DISCORD-INTEGRATION.md\nASF-17-ENTERPRISE-DASHBOARD.md\nASF-17-GITHUB-SETUP.md\nASF-17-MOLTBOOK-POST.md\nASF-17-MOLTBOOK-SHORT.md\nASF-17-MOLTBOOK-SIMPLE.md\nASF-17-REST-AP
+
+--- Raven MC recent messages ---
+"text":"Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK.\nCurrent time: Thursday, February 26th, 2026 — 7:10 PM (UTC)"
+"text":"200"
+"text":"curl: (22) The requested URL returned error: 401\n401\n\n(Command exited with code 22)"
+"text":"{\n  \"
+"text":"HEARTBEAT_OK"
+
+--- mc-api script check ---
+997 /usr/local/bin/mc-api
+#!/bin/sh
+MC_TOKEN="HthMEQIXNRw8f1FHLVmVA1sIM8R+swsGADUzux3I6vp7357b2vzuPe5h7+dG5xMM"
+MC_URL="http://host.docker.internal:8001"
+
+--- workspace mc-api.sh check ---
+997 /workspace/agents/product-owner/mc-api.sh
+#!/bin/sh
+MC_TOKEN="HthMEQIXNRw8f1FHLVmVA1sIM8R+swsGADUzux3I6vp7357b2vzuPe5h7+dG5xMM"
+MC_URL="http://host.docker.internal:8001"

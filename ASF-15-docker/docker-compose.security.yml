@@ -1,0 +1,156 @@
+# ASF Security Hardening Overrides
+# Based on OpenClaw security recommendations
+# Use: docker-compose -f docker-compose.yml -f docker-compose.security.yml up -d
+
+
+services:
+
+  # OpenClaw Gateway Security Overrides
+  openclaw:
+    ports:
+      - "18789:18789"  # Allow connections from Docker network (for Mission Control)
+    security_opt:
+      - no-new-privileges:true
+      - seccomp:unconfined  # Required for Chromium/Playwright browser automation
+    # read_only disabled - state dir is bind-mounted and needs writes
+    tmpfs:
+      - /tmp:size=50M
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_RAW  # Required for network connectivity to external APIs
+      - SYS_ADMIN  # Required for Chromium browser sandbox in agent-browser
+
+  # API Service Security Overrides
+  asf-api:
+    ports:
+      - "127.0.0.1:18080:8080"  # Bind to localhost only (using 18080 to avoid conflict)
+    environment:
+      # Additional security environment variables
+      - SANDBOX_MODE=non-main
+      - GATEWAY_AUTH_MODE=token
+      - "GATEWAY_TOKEN=${GATEWAY_TOKEN:?Error: Set GATEWAY_TOKEN in .env (32+ chars)}"
+      - EXEC_SECURITY=approve
+      - TOOL_PROFILE=minimal
+      - MODEL_SECURITY=claude-opus-4.5  # Best prompt injection resistance
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2G
+        reservations:
+          cpus: "0.5"
+          memory: 512M
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp:size=100M
+      - /app/tmp:size=100M
+    volumes:
+      - ./api/logs:/app/logs:rw  # Only logs are writable
+      - ./workspace:/app/workspace:ro  # Workspace is read-only
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE  # Only if needed for port binding
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Dashboard Security Overrides
+  asf-dashboard:
+    ports:
+      - "127.0.0.1:13000:3000"  # Bind to localhost only (using 13000 to avoid conflict)
+    security_opt:
+      - no-new-privileges:true
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1G
+        reservations:
+          cpus: "0.25"
+          memory: 256M
+
+  # PostgreSQL Security Overrides
+  postgres:
+    ports:
+      - "127.0.0.1:15432:5432"  # Bind to localhost only (using 15432 to avoid conflict)
+    environment:
+      - "POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?Error: Set POSTGRES_PASSWORD in .env}"
+    security_opt:
+      - no-new-privileges:true
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1G
+        reservations:
+          cpus: "0.25"
+          memory: 256M
+
+  # Redis Security Overrides
+  redis:
+    ports:
+      - "127.0.0.1:16379:6379"  # Bind to localhost only (using 16379 to avoid conflict)
+    command: ["redis-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD}"]
+    security_opt:
+      - no-new-privileges:true
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+        reservations:
+          cpus: "0.25"
+          memory: 256M
+
+  # Webhook Service Security Overrides
+  webhook-service:
+    ports:
+      - "127.0.0.1:18081:8081"  # Bind to localhost only (using 18081 to avoid conflict)
+    environment:
+      - "WEBHOOK_SECRET=${WEBHOOK_SECRET:?Error: Set WEBHOOK_SECRET in .env (32+ chars)}"
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp:size=50M
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1G
+
+  # Caddy reverse proxy for TLS termination (if exposing to network)
+  caddy:
+    image: caddy:2-alpine
+    container_name: asf-caddy
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - asf-api
+      - asf-dashboard
+    profiles:
+      - production
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+
+volumes:
+  caddy_data:
+  caddy_config:
+
+# Network is already defined as 'asf-network' in docker-compose.yml
+# No need to redeclare here

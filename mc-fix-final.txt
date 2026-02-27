@@ -1,0 +1,15 @@
+=== Fix MC API + Config ===
+
+docker cp mc-api: rc=0
+chmod: rc=0
+Copied to all workspaces
+
+--- Testing fixed mc-api ---
+health: {"ok":true}
+tasks: {'detail': 'Unauthorized', 'request_id': '401675149bd04d86bdf8b436d0182ab1'}
+
+agents: {"detail":"Unauthorized","request_id":"2b3962906a994389ae4dd96db66b141f"}
+
+HEARTBEAT /workspace/agents/product-owner: rc=0
+
+HEARTBEAT /workspace/workspace-mc-3634c19a-9174-4f23-b03a-0d451f5de6be: rc=0

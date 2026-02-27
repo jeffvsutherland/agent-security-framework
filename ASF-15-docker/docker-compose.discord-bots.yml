@@ -1,0 +1,107 @@
+# ASF Discord Bots Production Deployment
+# Deploy with: docker-compose -f docker-compose.yml -f docker-compose.discord-bots.yml up -d
+# Or standalone: docker-compose -f docker-compose.discord-bots.yml up -d
+
+version: '3.8'
+
+services:
+  # Agent Verification Discord Bot
+  discord-agent-verifier:
+    build:
+      context: ./agent-verifier
+      dockerfile: Dockerfile
+    container_name: asf-discord-agent-verifier
+    environment:
+      - DISCORD_TOKEN=${DISCORD_AGENT_BOT_TOKEN:?Error: Set DISCORD_AGENT_BOT_TOKEN in .env}
+      - ASF_API_URL=${ASF_API_URL:-http://asf-api:8080}
+      - ASF_API_KEY=${ASF_API_KEY:?Error: Set ASF_API_KEY in .env}
+      - NODE_ENV=production
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - VERIFICATION_CHANNEL_ID=${VERIFICATION_CHANNEL_ID}
+      - ANNOUNCEMENT_CHANNEL_ID=${ANNOUNCEMENT_CHANNEL_ID}
+    depends_on:
+      asf-api:
+        condition: service_healthy
+    volumes:
+      - ./logs/agent-verifier:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "process.exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+        reservations:
+          cpus: "0.25"
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Skill Security Checker Discord Bot
+  discord-skill-verifier:
+    build:
+      context: ./skill-verifier
+      dockerfile: Dockerfile
+    container_name: asf-discord-skill-verifier
+    environment:
+      - DISCORD_TOKEN=${DISCORD_SKILL_BOT_TOKEN:?Error: Set DISCORD_SKILL_BOT_TOKEN in .env}
+      - ASF_API_URL=${ASF_API_URL:-http://asf-api:8080}
+      - ASF_API_KEY=${ASF_API_KEY:?Error: Set ASF_API_KEY in .env}
+      - NODE_ENV=production
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - SKILL_CHECK_CHANNEL_ID=${SKILL_CHECK_CHANNEL_ID}
+      - SECURITY_ALERT_CHANNEL_ID=${SECURITY_ALERT_CHANNEL_ID}
+    depends_on:
+      asf-api:
+        condition: service_healthy
+    volumes:
+      - ./logs/skill-verifier:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "process.exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+        reservations:
+          cpus: "0.25"
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Prometheus monitoring for Discord bots (optional)
+  discord-bot-monitor:
+    image: prom/node-exporter:latest
+    container_name: asf-discord-bot-monitor
+    ports:
+      - "127.0.0.1:9100:9100"
+    command:
+      - '--path.rootfs=/host'
+    volumes:
+      - '/:/host:ro,rslave'
+    restart: unless-stopped
+    profiles:
+      - monitoring
+
+volumes:
+  logs:
+    name: asf-discord-logs
+
+networks:
+  default:
+    external:
+      name: asf-network

@@ -1,0 +1,17 @@
+@ASFSalesBot Please work on ASF-33: Create Agent Security Framework Website
+
+Create a professional website for ASF at scrumai.org/agentsecurityframework
+
+Key requirements:
+- Design similar to Moltbook or OpenClaw (modern, clean)
+- Homepage with clear value proposition
+- Features section (self-healing, auto-fix, etc.)
+- Getting Started guide
+- Download/installation instructions
+- Link to GitHub repo
+- Mobile responsive
+- Work with existing scrumai.org web team
+
+The site already has traffic, so this will help convert visitors into ASF users.
+
+Update Jira hourly with your progress. Start with wireframes/mockups.

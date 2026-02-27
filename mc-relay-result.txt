@@ -1,0 +1,54 @@
+=== Browser Relay Fix ===
+
+Host config token: uuI7HDktGsmbKPLeyJOC...
+Host config dangerouslyDisableDeviceAuth: True
+Docker config token: uuI7HDktGsmbKPLeyJOC...
+Tokens match: True
+
+Proxy 18793: OPEN
+
+--- Trying openclaw browser start ---
+stdout: ───────╯
+│
+◇  Doctor ──────────────────────────────────────────────╮
+│                                                       │
+│  Run "openclaw doctor --fix" to apply these changes.  │
+│                                                       │
+├───────────────────────────────────────────────────────╯
+stderr: gateway connect failed: Error: pairing required
+Error: gateway closed (1008): pairing required
+Gateway target: ws://127.0.0.1:18793
+Source: cli --url
+Config: /Users/jeffsutherland/.openclaw/openclaw.json
+rc: 1
+
+18792 after browser start: STILL CLOSED
+
+--- Pairing the host CLI ---
+Set remote URL: │
+◇  Doctor changes ─────────────────────────────╮
+│                                              │
+│  Discord configured, enabled automatically.  │
+│                                              │
+├──────────────────────────────────────────────╯
+│
+◇  Doctor warnings ────────────────────────────────────────────────────────╮
+│                                                                          │
+│  - Telegram allowFrom contains 2 non-numeric entries (e.g.               │
+│    -1003887253177); Telegram authorization requires numeric sender IDs.  │
+│  - Run "openclaw doctor --fix" to auto-resolve @username entries to      │
+│    numeric IDs (requires a Telegram bot token).                          │
+│                                                                          │
+├──────────────────────────────────────────────────────────────────────────╯
+│
+◇  Doctor ──────────────────────────────────────────────╮
+│                                                       │
+│  Run "openclaw doctor --fix" to apply these changes.  │
+│                                                       │
+├───────────────────────────────────────────────────────╯
+Updated gateway.remote.url. Restart the gateway to apply. Config overwrite: /Users/jeffsutherland/.openclaw/openclaw.json (sha256 f87389c39a408c8dedc9ba1012ab
+
+--- Starting host-side relay server ---
+The extension needs http://127.0.0.1:18792 to respond.
+Creating a simple relay that responds to the extension's health check
+and proxies WS connections to the Docker gateway browser service.

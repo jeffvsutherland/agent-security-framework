@@ -1,0 +1,15 @@
+=== Fix proxy on 0.0.0.0:18792 ===
+
+Wrote script: rc=0
+Test run output: 
+Test run stderr: Server error: listen EADDRINUSE: address already in use 0.0.0.0:18792
+Background start: rc=0
+
+Ports inside container:
+
+--- Host tests ---
+18792 TCP: OPEN
+WS upgrade error: ConnectionResetError: [Errno 54] Connection reset by peer
+WS error: ConnectionResetError: [Errno 54] Connection reset by peer
+
+=== DONE ===

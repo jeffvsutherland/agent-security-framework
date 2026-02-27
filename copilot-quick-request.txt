@@ -1,0 +1,13 @@
+Hey Copilot,
+
+The ASF Sales Agent (@ASFSalesBot) isn't receiving my Telegram messages because it doesn't have an active OpenClaw session. I've been trying to assign ASF-33 to it all morning.
+
+Can you please:
+1. Spawn the Sales Agent session in the Docker container
+2. Also spawn the other ASF agent sessions (Deploy, Social, Research, Product Owner)
+3. Make sure they're all connected to their Telegram bots
+
+The Sales Agent needs to start working on creating the ASF website at scrumai.org/agentsecurityframework.
+
+Thanks!
+Jeff

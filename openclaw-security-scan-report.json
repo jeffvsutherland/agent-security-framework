@@ -1,0 +1,452 @@
+{
+  "scan_date": "2026-02-18T01:43:13.004508",
+  "scanner_version": "2.0-docker",
+  "skills": [
+    {
+      "name": "session-logs",
+      "path": "/app/skills/session-logs",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "1password",
+      "path": "/app/skills/1password",
+      "vulnerabilities": [],
+      "files_scanned": 3,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "food-order",
+      "path": "/app/skills/food-order",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "things-mac",
+      "path": "/app/skills/things-mac",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "gemini",
+      "path": "/app/skills/gemini",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "openai-whisper",
+      "path": "/app/skills/openai-whisper",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "clawhub",
+      "path": "/app/skills/clawhub",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "mcporter",
+      "path": "/app/skills/mcporter",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "sonoscli",
+      "path": "/app/skills/sonoscli",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "github",
+      "path": "/app/skills/github",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "voice-call",
+      "path": "/app/skills/voice-call",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "model-usage",
+      "path": "/app/skills/model-usage",
+      "vulnerabilities": [],
+      "files_scanned": 3,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "camsnap",
+      "path": "/app/skills/camsnap",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "sag",
+      "path": "/app/skills/sag",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "notion",
+      "path": "/app/skills/notion",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "himalaya",
+      "path": "/app/skills/himalaya",
+      "vulnerabilities": [],
+      "files_scanned": 3,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "weather",
+      "path": "/app/skills/weather",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "canvas",
+      "path": "/app/skills/canvas",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "ordercli",
+      "path": "/app/skills/ordercli",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "blogwatcher",
+      "path": "/app/skills/blogwatcher",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "apple-notes",
+      "path": "/app/skills/apple-notes",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "blucli",
+      "path": "/app/skills/blucli",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "video-frames",
+      "path": "/app/skills/video-frames",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "tmux",
+      "path": "/app/skills/tmux",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "songsee",
+      "path": "/app/skills/songsee",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "slack",
+      "path": "/app/skills/slack",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "gifgrep",
+      "path": "/app/skills/gifgrep",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "bluebubbles",
+      "path": "/app/skills/bluebubbles",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "nano-pdf",
+      "path": "/app/skills/nano-pdf",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "skill-creator",
+      "path": "/app/skills/skill-creator",
+      "vulnerabilities": [],
+      "files_scanned": 4,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "goplaces",
+      "path": "/app/skills/goplaces",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "gog",
+      "path": "/app/skills/gog",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "nano-banana-pro",
+      "path": "/app/skills/nano-banana-pro",
+      "vulnerabilities": [],
+      "files_scanned": 2,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "oracle",
+      "path": "/app/skills/oracle",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "coding-agent",
+      "path": "/app/skills/coding-agent",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "eightctl",
+      "path": "/app/skills/eightctl",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "apple-reminders",
+      "path": "/app/skills/apple-reminders",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "wacli",
+      "path": "/app/skills/wacli",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "sherpa-onnx-tts",
+      "path": "/app/skills/sherpa-onnx-tts",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "spotify-player",
+      "path": "/app/skills/spotify-player",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "discord",
+      "path": "/app/skills/discord",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "openai-image-gen",
+      "path": "/app/skills/openai-image-gen",
+      "vulnerabilities": [],
+      "files_scanned": 2,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "openhue",
+      "path": "/app/skills/openhue",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "openai-whisper-api",
+      "path": "/app/skills/openai-whisper-api",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "obsidian",
+      "path": "/app/skills/obsidian",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "imsg",
+      "path": "/app/skills/imsg",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "healthcheck",
+      "path": "/app/skills/healthcheck",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "trello",
+      "path": "/app/skills/trello",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "summarize",
+      "path": "/app/skills/summarize",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "peekaboo",
+      "path": "/app/skills/peekaboo",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "bear-notes",
+      "path": "/app/skills/bear-notes",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "oracle",
+      "path": "/workspace/skills/oracle",
+      "vulnerabilities": [],
+      "files_scanned": 2,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "moltbook-interact",
+      "path": "/workspace/skills/moltbook-interact",
+      "vulnerabilities": [],
+      "files_scanned": 4,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "moltbook-post-verified",
+      "path": "/workspace/skills/moltbook-post-verified",
+      "vulnerabilities": [],
+      "files_scanned": 1,
+      "risk_level": "safe",
+      "recommendations": []
+    },
+    {
+      "name": "openai-image-gen",
+      "path": "/workspace/skills/openai-image-gen",
+      "vulnerabilities": [],
+      "files_scanned": 2,
+      "risk_level": "safe",
+      "recommendations": []
+    }
+  ],
+  "summary": {
+    "total": 55,
+    "safe": 55,
+    "warning": 0,
+    "danger": 0
+  }
+}

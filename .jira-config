@@ -1,0 +1,11 @@
+# JIRA Configuration for ASF Project
+# Source this file: source ~/.jira-config
+
+export JIRA_URL="https://frequencyfoundation.atlassian.net"
+export JIRA_USER="jeff.sutherland@gmail.com"
+export JIRA_PROJECT="ASF"
+
+# JIRA API Token
+export JIRA_TOKEN="ATATT3xFfGF0khSabkTKRWmFCJ2ft6E-Mj_DpPxJEY-J3iccP6zn2ofP0yvApuT5C9L29xAHjEVOAKDjKXOBUA2U3ugzHoIK5b-FpLISFRwTiC4iRvqpQ6NHdv8cUmP-k0xV85WDoF8UBx5Z-X8tLiCL4pP-72iIOGrIlYCZ9iFigyuu4U-wN08=8086D014"
+export JIRA_API_TOKEN="$JIRA_TOKEN"
+

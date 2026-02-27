@@ -1,0 +1,432 @@
+2026-02-20 20:59:45,380 INFO app.core.logging logging.configured level=INFO format=text use_utc=False app=mission-control version=0.1.0
+SUCCESS: {
+  "ok": true,
+  "ts": 1771621126920,
+  "durationMs": 1595,
+  "channels": {
+    "telegram": {
+      "configured": true,
+      "tokenSource": "none",
+      "running": false,
+      "mode": null,
+      "lastStartAt": null,
+      "lastStopAt": null,
+      "lastError": null,
+      "probe": {
+        "ok": true,
+        "status": null,
+        "error": null,
+        "elapsedMs": 655,
+        "bot": {
+          "id": 8262532044,
+          "username": "jeffsutherlandbot",
+          "canJoinGroups": true,
+          "canReadAllGroupMessages": true,
+          "supportsInlineQueries": false
+        },
+        "webhook": {
+          "url": "",
+          "hasCustomCert": false
+        }
+      },
+      "lastProbeAt": 1771621125980,
+      "accountId": "default",
+      "accounts": {
+        "default": {
+          "configured": true,
+          "tokenSource": "none",
+          "running": false,
+          "mode": null,
+          "lastStartAt": null,
+          "lastStopAt": null,
+          "lastError": null,
+          "probe": {
+            "ok": true,
+            "status": null,
+            "error": null,
+            "elapsedMs": 655,
+            "bot": {
+              "id": 8262532044,
+              "username": "jeffsutherlandbot",
+              "canJoinGroups": true,
+              "canReadAllGroupMessages": true,
+              "supportsInlineQueries": false
+            },
+            "webhook": {
+              "url": "",
+              "hasCustomCert": false
+            }
+          },
+          "lastProbeAt": 1771621125980,
+          "accountId": "default"
+        },
+        "deploy": {
+          "configured": true,
+          "tokenSource": "none",
+          "running": false,
+          "mode": null,
+          "lastStartAt": null,
+          "lastStopAt": null,
+          "lastError": null,
+          "probe": {
+            "ok": true,
+            "status": null,
+            "error": null,
+            "elapsedMs": 184,
+            "bot": {
+              "id": 8562304149,
+              "username": "ASFDeployBot",
+              "canJoinGroups": true,
+              "canReadAllGroupMessages": true,
+              "supportsInlineQueries": false
+            },
+            "webhook": {
+              "url": "",
+              "hasCustomCert": false
+            }
+          },
+          "lastProbeAt": 1771621126164,
+          "accountId": "deploy"
+        },
+        "product-owner": {
+          "configured": true,
+          "tokenSource": "none",
+          "running": false,
+          "mode": null,
+          "lastStartAt": null,
+          "lastStopAt": null,
+          "lastError": null,
+          "probe": {
+            "ok": true,
+            "status": null,
+            "error": null,
+            "elapsedMs": 189,
+            "bot": {
+              "id": 8319192848,
+              "username": "AgentSaturdayASFBot",
+              "canJoinGroups": true,
+              "canReadAllGroupMessages": true,
+              "supportsInlineQueries": false
+            },
+            "webhook": {
+              "url": "",
+              "hasCustomCert": false
+            }
+          },
+          "lastProbeAt": 1771621126354,
+          "accountId": "product-owner"
+        },
+        "research": {
+          "configured": true,
+          "tokenSource": "none",
+          "running": false,
+          "mode": null,
+          "lastStartAt": null,
+          "lastStopAt": null,
+          "lastError": null,
+          "probe": {
+            "ok": true,
+            "status": null,
+            "error": null,
+            "elapsedMs": 179,
+            "bot": {
+              "id": 8371607764,
+              "username": "ASFResearchBot",
+              "canJoinGroups": true,
+              "canReadAllGroupMessages": true,
+              "supportsInlineQueries": false
+            },
+            "webhook": {
+              "url": "",
+              "hasCustomCert": false
+            }
+          },
+          "lastProbeAt": 1771621126533,
+          "accountId": "research"
+        },
+        "sales": {
+          "configured": true,
+          "tokenSource": "none",
+          "running": false,
+          "mode": null,
+          "lastStartAt": null,
+          "lastStopAt": null,
+          "lastError": null,
+          "probe": {
+            "ok": true,
+            "status": null,
+            "error": null,
+            "elapsedMs": 199,
+            "bot": {
+              "id": 8049864989,
+              "username": "ASFSalesBot",
+              "canJoinGroups": true,
+              "canReadAllGroupMessages": true,
+              "supportsInlineQueries": false
+            },
+            "webhook": {
+              "url": "",
+              "hasCustomCert": false
+            }
+          },
+          "lastProbeAt": 1771621126733,
+          "accountId": "sales"
+        },
+        "social": {
+          "configured": true,
+          "tokenSource": "none",
+          "running": false,
+          "mode": null,
+          "lastStartAt": null,
+          "lastStopAt": null,
+          "lastError": null,
+          "probe": {
+            "ok": true,
+            "status": null,
+            "error": null,
+            "elapsedMs": 186,
+            "bot": {
+              "id": 8363670185,
+              "username": "ASFSocialBot",
+              "canJoinGroups": true,
+              "canReadAllGroupMessages": true,
+              "supportsInlineQueries": false
+            },
+            "webhook": {
+              "url": "",
+              "hasCustomCert": false
+            }
+          },
+          "lastProbeAt": 1771621126919,
+          "accountId": "social"
+        }
+      }
+    },
+    "slack": {
+      "configured": false,
+      "botTokenSource": "none",
+      "appTokenSource": "none",
+      "running": false,
+      "lastStartAt": null,
+      "lastStopAt": null,
+      "lastError": null,
+      "lastProbeAt": null,
+      "accountId": "default",
+      "accounts": {
+        "default": {
+          "configured": false,
+          "botTokenSource": "none",
+          "appTokenSource": "none",
+          "running": false,
+          "lastStartAt": null,
+          "lastStopAt": null,
+          "lastError": null,
+          "lastProbeAt": null,
+          "accountId": "default"
+        }
+      }
+    }
+  },
+  "channelOrder": [
+    "telegram",
+    "slack"
+  ],
+  "channelLabels": {
+    "telegram": "Telegram",
+    "slack": "Slack"
+  },
+  "heartbeatSeconds": 1800,
+  "defaultAgentId": "main",
+  "agents": [
+    {
+      "agentId": "main",
+      "isDefault": true,
+      "heartbeat": {
+        "enabled": true,
+        "every": "30m",
+        "everyMs": 1800000,
+        "prompt": "Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK.",
+        "target": "last",
+        "ackMaxChars": 300
+      },
+      "sessions": {
+        "path": "/home/node/.openclaw/agents/main/sessions/sessions.json",
+        "count": 4,
+        "recent": [
+          {
+            "key": "agent:main:main",
+            "updatedAt": 1771619020154,
+            "age": 2105167
+          },
+          {
+            "key": "agent:main:cron:4e2a9c54-d8d3-4e8f-83b0-aa48ed9d022c",
+            "updatedAt": 1771618251126,
+            "age": 2874195
+          },
+          {
+            "key": "agent:main:cron:4e2a9c54-d8d3-4e8f-83b0-aa48ed9d022c:run:ccf807a4-8c6a-4202-af8a-3ae6a12d0fef",
+            "updatedAt": 1771618251126,
+            "age": 2874195
+          },
+          {
+            "key": "agent:main:cron:535a2ff1-4803-4881-822b-d52571b70b58",
+            "updatedAt": 1771502400036,
+            "age": 118725285
+          }
+        ]
+      }
+    },
+    {
+      "agentId": "research",
+      "name": "research",
+      "isDefault": false,
+      "heartbeat": {
+        "enabled": false,
+        "every": "disabled",
+        "everyMs": null,
+        "prompt": "Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK.",
+        "target": "last",
+        "ackMaxChars": 300
+      },
+      "sessions": {
+        "path": "/home/node/.openclaw/agents/research/sessions/sessions.json",
+        "count": 1,
+        "recent": [
+          {
+            "key": "agent:research:telegram:group:-1003887253177",
+            "updatedAt": 1771450116326,
+            "age": 171008996
+          }
+        ]
+      }
+    },
+    {
+      "agentId": "social",
+      "name": "social",
+      "isDefault": false,
+      "heartbeat": {
+        "enabled": false,
+        "every": "disabled",
+        "everyMs": null,
+        "prompt": "Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK.",
+        "target": "last",
+        "ackMaxChars": 300
+      },
+      "sessions": {
+        "path": "/home/node/.openclaw/agents/social/sessions/sessions.json",
+        "count": 1,
+        "recent": [
+          {
+            "key": "agent:social:main",
+            "updatedAt": 1771504917547,
+            "age": 116207776
+          }
+        ]
+      }
+    },
+    {
+      "agentId": "deploy",
+      "name": "deploy",
+      "isDefault": false,
+      "heartbeat": {
+        "enabled": false,
+        "every": "disabled",
+        "everyMs": null,
+        "prompt": "Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK.",
+        "target": "last",
+        "ackMaxChars": 300
+      },
+      "sessions": {
+        "path": "/home/node/.openclaw/agents/deploy/sessions/sessions.json",
+        "count": 1,
+        "recent": [
+          {
+            "key": "agent:deploy:main",
+            "updatedAt": 1771450416337,
+            "age": 170708986
+          }
+        ]
+      }
+    },
+    {
+      "agentId": "sales",
+      "name": "sales",
+      "isDefault": false,
+      "heartbeat": {
+        "enabled": false,
+        "every": "disabled",
+        "everyMs": null,
+        "prompt": "Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK.",
+        "target": "last",
+        "ackMaxChars": 300
+      },
+      "sessions": {
+        "path": "/home/node/.openclaw/agents/sales/sessions/sessions.json",
+        "count": 1,
+        "recent": [
+          {
+            "key": "agent:sales:main",
+            "updatedAt": 1771512590010,
+            "age": 108535313
+          }
+        ]
+      }
+    },
+    {
+      "agentId": "product-owner",
+      "name": "product-owner",
+      "isDefault": false,
+      "heartbeat": {
+        "enabled": false,
+        "every": "disabled",
+        "everyMs": null,
+        "prompt": "Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK.",
+        "target": "last",
+        "ackMaxChars": 300
+      },
+      "sessions": {
+        "path": "/home/node/.openclaw/agents/product-owner/sessions/sessions.json",
+        "count": 2,
+        "recent": [
+          {
+            "key": "agent:product-owner:main",
+            "updatedAt": 1771533264224,
+            "age": 87861101
+          },
+          {
+            "key": "agent:product-owner:telegram:group:-1003887253177",
+            "updatedAt": 1771454234633,
+            "age": 166890692
+          }
+        ]
+      }
+    }
+  ],
+  "sessions": {
+    "path": "/home/node/.openclaw/agents/main/sessions/sessions.json",
+    "count": 4,
+    "recent": [
+      {
+        "key": "agent:main:main",
+        "updatedAt": 1771619020154,
+        "age": 2105167
+      },
+      {
+        "key": "agent:main:cron:4e2a9c54-d8d3-4e8f-83b0-aa48ed9d022c",
+        "updatedAt": 1771618251126,
+        "age": 2874195
+      },
+      {
+        "key": "agent:main:cron:4e2a9c54-d8d3-4e8f-83b0-aa48ed9d022c:run:ccf807a4-8c6a-4202-af8a-3ae6a12d0fef",
+        "updatedAt": 1771618251126,
+        "age": 2874195
+      },
+      {
+        "key": "agent:main:cron:535a2ff1-4803-4881-822b-d52571b70b58",
+        "updatedAt": 1771502400036,
+        "age": 118725285
+      }
+    ]
+  }
+}
+exit: 0

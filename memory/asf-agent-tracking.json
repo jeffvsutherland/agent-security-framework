@@ -1,0 +1,91 @@
+{
+  "agents": {
+    "asf-deploy": {
+      "name": "ASF Deploy Agent",
+      "emoji": "\ud83d\udd34",
+      "status": "Running in Docker",
+      "telegram_bot": "@ASFDeployBot",
+      "workspace": "/workspace/agents/deploy/",
+      "current_story": "ASF-30: Docker security hardening",
+      "jira_assigned": true,
+      "last_update": "2026-02-18T11:20:00Z"
+    },
+    "asf-sales": {
+      "name": "ASF Sales Agent",
+      "emoji": "\ud83d\udd35",
+      "status": "Ready for assignment",
+      "telegram_bot": "@ASFSalesBot",
+      "workspace": "/workspace/agents/sales/",
+      "current_story": "ASF-33: Create Agent Security Framework Website",
+      "jira_assigned": false,
+      "last_update": "2026-02-18T11:20:00Z"
+    },
+    "asf-social": {
+      "name": "ASF Social Agent",
+      "emoji": "\ud83d\udfe2",
+      "status": "Running in Docker",
+      "telegram_bot": "@ASFSocialBot",
+      "workspace": "/workspace/agents/social/",
+      "current_story": "ASF-28: Community Engagement Strategy",
+      "jira_assigned": true,
+      "last_update": "2026-02-18T11:20:00Z"
+    },
+    "asf-research": {
+      "name": "ASF Research Agent",
+      "emoji": "\ud83d\udfe3",
+      "status": "Running in Docker",
+      "telegram_bot": "@ASFResearchBot",
+      "workspace": "/workspace/agents/research/",
+      "current_story": "ASF-29: Technical Documentation Update",
+      "jira_assigned": true,
+      "last_update": "2026-02-18T11:20:00Z"
+    },
+    "main": {
+      "name": "Main Agent (Jeff Sutherland Bot)",
+      "emoji": "\ud83e\udd16",
+      "status": "Running in Docker",
+      "telegram_bot": "@jeffsutherlandbot",
+      "workspace": "/workspace/",
+      "role": "Primary agent, general tasks, delegation",
+      "last_update": "2026-02-18T11:20:00Z"
+    },
+    "product-owner": {
+      "name": "Product Owner (Agent Saturday)",
+      "emoji": "\ud83d\udfe0",
+      "status": "Running in Docker",
+      "telegram_bot": "@AgentSaturdayASFBot",
+      "workspace": "/workspace/agents/product-owner/",
+      "role": "Product management, Jira coordination, sprint planning",
+      "last_update": "2026-02-18T11:20:00Z"
+    }
+  },
+  "jira_config": {
+    "url": "https://frequencyfoundation.atlassian.net",
+    "project": "ASF",
+    "config_location": "/home/node/.jira-config"
+  },
+  "definition_of_done": {
+    "steps": [
+      "Story implementation complete",
+      "Grok Heavy review completed",
+      "Documentation updated",
+      "Tests passing (if applicable)",
+      "Product Owner (AgentSaturday) approval",
+      "Jeff's final approval",
+      "Story moved to Done in Jira with clear comments"
+    ],
+    "grok_heavy_review": {
+      "required": true,
+      "purpose": "Quality and security review before GitHub push",
+      "added_by": "Jeff",
+      "date": "2026-02-18"
+    }
+  },
+  "hourly_heartbeat": {
+    "enabled": true,
+    "frequency": "0 * * * * (every hour)",
+    "timezone": "America/New_York",
+    "cron_job_id": "4e2a9c54-d8d3-4e8f-83b0-aa48ed9d022c",
+    "next_run": "2026-02-18T07:00:00-05:00"
+  }
+}

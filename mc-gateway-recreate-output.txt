@@ -1,0 +1,26 @@
+=== Recreating OpenClaw Gateway with Browser Relay Port ===
+
+Step 1: Stopping openclaw-gateway...
+  rc=0 out=openclaw-gateway err=
+
+Step 2: Removing openclaw-gateway...
+  rc=0 out=openclaw-gateway err=
+
+Step 3: Creating new openclaw-gateway with -p 18792:18792...
+  rc=0
+  container_id=698be431b8062ca281d8
+
+Step 4: Waiting 10s for gateway startup...
+
+Step 5: Checking ports...
+  18789 (gateway): OPEN
+  18792 (browser relay): OPEN
+
+Step 6: Container status:
+  openclaw-gateway | Up 10 seconds | 0.0.0.0:18789->18789/tcp, [::]:18789->18789/tcp, 0.0.0.0:18792->18792/tcp, [::]:18792->18792/tcp
+
+Step 7: Recent gateway logs:
+(empty stdout)
+
+=== DONE ===
+Try the Chrome extension now - it should connect to http://127.0.0.1:18792

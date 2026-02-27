@@ -1,0 +1,72 @@
+{
+  "asf_enterprise_team": {
+    "description": "Agent Security Framework Enterprise Team - Complete 6-Agent Setup",
+    "telegram_bots": {
+      "main": {
+        "display_name": "Clawdbot Main",
+        "username": "Your existing bot",
+        "token": "8262532044:AAFo2MOi61bZL3rCK_zX7t_e7PyIDHYNhTE",
+        "accountId": "main",
+        "role": "Jeff's personal assistant"
+      },
+      "product_owner": {
+        "display_name": "ASF Product Owner - Agent Saturday",
+        "username": "@ASFProductOwnerBot",
+        "token": "8319192848:AAFMgnWa0ozOu0YC0EEcDHkRxAHlhIpEveo",
+        "accountId": "saturday",
+        "persona_file": "asf-product-owner-agent-saturday-SOUL.md",
+        "role": "Product Owner, Sprint Master, Team Coordinator",
+        "jira_access": "agent.saturday@scrumai.org"
+      },
+      "asf_research": {
+        "display_name": "ASF Research Agent",
+        "username": "@ASFResearchBot",
+        "token": "8371607764:AAEsQCxbZLi-gcDfcrc4otTg7Tj5wtVTI74",
+        "accountId": "research",
+        "persona_file": "asf-research-agent-SOUL.md",
+        "role": "Market intelligence, competitive analysis, Moltbook monitoring"
+      },
+      "asf_social": {
+        "display_name": "ASF Social Agent",
+        "username": "@ASFSocialBot",
+        "token": "8363670185:AAF87g3nBTkhsQ4O1TIEq1lxiRRQ7_G1BQ4",
+        "accountId": "social",
+        "persona_file": "asf-social-agent-SOUL.md",
+        "role": "Community engagement, Moltbook/Twitter presence, relationship building"
+      },
+      "asf_deploy": {
+        "display_name": "ASF Deploy Agent",
+        "username": "@ASFDeployBot",
+        "token": "8562304149:AAGG8z9voTN0UO8zfI1AjKX5z7K7mQp21ok",
+        "accountId": "deploy",
+        "persona_file": "asf-deploy-agent-SOUL.md",
+        "role": "Infrastructure, API deployment, DevOps, system reliability"
+      },
+      "asf_sales": {
+        "display_name": "ASF Sales Agent",
+        "username": "@ASFSalesBot",
+        "token": "8049864989:AAHdP9iDsSpQWiQ5sKFZGJD060WLbmG5aAM",
+        "accountId": "sales",
+        "persona_file": "asf-sales-agent-SOUL.md",
+        "role": "Enterprise relationships, demos, revenue generation"
+      }
+    },
+    "team_hierarchy": {
+      "product_owner": "Agent Saturday - Strategic direction, sprint planning, stakeholder management",
+      "development_team": [
+        "Research Agent - Market intelligence and competitive analysis",
+        "Social Agent - Community building and engagement",
+        "Deploy Agent - Technical implementation and infrastructure", 
+        "Sales Agent - Enterprise relationships and revenue"
+      ],
+      "stakeholder": "Jeff Sutherland - Vision, budget approval, enterprise relationships"
+    },
+    "current_sprint": {
+      "epic": "ASF-20: Enterprise Integration Package",
+      "goal": "Deploy working Discord bot and gain 5+ community users",
+      "velocity_target": "35+ story points",
+      "sprint_length": "1 week",
+      "daily_standup": "Via Jira comments coordinated by Agent Saturday"
+    }
+  }
+}

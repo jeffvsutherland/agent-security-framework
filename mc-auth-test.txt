@@ -1,0 +1,22 @@
+=== MC Auth Discovery ===
+
+LOCAL_TOKEN /api/v1/boards: OK — {"items":[{"name":"Agent Security Framework","slug":"agent-security-framework","description":"ASF Team","gateway_id":"c3
+LOCAL_TOKEN /api/v1/boards/24394a90-a74e-479c-95e8-e5d24c7b4a40/tasks: OK — {"items":[{"title":"[ASF-42] Implement Docker Syscall Monitoring","description":"Add syscall interception to monitor Cod
+LOCAL_TOKEN /api/v1/agent/boards: FAIL — {"detail":"Unauthorized","request_id":"274bdc947df149aa8d1e8f81eb20c824"}
+LOCAL_TOKEN /api/v1/agent/boards/24394a90-a74e-479c-95e8-e5d24c7b4a40/tasks: FAIL — {"detail":"Unauthorized","request_id":"a8ea5b75a0ee4092a69a0970090d2cd8"}
+LOCAL_TOKEN /api/v1/agents: OK — {"items":[{"board_id":"24394a90-a74e-479c-95e8-e5d24c7b4a40","name":"Deploy Agent","status":"offline","heartbeat_config"
+
+Testing Raven (Product Owner) (id=3634c19a-917...):
+  /api/v1/agent/boards: OK — {"items":[{"name":"Agent Security Framework","slug":"agent-security-framework","description":"ASF Team","gateway_id":"c3
+  /api/v1/agent/boards/24394a90-a74e-479c-95e8-e5d24c7b4a40/tasks: OK — {"items":[{"title":"[ASF-42] Implement Docker Syscall Monitoring","description":"Add syscall interception to monitor Cod
+  /api/v1/agent/agents: OK — {"items":[{"board_id":"24394a90-a74e-479c-95e8-e5d24c7b4a40","name":"Deploy Agent","status":"offline","heartbeat_config"
+
+Testing OPERATOR_TOKEN:
+  /api/v1/agent/boards: FAIL — {"detail":"Unauthorized","request_id":"f1a18387cb6b41b29f32dacbdfc26e67"}
+  /api/v1/agent/boards/24394a90-a74e-479c-95e8-e5d24c7b4a40/tasks: FAIL — {"detail":"Unauthorized","request_id":"2d80b97ec2d543bfb6c6d6cb2920c0a2"}
+
+--- Working task endpoints with LOCAL_TOKEN ---
+  /api/v1/boards/24394a90-a74e-479c-95e8-e5d24c7b4a40/tasks: OK — {"items":[{"title":"[ASF-42] Implement Docker Syscall Monitoring","description":"Add syscall interception to monitor Coder agent for unauthorized netw
+  /api/v1/boards/agent-security-framework/tasks: FAIL — {"detail":"Internal Server Error","request_id":"2d09137c35614c3fb67ee6f6bc0bf379"}
+  /api/v1/activity: OK — {"items":[{"id":"ad433963-c82a-4bd9-9561-eba4d7c50801","event_type":"task.lead_notify_failed","message":"Lead notify failed: [Errno 111] Connection re
+  /api/v1/activity/task-comments: OK — {"items":[{"id":"5f33e3e9-8e27-46bb-a52a-6946091f02b6","created_at":"2026-02-26T14:09:12.184948","message":"✅ APPROVED by Grok Heavy! Zero secrets con

@@ -1,0 +1,1 @@
+- [2026-02-27] [URGENT] 15 high / 0 critical vulnerabilities found

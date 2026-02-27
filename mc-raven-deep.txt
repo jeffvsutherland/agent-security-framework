@@ -1,0 +1,83 @@
+=== Raven Deep Status ===
+
+Container: Up 3 hours
+
+--- PO (product-owner) last 20 actions ---
+"toolName":"exec"
+"text":"{\"
+"exitCode":0,"
+"toolName":"read"
+"text":"# HEARTBEAT - Raven (Product Owner)\n\n## CRITICAL: You are INSIDE Docker\n- Do NOT run `docker exec` — you are already inside\n- Do NOT run `docker` — not available\n\n## Mission Control API\n\n`mc-api` is in your PATH. Use it for ALL MC operations.\n\n### Pre-flight:\n```\nmc-api health\nmc-api boards\nmc-api tasks\n```\n\n### Commands:\n```\nmc-api health                         # Health check\nmc-api boards                         # List boards\nmc-api tasks                          # List tasks on ASF board\nmc-api tasks BOARD_ID                 # Tasks on specific board\nmc-api create-task '{\"
+"text":"All tools still broken - exec, read, message all returning empty. Complete session failure."
+"toolName":"message"
+"text":"{\n  \"
+"command":"echo test"
+"toolName":"exec"
+"text":"test"
+"exitCode":0,"
+"command":"pwd"
+"toolName":"exec"
+"text":"/workspace/agents/product-owner"
+"exitCode":0,"
+"text":"Still broken - all tools return empty"
+"toolName":"message"
+"text":"{\n  \"
+"text":"NO_REPLY"
+
+--- MC (mc-3634c19a-9174-4f23-b03a-0d451f5de6be) last 20 actions ---
+"text":"200"
+"exitCode":0,"
+"toolName":"exec"
+"text":"curl: (22) The requested URL returned error: 401\n401\n\n(Command exited with code 22)"
+"exitCode":22,"
+"toolName":"message"
+"text":"{\n  \"
+"text":"HEARTBEAT_OK"
+"text":"Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK.\nCurrent time: Thursday, February 26th, 2026 — 7:10 PM (UTC)"
+"command":"curl -fsS -o /dev/null -w \"
+"command":"curl -fsS -o /dev/null -w \"
+"toolName":"exec"
+"text":"200"
+"exitCode":0,"
+"toolName":"exec"
+"text":"curl: (22) The requested URL returned error: 401\n401\n\n(Command exited with code 22)"
+"exitCode":22,"
+"toolName":"message"
+"text":"{\n  \"
+"text":"HEARTBEAT_OK"
+
+
+--- Testing as Raven would ---
+
+From /workspace/agents/product-owner:
+  which mc-api: /usr/local/bin/mc-api 
+  ls mc-api.sh: -rwxr-xr-x 1 node node 2338 Feb 26 22:31 mc-api.sh
+  mc-api health: stdout='{"ok":true}' stderr=''
+  mc-api tasks: {"items":[{"title":"[ASF-42] Implement Docker Syscall Monitoring","description":"Add syscall interception to monitor Coder agent for unauthorized network requests or sensitive env var access. Enforce
+
+From /workspace/workspace-mc-3634c19a-9174-4f23-b03a-0d451f5de6be:
+  which mc-api: /usr/local/bin/mc-api 
+  ls mc-api.sh: -rwxr-xr-x 1 node node 2338 Feb 26 22:31 mc-api.sh
+  mc-api health: stdout='{"ok":true}' stderr=''
+  mc-api tasks: {"items":[{"title":"[ASF-42] Implement Docker Syscall Monitoring","description":"Add syscall interception to monitor Coder agent for unauthorized network requests or sensitive env var access. Enforce
+
+
+--- Raven's exec tool status ---
+
+
+--- /usr/local/bin/mc-api content ---
+#!/bin/sh
+# MC API helper for Raven (Product Owner)
+# Agent token for /api/v1/agent/ endpoints
+# Local token for /api/v1/ admin endpoints
+AGENT_TOKEN="WeWnFbK9IoknRjXFPGsV-xHlgGJkXZNcfgltKCQasFQ"
+LOCAL_TOKEN="HthMEQIXNRw8f1FHLVmVA1sIM8R+swsGADUzux3I6vp7357b2vzuPe5h7+dG5xMM"
+MC_URL="http://host.docker.internal:8001"
+BOARD="24394a90-a74e-479c-95e8-e5d24c7b4a40"
+
+case "$1" in
+  health)
+    curl -s -m 10 "$MC_URL/health"
+    ;;
+  boards)
+    curl -s -m 10 -H "Authorization: Bearer $AGENT_TOKEN" "$MC

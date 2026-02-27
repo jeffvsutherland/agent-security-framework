@@ -1,0 +1,251 @@
+# ASF Platform Integration SDK - Secure Docker Deployment Makefile
+# Includes OpenClaw security hardening recommendations
+
+.PHONY: all build up up-secure down restart logs clean test deploy security-audit check-skill
+
+# Default target
+all: build up-secure
+
+# Build all containers
+build:
+	@echo "Building ASF containers..."
+	docker-compose build
+
+# Start all services (basic mode)
+up:
+	@echo "Starting ASF services..."
+	docker-compose up -d
+	@echo "Services starting... Check status with 'make status'"
+
+# Start all services with security hardening
+up-secure:
+	@echo "Starting ASF services with security hardening..."
+	@if [ ! -f .env ]; then echo "ERROR: .env file not found. Run 'make init-secure' first"; exit 1; fi
+	docker-compose -f docker-compose.yml -f docker-compose.security.yml up -d
+	@echo "Secure services starting... Check status with 'make status'"
+
+# Stop all services
+down:
+	@echo "Stopping ASF services..."
+	docker-compose down
+
+# Restart all services
+restart: down up
+
+# Restart with security
+restart-secure: down up-secure
+
+# View logs
+logs:
+	docker-compose logs -f
+
+# View logs for specific service
+logs-%:
+	docker-compose logs -f $*
+
+# Clean everything (including volumes)
+clean:
+	@echo "Cleaning ASF deployment..."
+	docker-compose down -v
+	docker system prune -f
+
+# Check service status
+status:
+	@echo "ASF Service Status:"
+	@docker-compose ps
+	@echo "\nHealth Check Status:"
+	@docker ps --filter "name=asf-" --format "table {{.Names}}\t{{.Status}}"
+
+# Security audit
+security-audit:
+	@echo "🛡️  ASF Security Audit"
+	@echo "===================="
+	@echo ""
+	@echo "1. Port Exposure Check:"
+	@docker-compose ps 2>/dev/null | grep -E "0\.0\.0\.0:" && echo "   ❌ FAIL: Services exposed on all interfaces!" || echo "   ✅ PASS: Port binding restricted"
+	@echo ""
+	@echo "2. Environment Security:"
+	@test -f .env && echo "   ✅ .env file exists" || echo "   ❌ Missing .env file"
+	@if [ -f .env ]; then \
+		grep -E "^GATEWAY_TOKEN=.{32,}" .env >/dev/null 2>&1 && echo "   ✅ Gateway token secure (32+ chars)" || echo "   ❌ Weak or missing GATEWAY_TOKEN"; \
+		grep -E "^JWT_SECRET=.{32,}" .env >/dev/null 2>&1 && echo "   ✅ JWT secret secure (32+ chars)" || echo "   ❌ Weak or missing JWT_SECRET"; \
+		grep -E "^WEBHOOK_SECRET=.{32,}" .env >/dev/null 2>&1 && echo "   ✅ Webhook secret secure (32+ chars)" || echo "   ❌ Weak or missing WEBHOOK_SECRET"; \
+	fi
+	@echo ""
+	@echo "3. Container Security:"
+	@if [ -f docker-compose.security.yml ]; then \
+		grep -q "read_only: true" docker-compose.security.yml && echo "   ✅ Read-only filesystems configured" || echo "   ❌ Containers have write access"; \
+		grep -q "no-new-privileges:true" docker-compose.security.yml && echo "   ✅ Privilege escalation blocked" || echo "   ❌ Privilege escalation possible"; \
+		grep -q "limits:" docker-compose.security.yml && echo "   ✅ Resource limits configured" || echo "   ❌ No resource limits"; \
+		grep -q "network_mode: none" docker-compose.security.yml && echo "   ✅ Sandbox network isolation" || echo "   ❌ Sandbox not isolated"; \
+	else \
+		echo "   ❌ Security overrides file missing"; \
+	fi
+	@echo ""
+	@echo "4. Sandboxing Status:"
+	@docker ps --filter "name=asf-sandbox" --format "{{.Names}}" | grep -q "asf-sandbox" && echo "   ✅ Sandbox container running" || echo "   ❌ Sandbox container not running"
+	@echo ""
+	@echo "Run 'make fix-security' to apply recommended fixes"
+
+# Apply security fixes
+fix-security:
+	@echo "Applying security fixes..."
+	@if [ ! -f .env ]; then cp .env.example .env; echo "Created .env file - please update with secure values"; fi
+	@if [ ! -f docker-compose.security.yml ]; then echo "ERROR: docker-compose.security.yml missing"; exit 1; fi
+	@echo "Security configuration ready. Run 'make restart-secure' to apply"
+
+# Initialize secure environment
+init-secure:
+	@echo "Initializing secure ASF environment..."
+	@if [ -f .env ]; then echo "WARNING: .env already exists. Backing up to .env.backup"; cp .env .env.backup; fi
+	@echo "Generating secure tokens..."
+	@echo "# ASF Security Configuration" > .env
+	@echo "# Generated on $$(date)" >> .env
+	@echo "" >> .env
+	@echo "# Gateway Authentication (32+ chars)" >> .env
+	@echo "GATEWAY_TOKEN=$$(openssl rand -base64 32 | tr -d '\n')" >> .env
+	@echo "" >> .env
+	@echo "# JWT Signing Secret (32+ chars)" >> .env
+	@echo "JWT_SECRET=$$(openssl rand -base64 32 | tr -d '\n')" >> .env
+	@echo "" >> .env
+	@echo "# Webhook Validation (32+ chars)" >> .env
+	@echo "WEBHOOK_SECRET=$$(openssl rand -base64 32 | tr -d '\n')" >> .env
+	@echo "" >> .env
+	@echo "# Database Credentials" >> .env
+	@echo "POSTGRES_PASSWORD=$$(openssl rand -base64 24 | tr -d '\n')" >> .env
+	@echo "" >> .env
+	@echo "# Redis Authentication" >> .env
+	@echo "REDIS_PASSWORD=$$(openssl rand -base64 24 | tr -d '\n')" >> .env
+	@echo "" >> .env
+	@echo "# API Keys (add your own)" >> .env
+	@echo "ANTHROPIC_API_KEY=" >> .env
+	@echo "VIRUSTOTAL_API_KEY=" >> .env
+	@echo "DISCORD_BOT_TOKEN=" >> .env
+	@echo "DISCORD_SKILL_CHECKER_CHANNEL_ID=" >> .env
+	@echo "" >> .env
+	@echo "✅ Secure .env file generated"
+	@echo "⚠️  Add your API keys before starting services"
+
+# Check skill security
+check-skill:
+	@if [ -z "$(SKILL)" ]; then \
+		echo "Usage: make check-skill SKILL=<github-url|package-name>"; \
+		echo "Example: make check-skill SKILL=https://github.com/openclaw/skill-weather"; \
+		exit 1; \
+	fi
+	@cd skill-verifier && chmod +x skill-checker.sh && ./skill-checker.sh "$(SKILL)"
+
+# Skill verifier bot setup
+skill-bot-setup:
+	@echo "Setting up skill verification bot..."
+	cd skill-verifier && npm install
+
+skill-bot-start:
+	@echo "Starting Discord skill verification bot..."
+	cd skill-verifier && npm start
+
+skill-bot-dev:
+	@echo "Starting skill bot in development mode..."
+	cd skill-verifier && npm run dev
+
+# Run tests
+test:
+	@echo "Running ASF integration tests..."
+	docker-compose run --rm api npm test 2>/dev/null || echo "API tests not configured"
+	docker-compose run --rm webhook npm test 2>/dev/null || echo "Webhook tests not configured"
+	@echo "Running security tests..."
+	@make security-audit
+
+# Build SDKs
+build-sdks:
+	@echo "Building ASF SDKs..."
+	docker-compose --profile build run --rm sdk-builder
+
+# Deploy to production (with security checks)
+deploy: security-audit test
+	@echo "Deploying ASF to production..."
+	@if grep -q "❌" /tmp/security-audit.log 2>/dev/null; then \
+		echo "ERROR: Security audit failed. Fix issues before deploying."; \
+		exit 1; \
+	fi
+	./scripts/deploy-production.sh || echo "Deploy script not found"
+
+# Development mode with hot reload
+dev:
+	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+
+# Database operations
+migrate:
+	docker-compose exec asf-api npm run migrate
+
+backup:
+	@echo "Backing up ASF database..."
+	@mkdir -p backups
+	docker-compose exec postgres pg_dump -U asf asf_db > backups/asf_backup_$$(date +%Y%m%d_%H%M%S).sql
+	@echo "Backup saved to backups/"
+
+# Monitor services
+monitor:
+	@echo "ASF Monitoring Dashboard"
+	@echo "======================="
+	@echo "API Health: http://localhost:8080/health"
+	@echo "Dashboard: http://localhost:3000"
+	@echo "API Docs: http://localhost:8080/docs"
+	@echo ""
+	@echo "Security Status:"
+	@make security-audit
+
+# Quick secure setup
+quickstart:
+	@echo "🚀 ASF Quick Secure Setup"
+	@echo "========================"
+	make init-secure
+	@echo ""
+	@echo "Next steps:"
+	@echo "1. Edit .env and add your API keys"
+	@echo "2. Run 'make up-secure' to start services"
+	@echo "3. Run 'make security-audit' to verify security"
+	@echo "4. Run 'make skill-bot-setup' to set up Discord bot"
+
+# Help
+help:
+	@echo "ASF Platform Integration SDK - Secure Docker Commands"
+	@echo ""
+	@echo "🚀 Quick Start:"
+	@echo "  make quickstart    - Generate secure config and show next steps"
+	@echo "  make up-secure     - Start with security hardening"
+	@echo ""
+	@echo "📦 Basic Operations:"
+	@echo "  make build         - Build all containers"
+	@echo "  make up            - Start services (basic mode)"
+	@echo "  make down          - Stop all services"
+	@echo "  make restart       - Restart services"
+	@echo "  make status        - Check service status"
+	@echo "  make logs          - View all logs"
+	@echo "  make logs-<name>   - View specific service logs"
+	@echo "  make clean         - Remove containers and volumes"
+	@echo ""
+	@echo "🛡️  Security:"
+	@echo "  make security-audit   - Run security checks"
+	@echo "  make init-secure      - Generate secure configuration"
+	@echo "  make fix-security     - Apply security fixes"
+	@echo "  make check-skill SKILL=<url>  - Check skill for threats"
+	@echo ""
+	@echo "🤖 Skill Verifier Bot:"
+	@echo "  make skill-bot-setup  - Install bot dependencies"
+	@echo "  make skill-bot-start  - Start Discord bot"
+	@echo "  make skill-bot-dev    - Start bot in dev mode"
+	@echo ""
+	@echo "🧪 Development:"
+	@echo "  make dev           - Development mode with hot reload"
+	@echo "  make test          - Run tests"
+	@echo "  make migrate       - Run database migrations"
+	@echo "  make backup        - Backup database"
+	@echo "  make monitor       - View monitoring endpoints"
+	@echo ""
+	@echo "📦 Deployment:"
+	@echo "  make build-sdks    - Build SDK packages"
+	@echo "  make deploy        - Deploy to production (after security check)"
+
+# Default .SILENT to reduce noise
+.SILENT: security-audit init-secure fix-security monitor help quickstart

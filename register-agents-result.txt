@@ -1,0 +1,33 @@
+=== Step 1: Assign Gateway Agent to Board ===
+  Found: ASF Gateway Gateway Agent (id=ae63a2bf-863a-4daa-a010-42258d6e40a3, board=None)
+  Assigned to board: None
+
+=== Step 2: Creating Team Agents ===
+
+Creating: Raven (Product Owner)
+  OK: id=3634c19a-9174-4f23-b03a-0d451f5de6be, status=provisioning
+
+Creating: Sales Agent
+  OK: id=f231fd0f-6004-4268-8dc9-d7013fcb23e9, status=provisioning
+
+Creating: Deploy Agent
+  ERROR 502: {"detail":"Gateway provision failed: rate limit exceeded for config.patch; retry after 59s","request_id":"a095e04649944faf9967765a65f3b81a"}
+  FAILED
+
+Creating: Social Agent
+  ERROR 502: {"detail":"Gateway provision failed: rate limit exceeded for config.patch; retry after 58s","request_id":"1c3c536d33634f72bffc0d990bee76e8"}
+  FAILED
+
+Creating: Research Agent
+  ERROR 502: {"detail":"Gateway provision failed: rate limit exceeded for config.patch; retry after 58s","request_id":"0e7a8f7f6fe64d2a8b4819e5d93a3026"}
+  FAILED
+
+=== Step 3: Final Agent List ===
+  Research Agent: status=provisioning, board=24394a90-a74e-479c-95e8-e5d24c7b4a40, lead=False
+  Social Agent: status=provisioning, board=24394a90-a74e-479c-95e8-e5d24c7b4a40, lead=False
+  Deploy Agent: status=provisioning, board=24394a90-a74e-479c-95e8-e5d24c7b4a40, lead=False
+  Sales Agent: status=provisioning, board=24394a90-a74e-479c-95e8-e5d24c7b4a40, lead=False
+  Raven (Product Owner): status=provisioning, board=24394a90-a74e-479c-95e8-e5d24c7b4a40, lead=False
+  ASF Gateway Gateway Agent: status=provisioning, board=None, lead=False
+
+Total agents: 6

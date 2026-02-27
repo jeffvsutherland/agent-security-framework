@@ -1,0 +1,70 @@
+# Environment variables with secrets
+.env
+.env.local
+.env.production
+
+# Sensitive credentials
+*-credentials.json
+agent-tokens.json
+mc-agent-tokens.json
+.mc-token
+auth-profiles.json
+*.key
+
+# API keys and tokens
+.anthropic_key
+.google_key
+shared-messages/GITHUB-TOKEN-FOR-AGENTS.md
+shared-messages/UPDATE-AGENT-PASSWORDS.md
+setup-drjeff-password.sh
+update-jira-token.sh
+
+# IDE
+.idea/
+.vscode/
+
+# System files
+.DS_Store
+__pycache__/
+
+# Node modules
+node_modules/
+package-lock.json
+
+# Build outputs
+dist/
+build/
+
+# Logs
+*.log
+
+# Temporary files
+copilot_out.txt
+*.tmp
+
+# OpenClaw workspace sessions (embedded git repos)
+workspace-mc-*/
+workspace-gateway-*/
+
+# Agent workspaces with their own git repos
+agents/deploy/
+agents/product-owner/
+agents/research/
+agents/sales/
+agents/social/
+agent-security-framework/
+asf-discord-bot/
+asf-security-scanner/
+openclaw-mission-control/
+
+# Config directories with secrets
+.config/
+.clawdhub/
+.clawhub/
+config-backups/
+
+# OpenClaw session data (contains secrets in logs)
+ASF-15-docker/openclaw-state/
+
+# Files containing embedded secrets
+shared-messages/GITHUB-PUSH-INSTRUCTIONS.md

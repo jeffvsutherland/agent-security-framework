@@ -1,0 +1,46 @@
+=== Raven MC Visibility Check ===
+
+--- PO recent messages ---
+"text":"test"
+"text":"Now even echo returns empty"
+"text":"{\n  \"
+"text":"hello"
+"text":"Even echo now returns empty - exec completely broken"
+"text":"{\n  \"
+"text":"10AM-STATUS-REPORT.md\n10am-compliance-check.sh\nAGENT-COMMUNICATION-LOG.md\nAGENT-CONTACT-TRACKING.md\nAGENT-MESSAGES-TO-SEND.md\nAGENTS.md\nAPI-COST-OPTIMIZATION-PLAN.md\nASF-1-DELIVERABLE.md\nASF-12-COMPLETION-SUMMARY.md\nASF-12-DEMO-SCRIPT.md\nASF-12-DEMO-VIDEO-SCRIPT.md\nASF-12-DEPLOYMENT-PACKAGE.md\nASF-12-DOCUMENTATION.md\nASF-12-DOD-STATUS.md\nASF-12-JIRA-COMMENT.md\nASF-12-MOLTBOOK-POST.md\nASF-12-MOLTBOOK-SHORT.md\nASF-12-TWITTER-TEMPLATE.md\nASF-13-DEPLOYMENT-PACKAGE.md\nASF-13-LINKEDIN-CONTENT.md\nASF-13-MEDIA-INTERVIEWS.md\nASF-13-PLATFORM-OUTREACH.md\nASF-13-PRESS-RELEASE.md\nASF-14-CERTIFICATION-FRAMEWORK.md\nASF-14-COMMUNITY-DEPLOYMENT.md\nASF-15-DOCKER-COMPLETE.md\nASF-15-JIRA-STORY.md\nASF-15-PLATFORM-SDK.md\nASF-15-docker\nASF-17-COMPLETE-DELIVERABLE.md\nASF-17-COMPLETION-REPORT.md\nASF-17-DISCORD-INTEGRATION.md\nASF-17-ENTERPRISE-DASHBOARD.md\nASF-17-GITHUB-SETUP.md\nASF-17-MOLTBOOK-POST.md\nASF-17-MOLTBOOK-SHORT.md\nASF-17-MOLTBOOK-SIMPLE.md\nASF-17-REST-API.md\nASF-17-SLACK-INTEGRATION.md\nASF-17-TWITTER-THREAD.md\nASF-17-Technical-Blog-Fake-Agent-Detection.md\nASF-18-DISCORD-BOT-DEPLOYMENT.md\nASF-18-SCRUM-PROCESS.md\nASF-19-CUSTOMER-PILOT-OVERVIEW.md\nASF-19-CUSTOMER-SUCCESS-STORIES.md\nASF-19-ENTERPRISE-PITCH-DECK.md\nASF-19-PILOT-LAUNCH-CAMPAIGN.md\nASF-19-PILOT-OUTREACH-TEMPLATES.md\nASF-19-VALUE-PROPOSITION-ONEPAGER.md\nASF-20-Capability-Enforcer-DOD.md\nASF-20-Documentation-Index.md\nASF-20-ENTERPRISE-INTEGRATION.md\nASF-22-SPAM-MONITORING.md\nASF-23-ANALYSIS.md\nASF-23-COMPLETE-SPEC.md\nASF-24-SPAM-REPORTING.md\nASF-26-URGENT-WEBSITE-UPDATE.md\nASF-26-WEBSITE-SECURITY.md\nASF-27-implementation-plan.md\nASF-3-NODE-WRAPPER-GITHUB.md\nASF-35-SECURITY-SCAN-REPORT.md\nASF-38-AGENT-TRUST-FRAMEWORK.md\nASF-38-TRUST-FRAMEWORK.md\nASF-4-BAD-AGENT-DATABASE-GITHUB.md\nASF-5-YARA-RES
+
+--- MC recent messages ---
+"text":"Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK.\nCurrent time: Thursday, February 26th, 2026 — 6:15 AM (UTC)"
+"text":"200"
+"text":"curl: (22) The requested URL returned error: 401\n401\n\n(Command exited with code 22)"
+"text":"{\n  \"
+"text":"HEARTBEAT_OK"
+"text":"Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK.\nCurrent time: Thursday, February 26th, 2026 — 7:10 PM (UTC)"
+"text":"200"
+"text":"curl: (22) The requested URL returned error: 401\n401\n\n(Command exited with code 22)"
+"text":"{\n  \"
+"text":"HEARTBEAT_OK"
+
+--- MC Boards ---
+  Board: Agent Security Framework (slug=agent-security-framework)
+
+--- ASF Board Cards ---
+  Raw: {'detail': 'Not Found', 'request_id': '0b2ae3d4905043838a44f21aa8a20d07'}
+
+--- MC Frontend (3001) from container ---
+<!DOCTYPE html><!--eIkFPZ5JreXSEQEbH2M2x--><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="preload" href="/_next/static/media/03fc1b4a8d284b5e-s.p.af4fcd24.woff2" as="font" crossorigin="" type="font/woff2"/><link rel="prelo
+
+--- Raven agent MC config ---
+{
+  "id": "product-owner",
+  "name": "product-owner",
+  "missionControl": "NOT_SET"
+}
+{
+  "id": "mc-3634c19a-9174-4f23-b03a-0d451f5de6be",
+  "name": "Raven (Product Owner)",
+  "missionControl": "NOT_SET"
+}
+
+--- Gateway ID ---
+gateway.id: NOT_SET

@@ -1,0 +1,4 @@
+18789: CLOSED
+18792: CLOSED
+http://127.0.0.1:18792/ -> URLError: <urlopen error [Errno 61] Connection refused>
+http://127.0.0.1:18792/json/version -> URLError: <urlopen error [Errno 61] Connection refused>

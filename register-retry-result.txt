@@ -1,0 +1,40 @@
+=== Checking existing agents to avoid duplicates ===
+  Found: Research Agent id=c7466164-4d69-4bc1-a58e-71f37bb7ccb2 status=provisioning
+  Found: Social Agent id=74664bc2-e015-4577-a6a5-7711a3883b07 status=provisioning
+  Found: Deploy Agent id=583bfc28-09f3-4b62-b3cd-f164a6012b0d status=provisioning
+  Found: Sales Agent id=f231fd0f-6004-4268-8dc9-d7013fcb23e9 status=provisioning
+  Found: Raven (Product Owner) id=3634c19a-9174-4f23-b03a-0d451f5de6be status=provisioning
+  Found: ASF Gateway Gateway Agent id=ae63a2bf-863a-4daa-a010-42258d6e40a3 status=provisioning
+
+Deleting failed agent: Deploy Agent
+  Deleted
+
+Deleting failed agent: Social Agent
+  Deleted
+
+Deleting failed agent: Research Agent
+  Deleted
+
+Waiting 5 seconds between creates to avoid rate limit...
+
+Creating: Deploy Agent
+  ERROR 502: {"detail":"Gateway provision failed: rate limit exceeded for config.patch; retry after 8s","request_id":"048c69753df444819f483eafde3d99d3"}
+  FAILED
+  Waiting 30s to avoid rate limit...
+
+Creating: Social Agent
+  OK: id=b9efac34-d836-4505-b123-130502e6f42b, status=provisioning
+  Waiting 30s to avoid rate limit...
+
+Creating: Research Agent
+  OK: id=a752e9fc-8c0d-4a12-b455-de0a322c142f, status=provisioning
+
+=== Final Agent List ===
+  Research Agent: status=provisioning, board=24394a90-a74e-479c-95e8-e5d24c7b4a40, lead=False
+  Social Agent: status=provisioning, board=24394a90-a74e-479c-95e8-e5d24c7b4a40, lead=False
+  Deploy Agent: status=provisioning, board=24394a90-a74e-479c-95e8-e5d24c7b4a40, lead=False
+  Sales Agent: status=provisioning, board=24394a90-a74e-479c-95e8-e5d24c7b4a40, lead=False
+  Raven (Product Owner): status=provisioning, board=24394a90-a74e-479c-95e8-e5d24c7b4a40, lead=False
+  ASF Gateway Gateway Agent: status=online, board=None, lead=False
+
+Total agents: 6

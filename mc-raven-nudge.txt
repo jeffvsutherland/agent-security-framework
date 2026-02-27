@@ -1,0 +1,54 @@
+--- PO HEARTBEAT.md ---
+# HEARTBEAT - Raven (Product Owner)
+
+## CRITICAL: You are INSIDE Docker
+- Do NOT run `docker exec` — you are already inside the container
+- Do NOT run `docker` — it is not available
+- Use the `exec` tool with shell commands directly
+
+## Mission Control API Access
+
+Use the helper script for ALL MC API calls:
+
+```bash
+# Health check
+./mc-api.sh health
+
+# List boards  
+./mc-api.sh boards
+
+# List cards on ASF board
+./mc-api.sh cards agent-security-framework
+
+# Update a card
+./mc-api.sh update-card C
+
+--- MC HEARTBEAT.md ---
+# HEARTBEAT - Raven (Product Owner)
+
+## CRITICAL: You are INSIDE Docker
+- Do NOT run `docker exec` — you are already inside the container
+- Do NOT run `docker` — it is not available
+- Use the `exec` tool with shell commands directly
+
+## Mission Control API Access
+
+Use the helper script for ALL MC API calls:
+
+```bash
+# Health check
+./mc-api.sh health
+
+# List boards  
+./mc-api.sh boards
+
+# List cards on ASF board
+./mc-api.sh cards agent-security-framework
+
+# Update a card
+./mc-api.sh update-card C
+
+Updated /workspace/agents/product-owner/HEARTBEAT.md: rc=0
+Updated /workspace/workspace-mc-3634c19a-9174-4f23-b03a-0d451f5de6be/HEARTBEAT.md: rc=0
+mc-api health from PO: {"ok":true}
+mc-api health from MC: {"ok":true}

@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "profiles": {
+    "minimax:default": {
+      "type": "api_key",
+      "provider": "anthropic",
+      "key": "sk-cp-XxgKSU-NF_4Hut66fKFInC-Rn-BNAYt1K5Qy-sfexE0TVOk12ofFDNaHEX11ZWtfEAeBOFzUJEJLZ8G0BHwZXoxqtu8XMSZJ3HL9wFW2D1yJ4t08bcObcQo"
+    }
+  },
+  "lastGood": {
+    "minimax": "minimax:default"
+  },
+  "usageStats": {
+    "minimax:default": {
+      "lastUsed": 1771856339432,
+      "errorCount": 0
+    }
+  }
+}

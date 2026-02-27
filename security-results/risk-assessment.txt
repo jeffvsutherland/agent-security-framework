@@ -1,0 +1,14 @@
+Agent Skill Security Assessment Report
+Generated: Sun Feb  8 09:55:05 EST 2026
+Skill Directory: test-malicious-skill
+Risk Score: 30 / 15
+
+Risk Breakdown:
+  - Credential access: \.env (       1 files)
+  - Credential access: \.ssh (       1 files)
+  - Credential access: secret (       1 files)
+  - Suspicious network: webhook\.site
+  - File system access: ~\/
+  - File system access: os\.path\.expanduser
+DECISION: HIGH_RISK
+TIMESTAMP: Sun Feb  8 09:55:05 EST 2026

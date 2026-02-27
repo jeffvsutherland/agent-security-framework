@@ -1,0 +1,3 @@
+#!/bin/bash
+# Secure wrapper - redirects to protected version
+exec python3 "$(dirname "$0")/gen-secure.py" "$@"

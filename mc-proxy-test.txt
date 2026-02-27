@@ -1,0 +1,8 @@
+=== Testing host proxy on 18792 ===
+
+Port 18792: OPEN
+WS: CONNECTED!
+WS msg: {"type":"event","event":"connect.challenge","payload":{"nonce":"0fdc719f-f88a-4986-bbfd-703f4fc5a4c2","ts":1772123700054}}
+SUCCESS - Extension should work now!
+
+=== DONE ===

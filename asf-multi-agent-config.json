@@ -1,0 +1,50 @@
+{
+  "asf_enterprise_team": {
+    "description": "Agent Security Framework Enterprise Multi-Agent Team",
+    "telegram_bots": {
+      "asf_research": {
+        "display_name": "ASF Research Agent",
+        "username": "@ASFResearchBot",
+        "token": "8371607764:AAEsQCxbZLi-gcDfcrc4otTg7Tj5wtVTI74",
+        "accountId": "research",
+        "persona_file": "asf-research-agent-SOUL.md",
+        "specialization": "Market intelligence, competitive analysis, Moltbook monitoring"
+      },
+      "asf_social": {
+        "display_name": "ASF Social Agent",
+        "username": "@ASFSocialBot", 
+        "token": "8363670185:AAF87g3nBTkhsQ4O1TIEq1lxiRRQ7_G1BQ4",
+        "accountId": "social",
+        "persona_file": "asf-social-agent-SOUL.md",
+        "specialization": "Community engagement, Moltbook/Twitter presence, relationship building"
+      },
+      "asf_deploy": {
+        "display_name": "ASF Deploy Agent",
+        "username": "@ASFDeployBot",
+        "token": "8562304149:AAGG8z9voTN0UO8zfI1AjKX5z7K7mQp21ok",
+        "accountId": "deploy", 
+        "persona_file": "asf-deploy-agent-SOUL.md",
+        "specialization": "Infrastructure, API deployment, DevOps, system reliability"
+      },
+      "asf_sales": {
+        "display_name": "ASF Sales Agent",
+        "username": "@ASFSalesBot",
+        "token": "8049864989:AAHdP9iDsSpQWiQ5sKFZGJD060WLbmG5aAM",
+        "accountId": "sales",
+        "persona_file": "asf-sales-agent-SOUL.md", 
+        "specialization": "Enterprise relationships, demos, revenue generation"
+      }
+    },
+    "team_coordination": {
+      "daily_standup": "Agent Saturday coordinates via Jira updates",
+      "sprint_planning": "Jeff leads, all agents contribute via Telegram",
+      "communication_protocol": "Each agent has dedicated Telegram chat with Jeff",
+      "shared_resources": {
+        "jira_project": "ASF (Agent Security Framework)",
+        "current_epic": "ASF-20: Enterprise Integration Package",
+        "shared_workspace": "/Users/jeffsutherland/clawd",
+        "documentation": "All agents can access and update team docs"
+      }
+    }
+  }
+}

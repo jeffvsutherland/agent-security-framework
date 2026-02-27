@@ -1,0 +1,4 @@
+JIRA_URL="https://frequencyfoundation.atlassian.net"
+JIRA_USER="jeff.sutherland@gmail.com"
+PROJECT_KEY="FF"
+BOARD_ID="1"

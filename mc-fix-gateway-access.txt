@@ -1,0 +1,27 @@
+=== Gateway Access Fix ===
+
+Inside container HTTP test: stdout=<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OpenClaw Control</title>
+    <meta name="color-scheme" content="dark light" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" stderr=
+
+Inside container Node HTTP: STATUS:200 BODY:<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OpenClaw Control</title>
+    <meta name=" 
+
+Inside container WS test: WS_CONNECTED
+WS_MSG:{"type":"event","event":"connect.challenge","payload":{"nonce":"8f8c8f81-d102-47c8-a326-fa49dcc721b0","ts":1772122237335}}
+WS_TIMEOUT 
+
+--- Raw TCP from host ---
+  Raw TCP error: ConnectionResetError: [Errno 54] Connection reset by peer
+
+=== DONE ===

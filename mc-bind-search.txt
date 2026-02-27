@@ -1,0 +1,15 @@
+=== Searching for bind enum values ===
+Enum-like values: 
+
+Bind references: 
+
+Bind schema: 
+
+Context around 'loopback': loopback not found in source
+
+
+All 'loopback' occurrences:
+Total: 0
+
+
+=== DONE ===
