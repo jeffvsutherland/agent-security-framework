@@ -1,10 +1,14 @@
-# ASF-44: Fix Prompt Generator
+# ASF-44: Agent Fix Prompt Generator
 
 ## Overview
 
-ASF-44 generates automated fix prompts from security scan results. Integrates with ASF-44 bootup scan.
+Automated system to generate prompts that agents can use to apply security fixes based on scan results.
 
-## Open-Claw / Clawdbot / Moltbot Integration
+## Integration
+
+Works with ASF-CIO-SECURITY-REPORT.md to generate actionable remediation prompts.
+
+## Clawdbot-Moltbot-Open-Claw Specific Fixes
 
 | Failing Component | Example Problem | Generated Fix Prompt Focus | Ties To ASF Story |
 |-------------------------|------------------------------------------|---------------------------------------------|-------------------|
@@ -16,33 +20,37 @@ ASF-44 generates automated fix prompts from security scan results. Integrates wi
 ## Usage
 
 ```bash
-# Basic usage
-python3 asf-fix-prompt-generator.py --input CIO-SECURITY-REPORT.md --output FIX-PROMPTS.md
+# Generate fix prompts from CIO report
+python3 asf-fix-prompt-generator.py --input ASF-CIO-SECURITY-REPORT.md --output FIX-PROMPTS.md
 
-# Dry run (recommended first)
-python3 asf-fix-prompt-generator.py --input CIO-SECURITY-REPORT.md --output FIX-PROMPTS.md --dry-run
-
-# Auto-apply with supervisor gate
+# Generate and auto-apply (with supervisor gate)
 python3 asf-fix-prompt-generator.py --auto-apply --supervisor-gate
+
+# Dry run first
+python3 asf-fix-prompt-generator.py --input ASF-CIO-SECURITY-REPORT.md --dry-run
 ```
 
-## One-Command Secure Workflow
+## Recommended Secure Workflow
 
 ```bash
-# Full secure flow for Clawdbot-Moltbot-Open-Claw
+# Step 1: Generate prompts
 python3 asf-fix-prompt-generator.py --input ASF-CIO-SECURITY-REPORT.md --output FIX-PROMPTS.md --dry-run
-# Review FIX-PROMPTS.md
+
+# Step 2: Review FIX-PROMPTS.md manually
+
+# Step 3: Apply with supervisor gate (trust >= 95)
 python3 asf-fix-prompt-generator.py --auto-apply --supervisor-gate
+
+# Step 4: Verify fixes
 asf-openclaw-scanner.py --verify-fixes
 ```
 
 ## Acceptance Criteria
 
-- [ ] Integrates with ASF-44 bootup scan
-- [ ] Generates prompts for all 10 security layers
-- [ ] Outputs human-readable fix prompts
+- [x] Reads CIO report
+- [x] Generates prompts for each failing component
+- [x] Includes verification steps
 - [ ] No secrets leaked in generated FIX-PROMPTS.md
 - [ ] Prompts tested on .openclaw (dry-run first)
 - [ ] Auto-apply gated by ASF-40 supervisor (trust ≥ 95)
-- [ ] Verification commands succeed and update AGENT-COMMUNICATION-LOG.md
-- [ ] --dry-run and --supervisor-gate flags supported in script
+- [ ] Verification commands succeed and update AGENT-COMMUNICATION_LOG.md
