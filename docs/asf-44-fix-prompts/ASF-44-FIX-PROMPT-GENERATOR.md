@@ -1,10 +1,9 @@
-# ASF-44: Fix Prompt Generator
+# ASF-44: Security Fix Prompt Generator
 
 ## Overview
+Generate agent-executable prompts from security scan findings.
 
-ASF-44 generates automated fix prompts from security scan results. Integrates with ASF-44 bootup scan.
-
-## Open-Claw / Clawdbot / Moltbot Integration
+## Integration
 
 | Failing Component | Example Problem | Generated Fix Prompt Focus | Ties To ASF Story |
 |-------------------------|------------------------------------------|---------------------------------------------|-------------------|
@@ -13,36 +12,47 @@ ASF-44 generates automated fix prompts from security scan results. Integrates wi
 | Open-Claw skills dir | Low-trust skill detected | Quarantine + re-scan after YARA update | ASF-38 / ASF-5 |
 | Supervisor anomalies | Syscall violation in container | Restart container + log to Discord | ASF-40 / ASF-42 |
 
-## Usage
-
-```bash
-# Basic usage
-python3 asf-fix-prompt-generator.py --input CIO-SECURITY-REPORT.md --output FIX-PROMPTS.md
-
-# Dry run (recommended first)
-python3 asf-fix-prompt-generator.py --input CIO-SECURITY-REPORT.md --output FIX-PROMPTS.md --dry-run
-
-# Auto-apply with supervisor gate
-python3 asf-fix-prompt-generator.py --auto-apply --supervisor-gate
-```
-
-## One-Command Secure Workflow
-
-```bash
-# Full secure flow for Clawdbot-Moltbot-Open-Claw
-python3 asf-fix-prompt-generator.py --input ASF-CIO-SECURITY-REPORT.md --output FIX-PROMPTS.md --dry-run
-# Review FIX-PROMPTS.md
-python3 asf-fix-prompt-generator.py --auto-apply --supervisor-gate
-asf-openclaw-scanner.py --verify-fixes
-```
-
 ## Acceptance Criteria
 
-- [ ] Integrates with ASF-44 bootup scan
-- [ ] Generates prompts for all 10 security layers
-- [ ] Outputs human-readable fix prompts
 - [ ] No secrets leaked in generated FIX-PROMPTS.md
 - [ ] Prompts tested on .openclaw (dry-run first)
 - [ ] Auto-apply gated by ASF-40 supervisor (trust ≥ 95)
 - [ ] Verification commands succeed and update AGENT-COMMUNICATION-LOG.md
 - [ ] --dry-run and --supervisor-gate flags supported in script
+
+## Usage
+
+### One-Command Secure Workflow
+
+```bash
+# Recommended secure flow for Clawdbot-Moltbot-Open-Claw
+
+# 1. Generate fix prompts (dry-run first)
+python3 asf-fix-prompt-generator.py --input ASF-CIO-SECURITY-REPORT.md --output FIX-PROMPTS.md --dry-run
+
+# 2. Review FIX-PROMPTS.md
+cat FIX-PROMPTS.md
+
+# 3. Apply with supervisor gate
+python3 asf-fix-prompt-generator.py --auto-apply --supervisor-gate
+
+# 4. Verify and log
+asf-openclaw-scanner.py --verify-fixes
+```
+
+## Example Output
+
+```markdown
+# Fix: Enable VPN
+
+Run these commands:
+curl -fsSL https://tailscale.com/install.sh | sh
+tailscale up --operator=jeff
+
+Verify: tailscale status
+```
+
+---
+
+**Story:** ASF-44  
+**Status:** Ready for Review
