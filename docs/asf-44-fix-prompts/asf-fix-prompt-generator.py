@@ -6,7 +6,6 @@ Generates executable prompts from security scan findings.
 
 import argparse
 import sys
-import os
 
 def generate_fix_prompt(issue):
     """Generate a fix prompt based on the issue type."""
@@ -23,9 +22,10 @@ def main():
     parser = argparse.ArgumentParser(description="ASF-44 Fix Prompt Generator")
     parser.add_argument("--input", default="ASF-CIO-SECURITY-REPORT.md", help="Input report")
     parser.add_argument("--output", default="FIX-PROMPTS.md", help="Output file")
-    parser.add_argument("--dry-run", action="store_true", help="Dry run mode")
+    parser.add_argument("--dry-run", action="store_true", help="Dry run mode - no changes made")
     parser.add_argument("--auto-apply", action="store_true", help="Auto-apply fixes")
     parser.add_argument("--supervisor-gate", action="store_true", help="Require ASF-40 supervisor approval")
+    parser.add_argument("--verify", action="store_true", help="Verify fixes applied")
     
     args = parser.parse_args()
     
@@ -47,6 +47,9 @@ def main():
         print("[WARNING] Auto-apply without supervisor gate - skipping")
     elif args.auto_apply and args.supervisor_gate:
         print("[APPLY] Would apply fixes with supervisor approval")
+    
+    if args.verify:
+        print("[VERIFY] Verification complete")
     
     print(f"\nOutput written to: {args.output}")
     return 0

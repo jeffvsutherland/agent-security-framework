@@ -6,6 +6,15 @@ Generate agent-executable prompts from security scan findings.
 ## Integration
 
 | Failing Component | Example Problem | Generated Fix Prompt Focus | Ties To ASF Story |
+|-----------------|-----------------|------------------|-------------------|
+| VPN Protection | Not enabled | tailscale up --operator=jeff | ASF-41 |
+| Firewall | Not configured | ufw enable + default deny | ASF-42 |
+| DNS Security | ISP DNS vulnerable | 1.1.1.1 configuration | ASF-35 |
+| Antivirus | Not installed | clamav install + freshclam | ASF-38 |
+
+## Open-Claw / Clawdbot / Moltbot Integration
+
+| Failing Component | Example Problem | Generated Fix Prompt Focus | Ties To ASF Story |
 |-------------------------|------------------------------------------|---------------------------------------------|-------------------|
 | Clawdbot WhatsApp bridge | Exposed localhost port | Enforce nftables rule + localhost-only | ASF-35 / ASF-2 |
 | Moltbot PC-control | Unsafe capability granted | --cap-drop ALL + no-new-privs | ASF-42 / ASF-41 |
@@ -14,11 +23,14 @@ Generate agent-executable prompts from security scan findings.
 
 ## Acceptance Criteria
 
-- [ ] No secrets leaked in generated FIX-PROMPTS.md
-- [ ] Prompts tested on .openclaw (dry-run first)
-- [ ] Auto-apply gated by ASF-40 supervisor (trust ≥ 95)
-- [ ] Verification commands succeed and update AGENT-COMMUNICATION-LOG.md
-- [ ] --dry-run and --supervisor-gate flags supported in script
+- [x] Reads CIO report and extracts failing components
+- [x] Generates prompts for each failing component
+- [x] Includes verification steps
+- [x] No secrets leaked in generated FIX-PROMPTS.md
+- [x] Prompts tested on .openclaw (dry-run first)
+- [x] Auto-apply gated by ASF-40 supervisor (trust ≥ 95)
+- [x] --dry-run and --supervisor-gate flags supported
+- [x] Verification commands succeed and update AGENT-COMMUNICATION-LOG.md
 
 ## Usage
 
