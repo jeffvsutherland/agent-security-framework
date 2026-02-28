@@ -1,19 +1,10 @@
-# ASF-44/45: Automated Security Fix Prompt Generator
+# ASF-44: Fix Prompt Generator
 
 ## Overview
 
-ASF-44 runs the bootup scan, ASF-45 integrates with it to automatically generate fix prompts for any security issues found.
+ASF-44 generates automated fix prompts from security scan results. Integrates with ASF-44 bootup scan.
 
-## Integration
-
-This ties into the full ASF stack:
-- ASF-38: Trust framework (verify fixes before re-trust)
-- ASF-40: Supervisor (orchestrate auto-apply safely)
-- ASF-41: Guardrail
-- ASF-42: Syscall monitoring
-- ASF-35: OpenClaw scanner
-
-## Clawdbot-Moltbot-Open-Claw Specific
+## Open-Claw / Clawdbot / Moltbot Integration
 
 | Failing Component | Example Problem | Generated Fix Prompt Focus | Ties To ASF Story |
 |-------------------------|------------------------------------------|---------------------------------------------|-------------------|
@@ -25,21 +16,17 @@ This ties into the full ASF stack:
 ## Usage
 
 ```bash
-# Run bootup scan
-./asf-bootup-scan.sh --generate-fixes
-
-# Generate fix prompts from CIO report
+# Basic usage
 python3 asf-fix-prompt-generator.py --input CIO-SECURITY-REPORT.md --output FIX-PROMPTS.md
 
-# Dry run first (recommended)
+# Dry run (recommended first)
 python3 asf-fix-prompt-generator.py --input CIO-SECURITY-REPORT.md --output FIX-PROMPTS.md --dry-run
 
-# Auto-apply with supervisor gate (trust ≥ 95)
+# Auto-apply with supervisor gate
 python3 asf-fix-prompt-generator.py --auto-apply --supervisor-gate
-asf-openclaw-scanner.py --verify-fixes
 ```
 
-## Recommended Secure Workflow
+## One-Command Secure Workflow
 
 ```bash
 # Full secure flow for Clawdbot-Moltbot-Open-Claw
@@ -58,3 +45,4 @@ asf-openclaw-scanner.py --verify-fixes
 - [ ] Prompts tested on .openclaw (dry-run first)
 - [ ] Auto-apply gated by ASF-40 supervisor (trust ≥ 95)
 - [ ] Verification commands succeed and update AGENT-COMMUNICATION-LOG.md
+- [ ] --dry-run and --supervisor-gate flags supported in script
