@@ -1,5 +1,11 @@
 # Prompt for Copilot: Fix OpenClaw Environment
 
+## Contact
+If you need help, reach out to:
+- **Research Agent**: @ASFResearchBot (Telegram)
+- **Raven (Product Owner)**: @AgentSaturdayASFBot (Telegram)
+- **Jeff (Scrum Master)**: @jeffsutherland (Telegram)
+
 ## Context
 There are issues with the OpenClaw environment that need to be fixed. Please investigate and resolve.
 
