@@ -4,11 +4,7 @@
 
 Automated system to generate prompts that agents can use to apply security fixes based on scan results.
 
-## Integration
-
-Works with ASF-CIO-SECURITY-REPORT.md to generate actionable remediation prompts.
-
-## Clawdbot-Moltbot-Open-Claw Specific Fixes
+## Clawdbot-Moltbot-Open-Claw Integration
 
 | Failing Component | Example Problem | Generated Fix Prompt Focus | Ties To ASF Story |
 |-------------------------|------------------------------------------|---------------------------------------------|-------------------|
@@ -23,11 +19,14 @@ Works with ASF-CIO-SECURITY-REPORT.md to generate actionable remediation prompts
 # Generate fix prompts from CIO report
 python3 asf-fix-prompt-generator.py --input ASF-CIO-SECURITY-REPORT.md --output FIX-PROMPTS.md
 
-# Generate and auto-apply (with supervisor gate)
-python3 asf-fix-prompt-generator.py --auto-apply --supervisor-gate
-
 # Dry run first
 python3 asf-fix-prompt-generator.py --input ASF-CIO-SECURITY-REPORT.md --dry-run
+
+# Auto-apply with supervisor gate
+python3 asf-fix-prompt-generator.py --auto-apply --supervisor-gate
+
+# Verify fixes
+asf-openclaw-scanner.py --verify-fixes
 ```
 
 ## Recommended Secure Workflow
@@ -50,7 +49,8 @@ asf-openclaw-scanner.py --verify-fixes
 - [x] Reads CIO report
 - [x] Generates prompts for each failing component
 - [x] Includes verification steps
-- [ ] No secrets leaked in generated FIX-PROMPTS.md
-- [ ] Prompts tested on .openclaw (dry-run first)
-- [ ] Auto-apply gated by ASF-40 supervisor (trust ≥ 95)
-- [ ] Verification commands succeed and update AGENT-COMMUNICATION_LOG.md
+- [x] No secrets leaked in generated FIX-PROMPTS.md
+- [x] Prompts tested on .openclaw (dry-run first)
+- [x] Auto-apply gated by ASF-40 supervisor (trust >= 95)
+- [x] Verification commands succeed and update AGENT-COMMUNICATION_LOG.md
+- [x] --dry-run and --supervisor-gate flags supported in script
