@@ -5,18 +5,24 @@
 | Component | ASF-40 Supervisor Role | ASF-43 White Paper Highlight | One-command activation |
 |------------------------|-------------------------------------------------|--------------------------------------------------|-------------------------------------------------|
 | Open-Claw host | Oversees all containers (trust + syscall) | "ASF's supervisor + guardrail beats CrewAI" | ./start-supervisor.sh --openclaw |
-| Clawdbot (WhatsApp) | Monitors skills in real-time, quarantines low-trust | "Zero-trust bridge vs AutoGPT prompt injection" | ./start-supervisor.sh --clawbot |
+| Clawdbot (WhatsApp) | Monitors skills in real-time, quarantines low-trust | "Zero-trust bridge vs AutoGPT ./start-supervisor prompt injection" |.sh --clawbot |
 | Moltbot (PC-control) | Gates voice/PC commands via ASF-41/42 | "Production-grade isolation not in LangChain" | ./start-supervisor.sh --moltbot |
 
 ## Overview
 
-ASF-43 documents why ASF beats other frameworks (LangChain, CrewAI, AutoGPT) for hardened multi-agent setups.
+Compares ASF (Agent Security Framework) against other security frameworks.
 
 ## Comparison
 
 | Feature | ASF | LangChain | CrewAI | AutoGPT |
-|---------|-----|-----------|--------|----------|
+|---------|-----|-----------|--------|---------|
+| Runtime protection | ✅ | ❌ | ❌ | ❌ |
 | Trust scoring | ✅ | ❌ | ❌ | ❌ |
 | Syscall monitoring | ✅ | ❌ | ❌ | ❌ |
-| Pre-action guardrail | ✅ | ❌ | ❌ | ❌ |
-| Real-time quarantine | ✅ | ❌ | ❌ | ❌ |
+| Scrum protocol | ✅ | ❌ | ❌ | ❌ |
+| Supervisor pattern | ✅ | ❌ | ✅ | ❌ |
+
+## DoD
+
+- [ ] Complete comparison
+- [ ] Business value defined
