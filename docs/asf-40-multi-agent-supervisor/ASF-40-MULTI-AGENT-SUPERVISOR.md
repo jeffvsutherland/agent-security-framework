@@ -10,10 +10,42 @@
 
 ## Overview
 
-Three-agent architecture: Architect → Coder → Security Auditor
+Three-agent architecture for secure code generation:
+1. **Architect Agent** - Decomposes requests into tasks
+2. **Coder Agent** - Generates code
+3. **Security Auditor** - Validates before writes (ASF-41)
+
+Based on Gemini research: 95% accuracy with iterative agentic loops.
+
+## Architecture
+
+```
+Request → Architect → Coder → Security Auditor (ASF-41)
+                                        ↓
+                              ✅ APPROVE or ❌ BLOCK
+```
+
+## Integration
+
+- ASF-38: Trust Framework (agent scores)
+- ASF-41: Guardrail (pre-write validation)
+- ASF-42: Syscall monitoring
 
 ## Usage
 
 ```bash
+# Start supervisor for all agents
 ./start-supervisor.sh --full
+
+# Start for specific agent
+./start-supervisor.sh --openclaw
+./start-supervisor.sh --clawbot
+./start-supervisor.sh --moltbot
 ```
+
+## DoD Checklist
+
+- [x] Supervisor architecture documented
+- [x] Integration table at top
+- [x] Scripts ready for deployment
+- [ ] Tested on Open-Claw
