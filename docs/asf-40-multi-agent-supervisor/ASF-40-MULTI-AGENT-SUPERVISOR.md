@@ -1,18 +1,19 @@
 # ASF-40: Multi-Agent Supervisor Pattern
 
+## Open-Claw / Clawdbot / Moltbot Integration
+
+| Component | ASF-40 Supervisor Role | ASF-43 White Paper Highlight | One-command activation |
+|-----------|-------------------------|------------------------------|------------------------|
+| Open-Claw host | Oversees all containers (trust + syscall) | "ASF's supervisor + guardrail beats CrewAI" | ./start-supervisor.sh --openclaw |
+| Clawdbot (WhatsApp) | Monitors skills in real-time, quarantines low-trust | "Zero-trust bridge vs AutoGPT prompt injection" | ./start-supervisor.sh --clawbot |
+| Moltbot (PC-control) | Gates voice/PC commands via ASF-41/42 | "Production-grade isolation not in LangChain" | ./start-supervisor.sh --moltbot |
+
 ## Overview
 
-Implements a supervisor pattern where one agent monitors and coordinates other agents.
+Three-agent architecture: Architect → Coder → Security Auditor
 
-## Integration
+## Usage
 
-| Agent | Role |
-|-------|------|
-| Supervisor | Monitors all agents |
-| Worker | Executes tasks |
-| Guardrail | Blocks unsafe actions |
-
-## DoD
-
-- [ ] Supervisor pattern implemented
-- [ ] Tested with Clawdbot-Moltbot
+```bash
+./start-supervisor.sh --full
+```

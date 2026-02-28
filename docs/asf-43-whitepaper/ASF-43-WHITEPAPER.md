@@ -1,19 +1,18 @@
-# ASF-43: White Paper - ASF vs Other Security Frameworks
+# ASF-43: White Paper
 
-## Overview
+## Open-Claw Integration
 
-Compares ASF (Agent Security Framework) against other security frameworks.
+| Component | Role |
+|-----------|------|
+| Open-Claw | Supervisor + guardrail |
+| Clawdbot | Zero-trust bridge |
+| Moltbot | PC-control isolation |
 
 ## Comparison
 
-| Feature | ASF | Others |
-|---------|-----|--------|
-| Runtime protection | ✅ | ❌ |
-| Trust scoring | ✅ | ❌ |
-| Syscall monitoring | ✅ | ❌ |
-| Scrum protocol | ✅ | ❌ |
+| Feature | ASF | LangChain | CrewAI |
+|---------|-----|-----------|--------|
+| Runtime | ✅ | ❌ | ❌ |
+| Guardrail | ✅ | ❌ | ❌ |
 
-## DoD
-
-- [ ] Complete comparison
-- [ ] Business value defined
+ASF is the only framework with complete runtime defense.
