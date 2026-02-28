@@ -4,15 +4,18 @@
 
 Automated system to generate prompts that agents can use to apply security fixes based on scan results.
 
-## How It Works
+## Integration
 
-1. Run CIO security scan → Get findings
-2. Generate remediation prompts → Agents execute fixes
-3. Verify fixes → Update report
+Works with ASF-CIO-SECURITY-REPORT.md to generate actionable remediation prompts.
 
-## Integration with CIO Report
+## Clawdbot-Moltbot-Open-Claw Specific Fixes
 
-The generator reads `ASF-CIO-SECURITY-REPORT.md` and creates actionable prompts for each failing component.
+| Failing Component | Example Problem | Generated Fix Prompt Focus | Ties To ASF Story |
+|-------------------------|------------------------------------------|---------------------------------------------|-------------------|
+| Clawdbot WhatsApp bridge | Exposed localhost port | Enforce nftables rule + localhost-only | ASF-35 / ASF-2 |
+| Moltbot PC-control | Unsafe capability granted | --cap-drop ALL + no-new-privs | ASF-42 / ASF-41 |
+| Open-Claw skills dir | Low-trust skill detected | Quarantine + re-scan after YARA update | ASF-38 / ASF-5 |
+| Supervisor anomalies | Syscall violation in container | Restart container + log to Discord | ASF-40 / ASF-42 |
 
 ## Usage
 
@@ -20,54 +23,34 @@ The generator reads `ASF-CIO-SECURITY-REPORT.md` and creates actionable prompts 
 # Generate fix prompts from CIO report
 python3 asf-fix-prompt-generator.py --input ASF-CIO-SECURITY-REPORT.md --output FIX-PROMPTS.md
 
-# Generate and auto-apply
-python3 asf-fix-prompt-generator.py --auto-apply
+# Generate and auto-apply (with supervisor gate)
+python3 asf-fix-prompt-generator.py --auto-apply --supervisor-gate
+
+# Dry run first
+python3 asf-fix-prompt-generator.py --input ASF-CIO-SECURITY-REPORT.md --dry-run
 ```
 
-## Prompt Templates
+## Recommended Secure Workflow
 
-### For Each Failing Component:
-
-```
-## Fix: [Component Name]
-
-### Problem
-[Brief description of what's failing]
-
-### Fix Command
-[Exact command to run]
-
-### Verification
-[How to confirm fix worked]
-```
-
-## Example Output
-
-### Fix: YARA Rules Update
-
-**Problem:** YARA rules need updating to detect new threats
-
-**Fix Command:**
 ```bash
-cd ~/agent-security-framework
-git pull origin main
-python3 docs/asf-5-yara-rules/update-rules.py
+# Step 1: Generate prompts
+python3 asf-fix-prompt-generator.py --input ASF-CIO-SECURITY-REPORT.md --output FIX-PROMPTS.md --dry-run
+
+# Step 2: Review FIX-PROMPTS.md manually
+
+# Step 3: Apply with supervisor gate (trust >= 95)
+python3 asf-fix-prompt-generator.py --auto-apply --supervisor-gate
+
+# Step 4: Verify fixes
+asf-openclaw-scanner.py --verify-fixes
 ```
-
-**Verification:**
-```bash
-yara -r docs/asf-5-yara-rules/ ~/.openclaw/skills/ | head
-```
-
-## Integration
-
-- Works with ASF-CIO-SECURITY-REPORT.md
-- Generates prompts for ASF-38, ASF-41, ASF-42, ASF-40
-- Outputs to FIX-PROMPTS.md
 
 ## Acceptance Criteria
 
-- [ ] Reads CIO report
-- [ ] Generates prompts for each failing component
-- [ ] Includes verification steps
-- [ ] Can auto-apply fixes
+- [x] Reads CIO report
+- [x] Generates prompts for each failing component
+- [x] Includes verification steps
+- [ ] No secrets leaked in generated FIX-PROMPTS.md
+- [ ] Prompts tested on .openclaw (dry-run first)
+- [ ] Auto-apply gated by ASF-40 supervisor (trust ≥ 95)
+- [ ] Verification commands succeed and update AGENT-COMMUNICATION_LOG.md
