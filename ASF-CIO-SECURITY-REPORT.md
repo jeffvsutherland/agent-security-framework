@@ -1,6 +1,6 @@
 # ASF Security Report - Executive Summary
 
-**Generated:** 2026-02-28 15:56:04  
+**Generated:** 2026-02-28 16:24:27  
 **System:** OpenClaw Agent Platform  
 **Security Score:** 80/100
 
