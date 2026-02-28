@@ -1,12 +1,7 @@
 # ASF-44: Agent Fix Prompt Generator
 
 ## Overview
-
 Automated system to generate prompts that agents can use to apply security fixes based on scan results.
-
-## Integration
-
-Works with ASF-CIO-SECURITY-REPORT.md to generate actionable remediation prompts.
 
 ## Clawdbot-Moltbot-Open-Claw Specific Fixes
 
@@ -20,37 +15,13 @@ Works with ASF-CIO-SECURITY-REPORT.md to generate actionable remediation prompts
 ## Usage
 
 ```bash
-# Generate fix prompts from CIO report
 python3 asf-fix-prompt-generator.py --input ASF-CIO-SECURITY-REPORT.md --output FIX-PROMPTS.md
-
-# Generate and auto-apply (with supervisor gate)
 python3 asf-fix-prompt-generator.py --auto-apply --supervisor-gate
-
-# Dry run first
-python3 asf-fix-prompt-generator.py --input ASF-CIO-SECURITY-REPORT.md --dry-run
-```
-
-## Recommended Secure Workflow
-
-```bash
-# Step 1: Generate prompts
-python3 asf-fix-prompt-generator.py --input ASF-CIO-SECURITY-REPORT.md --output FIX-PROMPTS.md --dry-run
-
-# Step 2: Review FIX-PROMPTS.md manually
-
-# Step 3: Apply with supervisor gate (trust >= 95)
-python3 asf-fix-prompt-generator.py --auto-apply --supervisor-gate
-
-# Step 4: Verify fixes
-asf-openclaw-scanner.py --verify-fixes
 ```
 
 ## Acceptance Criteria
 
 - [x] Reads CIO report
 - [x] Generates prompts for each failing component
-- [x] Includes verification steps
-- [ ] No secrets leaked in generated FIX-PROMPTS.md
-- [ ] Prompts tested on .openclaw (dry-run first)
-- [ ] Auto-apply gated by ASF-40 supervisor (trust ≥ 95)
-- [ ] Verification commands succeed and update AGENT-COMMUNICATION_LOG.md
+- [ ] No secrets leaked
+- [ ] Auto-apply gated by ASF-40 supervisor
