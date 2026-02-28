@@ -1,27 +1,19 @@
 # ASF-43: White Paper - ASF vs Other Security Frameworks
 
 ## Open-Claw / Clawdbot / Moltbot Integration
-<<<<<<< HEAD
 
 | Component | ASF-40 Supervisor Role | ASF-43 White Paper Highlight | One-command activation |
 |------------------------|-------------------------------------------------|--------------------------------------------------|-------------------------------------------------|
 | Open-Claw host | Oversees all containers (trust + syscall) | "ASF's supervisor + guardrail beats CrewAI" | ./start-supervisor.sh --openclaw |
-| Clawdbot (WhatsApp) | Monitors skills in real-time, quarantines low-trust | "Zero-trust bridge vs AutoGPT ./start-supervisor prompt injection" |.sh --clawbot |
-| Moltbot (PC-control) | Gates voice/PC commands via ASF-41/42 | "Production-grade isolation not in LangChain" | ./start-supervisor.sh --moltbot |
-
-## Overview
-=======
->>>>>>> origin/main
-
-| Component | ASF-40 Supervisor Role | ASF-43 White Paper Highlight | One-command activation |
-|-----------|-------------------------|------------------------------|------------------------|
-| Open-Claw host | Oversees all containers (trust + syscall) | "ASF's supervisor + guardrail beats CrewAI" | ./start-supervisor.sh --openclaw |
 | Clawdbot (WhatsApp) | Monitors skills in real-time, quarantines low-trust | "Zero-trust bridge vs AutoGPT prompt injection" | ./start-supervisor.sh --clawbot |
 | Moltbot (PC-control) | Gates voice/PC commands via ASF-41/42 | "Production-grade isolation not in LangChain" | ./start-supervisor.sh --moltbot |
 
-## Executive Summary
+## Overview
 
-<<<<<<< HEAD
+Compares ASF (Agent Security Framework) against other security frameworks.
+
+## Comparison
+
 | Feature | ASF | LangChain | CrewAI | AutoGPT |
 |---------|-----|-----------|--------|---------|
 | Runtime protection | ✅ | ❌ | ❌ | ❌ |
@@ -29,20 +21,15 @@
 | Syscall monitoring | ✅ | ❌ | ❌ | ❌ |
 | Scrum protocol | ✅ | ❌ | ❌ | ❌ |
 | Supervisor pattern | ✅ | ❌ | ✅ | ❌ |
-=======
-ASF provides comprehensive security for autonomous AI agents. This white paper compares ASF against LangChain, CrewAI, AutoGPT and other frameworks.
->>>>>>> origin/main
+| Guardrail | ✅ | ❌ | ❌ | ❌ |
 
-## Comparison Matrix
+## Key Differentiators
 
-| Feature | ASF | LangChain | CrewAI | AutoGPT |
-|---------|-----|-----------|--------|---------|
-| Runtime Monitoring | ✅ | ❌ | ❌ | ❌ |
-| Trust Scoring | ✅ | ❌ | ❌ | ❌ |
-| Pre-Action Guardrail | ✅ | ❌ | ❌ | ❌ |
-| Syscall Tracing | ✅ | ❌ | ❌ | ❌ |
-| Human-in-Loop | ✅ | ⚠️ | ⚠️ | ❌ |
+- **ASF vs LangChain**: Production-grade isolation not in LangChain
+- **ASF vs CrewAI**: Full supervisor + guardrail beats CrewAI
+- **ASF vs AutoGPT**: Zero-trust bridge vs prompt injection
 
-## Key Findings
+## DoD
 
-ASF is the **only** framework with complete runtime defense + trust scoring + guardrails + supervisor pattern.
+- [ ] Complete comparison
+- [ ] Business value defined

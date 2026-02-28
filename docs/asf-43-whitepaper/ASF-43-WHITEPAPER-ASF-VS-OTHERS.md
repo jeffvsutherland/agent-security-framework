@@ -1,22 +1,18 @@
-# ASF-43: White Paper - ASF vs Other Security Frameworks
+# ASF-43: White Paper - ASF vs Others
 
 ## Open-Claw / Clawdbot / Moltbot Integration
 
-| Component | ASF-40 Supervisor Role | ASF-43 White Paper Highlight | One-command activation |
-|------------------------|-------------------------------------------------|--------------------------------------------------|-------------------------------------------------|
-| Open-Claw host | Oversees all containers (trust + syscall) | "ASF's supervisor + guardrail beats CrewAI" | ./start-supervisor.sh --openclaw |
-| Clawdbot (WhatsApp) | Monitors skills in real-time, quarantines low-trust | "Zero-trust bridge vs AutoGPT prompt injection" | ./start-supervisor.sh --clawbot |
-| Moltbot (PC-control) | Gates voice/PC commands via ASF-41/42 | "Production-grade isolation not in LangChain" | ./start-supervisor.sh --moltbot |
+| Component | ASF-43 White Paper Highlight |
+|-----------|---------------------------|
+| Open-Claw host | "ASF's supervisor + guardrail beats CrewAI" |
+| Clawdbot (WhatsApp) | "Zero-trust bridge vs AutoGPT prompt injection" |
+| Moltbot (PC-control) | "Production-grade isolation not in LangChain" |
 
-## Overview
+## Why ASF Beats Others
 
-ASF-43 documents why ASF beats other frameworks (LangChain, CrewAI, AutoGPT) for hardened multi-agent setups.
-
-## Comparison
-
-| Feature | ASF | LangChain | CrewAI | AutoGPT |
-|---------|-----|-----------|--------|----------|
-| Trust scoring | ✅ | ❌ | ❌ | ❌ |
-| Syscall monitoring | ✅ | ❌ | ❌ | ❌ |
-| Pre-action guardrail | ✅ | ❌ | ❌ | ❌ |
-| Real-time quarantine | ✅ | ❌ | ❌ | ❌ |
+| Framework | Trust | Syscall | Guardrails | Supervisor |
+|-----------|-------|---------|-----------|------------|
+| ASF (ours) | ✅ | ✅ | ✅ | ✅ |
+| LangChain | ❌ | ❌ | ❌ | ❌ |
+| CrewAI | ❌ | ❌ | ❌ | ❌ |
+| AutoGPT | ❌ | ❌ | ❌ | ❌ |

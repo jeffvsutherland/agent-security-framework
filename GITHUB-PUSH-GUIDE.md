@@ -1,329 +1,308 @@
-# GitHub Push Guide for Agents
+# GitHub Push Guide for ASF Agents
 
 **Repository:** https://github.com/jeffvsutherland/agent-security-framework
-**Date:** February 22, 2026
-**For:** All ASF Agents
+**Updated:** February 27, 2026
+**For:** All ASF Agents (Raven, AgentFriday, AgentSaturday, Research, Social, Deploy, Sales)
 
 ---
 
-## Current Status
+## ⚠️ CRITICAL RULES — READ FIRST
 
-- **Local repository:** `~/clawd` (agent-security-framework)
-- **Remote:** `origin` → https://github.com/jeffvsutherland/agent-security-framework.git
-- **Current branch:** `main`
-- **Status:** 24 commits ahead of origin/main
-- **Authentication:** Required for push
-
----
-
-## Prerequisites
-
-You need a GitHub Personal Access Token (PAT) with `repo` scope to push to the repository.
-
-### Getting a GitHub Token
-
-**If Jeff hasn't provided a token yet, ask him to:**
-
-1. Go to https://github.com/settings/tokens
-2. Click "Generate new token (classic)"
-3. Name it: `ASF Agent Access` or similar
-4. Select scopes:
-   - ✅ `repo` (Full control of private repositories)
-5. Click "Generate token"
-6. Copy the token (starts with `ghp_...`)
-7. Store it securely
+1. **NEVER commit API keys, tokens, or passwords.** GitHub Push Protection WILL block it.
+2. **NEVER `git add .` without checking `.gitignore` first.** Embedded repos and secrets will break the push.
+3. **ALWAYS `git pull --rebase origin main` before pushing.** Other agents may have pushed ahead of you.
+4. **ALWAYS put story deliverables in `docs/<story-id>/`** — e.g., `docs/asf-40-multi-agent-supervisor/`
 
 ---
 
-## How to Push to GitHub
+## Repository Layout
 
-### Step 1: Configure Git Remote with Token
+```
+~/clawd/                          ← Main workspace (THIS is the git repo)
+├── .gitignore                    ← Controls what gets pushed (RESPECT THIS)
+├── docs/                         ← Story deliverables go HERE
+│   ├── asf-40-multi-agent-supervisor/
+│   ├── asf-43-whitepaper/
+│   ├── asf-41-security-auditor-guardrail/
+│   └── ...
+├── skills/                       ← Agent skills (sprint-rollover, security-audit)
+├── reports/                      ← Daily build logs, security logs
+├── memory/                       ← Agent memory files
+├── shared-messages/              ← Inter-agent messages
+├── workflows/                    ← Automation workflows
+├── agents/                       ← EXCLUDED (has own git repos)
+├── agent-security-framework/     ← EXCLUDED (nested clone)
+├── workspace-mc-*/               ← EXCLUDED (OpenClaw sessions)
+└── config-backups/               ← EXCLUDED (contains secrets)
+```
 
-**⚠️ IMPORTANT:** Replace `<GITHUB_TOKEN>` with the actual token.
+---
+
+## How to Push a Story to GitHub
+
+### Step 1: Create your deliverables in the correct directory
 
 ```bash
 cd ~/clawd
 
-# Set the remote URL with embedded token
-git remote set-url origin https://<GITHUB_TOKEN>@github.com/jeffvsutherland/agent-security-framework.git
+# Create the story directory under docs/
+mkdir -p docs/asf-XX-your-story-name/
+
+# Add your files
+cp your-deliverable.md docs/asf-XX-your-story-name/
+# OR create directly:
+cat > docs/asf-XX-your-story-name/README.md << 'EOF'
+# ASF-XX: Your Story Title
+... your content ...
+EOF
 ```
 
-### Step 2: Push Commits
+### Step 2: Check for secrets before staging
 
 ```bash
-# Push to main branch
+# Scan your files for API keys or tokens BEFORE adding
+grep -rE "(sk-ant-api|ghp_|AIza|apiKey|password|secret)" docs/asf-XX-your-story-name/ && echo "⚠️ SECRETS FOUND - DO NOT COMMIT" || echo "✅ Clean - safe to add"
+```
+
+### Step 3: Stage ONLY your story files
+
+```bash
+# Stage ONLY the specific files you changed
+git add docs/asf-XX-your-story-name/
+
+# DO NOT run: git add .
+# DO NOT run: git add -A
+# These will pick up embedded repos and secrets
+```
+
+### Step 4: Commit with a proper message
+
+```bash
+git commit -m "ASF-XX: Brief description of deliverable
+
+- What was added/changed
+- Key files included
+
+Story: ASF-XX"
+```
+
+### Step 5: Pull before push (other agents may have pushed)
+
+```bash
+git pull --rebase origin main
+```
+
+### Step 6: Push
+
+```bash
 git push origin main
 ```
 
-### Step 3: Verify
+### Step 7: Verify
 
 ```bash
-# Check that you're now up to date
-git status
-# Should say: "Your branch is up to date with 'origin/main'"
-```
-
----
-
-## Complete Command Sequence
-
-```bash
-cd ~/clawd
-
-# Configure authentication
-git remote set-url origin https://<GITHUB_TOKEN>@github.com/jeffvsutherland/agent-security-framework.git
-
-# Push commits
-git push origin main
-
-# Verify
-git log origin/main..HEAD
-# Should show no commits (empty output means everything is pushed)
-```
-
----
-
-## Before Pushing: Review What You're Pushing
-
-```bash
-cd ~/clawd
-
-# See the 24 commits you're about to push
+# Confirm push succeeded
 git log origin/main..HEAD --oneline
+# Should be empty (no unpushed commits)
 
-# See what files were changed
-git diff origin/main..HEAD --name-only
-
-# See detailed changes
-git diff origin/main..HEAD
+# Verify on GitHub
+echo "Check: https://github.com/jeffvsutherland/agent-security-framework/tree/main/docs/asf-XX-your-story-name/"
 ```
 
 ---
 
-## Story-Specific Pushes
-
-When working on a story that requires pushing specific files to GitHub:
-
-### Example: ASF-4 (Deployment Guide)
+## Complete Copy-Paste Example (ASF-44)
 
 ```bash
 cd ~/clawd
 
-# Check if the deployment-guide directory exists and has content
-ls -la deployment-guide/
+# 1. Create deliverables
+mkdir -p docs/asf-44-my-feature/
+cat > docs/asf-44-my-feature/ASF-44-DELIVERABLE.md << 'EOF'
+# ASF-44: Feature Name
+Content here...
+EOF
 
-# If it doesn't exist, create it and add files
-mkdir -p deployment-guide
-echo "# ASF Deployment Guide" > deployment-guide/README.md
-# ... add your deployment files
+# 2. Security check
+grep -rE "(sk-ant-api|ghp_|AIza|apiKey)" docs/asf-44-my-feature/ || echo "✅ Clean"
 
-# Stage the files
-git add deployment-guide/
+# 3. Stage
+git add docs/asf-44-my-feature/
+
+# 4. Commit
+git commit -m "ASF-44: Add feature deliverable"
+
+# 5. Pull (get other agents' changes)
+git pull --rebase origin main
+
+# 6. Push
+git push origin main
+
+# 7. Verify
+git status
+```
+
+---
+
+## Pushing Non-Story Files
+
+For scripts, skills, reports, and other workspace files:
+
+```bash
+cd ~/clawd
+
+# Stage specific files
+git add skills/my-skill/skill.md
+git add reports/DAILY_BUILD_LOG.md
+git add my-script.sh
 
 # Commit
-git commit -m "Add ASF-4 deployment guide
+git commit -m "Add/update skill and report files"
 
-- Comprehensive deployment documentation
-- Docker setup instructions
-- Configuration examples
-
-Story: ASF-4
-"
-
-# Push
-git push origin main
-```
-
-### Example: ASF-2 (Docker Templates)
-
-```bash
-cd ~/clawd
-
-# Check if docker-templates exists
-ls -la docker-templates/
-
-# If needed, create and populate
-mkdir -p docker-templates
-# ... add template files
-
-git add docker-templates/
-git commit -m "Add ASF-2 docker templates
-
-- Base agent template
-- Security scanner template
-- Deployment configs
-
-Story: ASF-2
-"
-
+# Pull + Push
+git pull --rebase origin main
 git push origin main
 ```
 
 ---
 
-## GitHub URLs for Stories
+## What NOT to Push (Enforced by .gitignore)
 
-After pushing, verify these URLs are accessible:
+These are automatically excluded. Do not try to override:
 
-| Story | GitHub URL |
-|-------|-----------|
-| ASF-24 | https://github.com/jeffvsutherland/agent-security-framework/tree/main/spam-reporting-infrastructure |
-| ASF-18 | https://github.com/jeffvsutherland/agent-security-framework/blob/main/ASF-SCRUM-PROTOCOL.md |
-| ASF-16 | https://github.com/jeffvsutherland/agent-security-framework/tree/main/ASF-14-COMMUNITY-DEPLOYMENT.md |
-| ASF-5  | https://github.com/jeffvsutherland/agent-security-framework/tree/main/security-tools |
-| ASF-4  | https://github.com/jeffvsutherland/agent-security-framework/tree/main/deployment-guide |
-| ASF-3  | https://github.com/jeffvsutherland/agent-security-framework/blob/main/ASF-3-NODE-WRAPPER-GITHUB.md |
-| ASF-2  | https://github.com/jeffvsutherland/agent-security-framework/tree/main/docker-templates |
+| Excluded Path | Reason |
+|--------------|--------|
+| `agents/deploy/`, `agents/product-owner/`, etc. | Embedded git repos — manage separately |
+| `agent-security-framework/` | Nested clone of this repo |
+| `asf-discord-bot/` | Has its own git repo |
+| `asf-security-scanner/` | Has its own git repo |
+| `openclaw-mission-control/` | Has its own git repo |
+| `workspace-mc-*/` | OpenClaw session data |
+| `config-backups/` | Contains API keys in backups |
+| `ASF-15-docker/openclaw-state/` | Session logs with embedded secrets |
+| `.env`, `.env.local`, `.env.production` | Environment secrets |
+| `*-credentials.json`, `*.key` | Credential files |
+| `.mc-token`, `auth-profiles.json` | Auth tokens |
+| `node_modules/`, `package-lock.json` | Dependencies |
 
 ---
 
 ## Troubleshooting
 
-### Error: "Authentication failed"
+### Error: "Push cannot contain secrets"
 
-**Problem:** Token is incorrect or expired
-**Solution:**
+GitHub Push Protection detected an API key or token in your commit.
+
+**Fix:**
 ```bash
-# Re-configure with correct token
-git remote set-url origin https://<CORRECT_TOKEN>@github.com/jeffvsutherland/agent-security-framework.git
-```
+# Undo the commit (keeps files)
+git reset HEAD~1
 
-### Error: "Permission denied"
+# Find the secret
+grep -rn "sk-ant-api\|ghp_\|AIza" <your-files>
 
-**Problem:** Token doesn't have `repo` scope
-**Solution:** Ask Jeff to create a new token with `repo` scope
-
-### Error: "Updates were rejected"
-
-**Problem:** Remote has changes you don't have locally
-**Solution:**
-```bash
-# Pull remote changes first
-git pull origin main --rebase
-
-# Then push
+# Remove or redact the secret, then re-commit
+git add <clean-files>
+git commit -m "your message"
 git push origin main
 ```
 
-### Want to See Remote URL (without exposing token)
+### Error: "Updates were rejected (fetch first)"
 
+Another agent pushed before you.
+
+**Fix:**
 ```bash
-# Shows the URL with token masked
-git remote -v
-```
-
----
-
-## Security Notes
-
-⚠️ **NEVER commit the GitHub token to the repository**
-⚠️ **NEVER share the token in Telegram/public channels**
-⚠️ **Store tokens in secure environment variables or credential managers**
-
-### Better Alternative: Use Environment Variable
-
-```bash
-# Store token in environment (add to ~/.bashrc or ~/.zshrc)
-export GITHUB_TOKEN="ghp_your_token_here"
-
-# Use the variable in git commands
-git remote set-url origin https://${GITHUB_TOKEN}@github.com/jeffvsutherland/agent-security-framework.git
-```
-
----
-
-## Creating Story Documentation on GitHub
-
-When a story requires documentation on GitHub:
-
-### 1. Create Local Files
-
-```bash
-cd ~/clawd
-mkdir -p <story-directory>
-cd <story-directory>
-
-# Create README.md
-cat > README.md <<'EOF'
-# Story Title
-
-## Overview
-Description of what this story delivers
-
-## Files
-- `file1.md` - Description
-- `file2.py` - Description
-
-## Usage
-How to use these files
-
-## Related Stories
-- ASF-X: Related story
-
-EOF
-```
-
-### 2. Add and Commit
-
-```bash
-git add .
-git commit -m "Add documentation for ASF-X: Story Title
-
-Closes ASF-X
-"
-```
-
-### 3. Push
-
-```bash
+git pull --rebase origin main
 git push origin main
 ```
 
-### 4. Get GitHub URL
+### Error: "adding embedded git repository"
 
-The URL will be:
+You ran `git add .` and it picked up a directory with its own `.git/`.
+
+**Fix:**
+```bash
+# Remove it from staging
+git rm --cached -r <embedded-repo-dir>
+
+# Add ONLY your specific files instead
+git add docs/asf-XX-your-story/
 ```
-https://github.com/jeffvsutherland/agent-security-framework/tree/main/<story-directory>
+
+### Error: "does not have a commit checked out"
+
+An OpenClaw workspace directory has an empty `.git`.
+
+**Fix:**
+```bash
+# Never add workspace-mc-* or workspace-gateway-* directories
+# They are already in .gitignore
+git reset HEAD
+git add <only-your-specific-files>
 ```
 
----
-
-## Quick Reference Commands
+### Merge conflicts after `git pull --rebase`
 
 ```bash
-# Check what you're about to push
-git log origin/main..HEAD --oneline
-
-# Push to GitHub
-git push origin main
-
-# Check status
+# See which files conflict
 git status
 
-# See remote configuration
-git remote -v
-
-# Pull latest from GitHub
-git pull origin main
-
-# Create and push a new branch
-git checkout -b feature/story-name
-git push origin feature/story-name
+# Edit the conflicting files, resolve the <<<< ==== >>>> markers
+# Then:
+git add <resolved-files>
+git rebase --continue
+git push origin main
 ```
 
 ---
 
-## For Agents Working on Review Stories
+## GitHub URLs for Verified Story Deliverables
 
-If your story (ASF-2, ASF-3, ASF-4, etc.) needs its code on GitHub:
-
-1. **Ensure files exist locally** in the correct directory
-2. **Add README.md** to the directory explaining what it contains
-3. **Commit with clear message** referencing the story number
-4. **Push to GitHub**
-5. **Verify URL is accessible** by checking the GitHub link
-6. **Update Mission Control task** with the GitHub URL
+| Story | GitHub URL |
+|-------|-----------|
+| ASF-40 | https://github.com/jeffvsutherland/agent-security-framework/tree/main/docs/asf-40-multi-agent-supervisor |
+| ASF-41 | https://github.com/jeffvsutherland/agent-security-framework/tree/main/docs/asf-41-security-auditor-guardrail |
+| ASF-42 | https://github.com/jeffvsutherland/agent-security-framework/tree/main/docs/asf-42-docker-syscall-monitoring |
+| ASF-43 | https://github.com/jeffvsutherland/agent-security-framework/tree/main/docs/asf-43-whitepaper |
+| ASF-38 | https://github.com/jeffvsutherland/agent-security-framework/tree/main/docs/asf-38-agent-trust-framework |
+| ASF-26 | https://github.com/jeffvsutherland/agent-security-framework/tree/main/docs/asf-26-website |
+| ASF-22 | https://github.com/jeffvsutherland/agent-security-framework/tree/main/docs/asf-22-spam-monitoring |
+| ASF-20 | https://github.com/jeffvsutherland/agent-security-framework/tree/main/docs/asf-20-enterprise-integration |
+| ASF-5  | https://github.com/jeffvsutherland/agent-security-framework/tree/main/docs/asf-5-yara-rules |
 
 ---
 
-**Once Jeff provides the GitHub token, any agent can push using the commands above.**
+## Authentication
+
+The remote URL already has the GitHub PAT embedded:
+```
+origin  https://ghp_...@github.com/jeffvsutherland/agent-security-framework.git
+```
+
+If authentication fails:
+```bash
+# Check current remote
+git remote -v
+
+# If token is expired, ask Jeff for a new one and update:
+git remote set-url origin https://<NEW_TOKEN>@github.com/jeffvsutherland/agent-security-framework.git
+```
+
+---
+
+## Quick Reference Card
+
+```
+┌──────────────────────────────────────────────────────┐
+│  AGENT GITHUB PUSH CHECKLIST                         │
+│                                                      │
+│  □ Files in docs/asf-XX-story-name/                  │
+│  □ No secrets in files (grep check)                  │
+│  □ git add docs/asf-XX-story-name/  (NOT git add .) │
+│  □ git commit -m "ASF-XX: description"               │
+│  □ git pull --rebase origin main                     │
+│  □ git push origin main                              │
+│  □ git status shows "up to date"                     │
+└──────────────────────────────────────────────────────┘
+```
