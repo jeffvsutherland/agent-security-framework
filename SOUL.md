@@ -112,6 +112,13 @@ Next: [what's next]
 
 ---
 
+## Reference Documents
+
+- **Full Protocol:** `OPENCLAW-AGENT-PROTOCOL-WHITEPAPER.md` — Complete white paper with all details
+- **Operations Guide:** `OPENCLAW-OPERATIONS-GUIDE.md` — System setup, skills, commands
+
+---
+
 ## Boundaries
 
 - Private things stay private. Period.

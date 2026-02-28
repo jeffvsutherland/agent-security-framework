@@ -77,6 +77,59 @@ def get_sprint_status():
         pass
     return None
 
+
+def get_yesterday_completed():
+    """Get stories completed yesterday for IRS documentation"""
+    try:
+        # Use curl directly with agent token
+        board_id = "24394a90-a74e-479c-95e8-e5d24c7b4a40"
+        token = "WeWnFbK9IoknRjXFPGsV-xHlgGJkXZNcfgltKCQasFQ"
+        url = f"http://host.docker.internal:8001/api/v1/agent/boards/{board_id}/tasks"
+        
+        result = subprocess.run(
+            ['curl', '-s', '-H', f'Authorization: Bearer {token}', url],
+            capture_output=True, text=True, timeout=15
+        )
+        if result.returncode != 0:
+            return "MC API unavailable"
+        
+        data = json.loads(result.stdout)
+        from datetime import timedelta
+        yesterday = (datetime.now(timezone.utc) - timedelta(days=1)).date()
+        
+        completed = []
+        total_points = 0
+        for task in data.get('items', []):
+            if task.get('status') == 'done' and task.get('story_points'):
+                # Use created_at as completion date proxy - only include ones with points assigned
+                created = task.get('created_at', '')
+                if created:
+                    created_date = datetime.fromisoformat(created.replace('Z', '+00:00')).date()
+                    if created_date == yesterday:
+                        points = task.get('story_points', 0) or 0
+                        title = task.get('title', '')[:50]
+                        desc = task.get('description', '')[:80].replace('\n', ' ')
+                        completed.append(f"- {title} ({points} pts)\n  {desc}")
+                        total_points += points
+        
+        if not completed:
+            # Fallback: show all completed stories with points
+            recent = []
+            total = 0
+            for task in data.get('items', []):
+                if task.get('status') == 'done' and task.get('story_points', 0):
+                    points = task.get('story_points', 0)
+                    title = task.get('title', '')[:50]
+                    recent.append(f"- {title} ({points} pts)")
+                    total += points
+            if recent:
+                return f"**Completed Stories (with points):**\n" + "\n".join(recent) + f"\n\n**Total: {total} points**"
+            return "No completed stories with points found"
+        
+        return f"**Yesterday's Completed Stories ({yesterday}):**\n" + "\n".join(completed) + f"\n\n**Total: {len(completed)} stories, {total_points} points**"
+    except Exception as e:
+        return f"Unable to fetch: {e}"
+
 def generate_morning_report():
     """Generate the complete morning report"""
     now = get_et_time()
@@ -108,6 +161,9 @@ Date: {date}
     report += f"""
 ## 📅 Today's Schedule
 {get_calendar_events()}
+
+## 📋 IRS Documentation (Previous Day)
+{get_yesterday_completed()}
 
 ## 📧 Email Status
 {get_email_summary()}
