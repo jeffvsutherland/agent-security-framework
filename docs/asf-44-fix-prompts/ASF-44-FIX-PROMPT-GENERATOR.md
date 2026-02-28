@@ -50,7 +50,8 @@ asf-openclaw-scanner.py --verify-fixes
 - [x] Reads CIO report
 - [x] Generates prompts for each failing component
 - [x] Includes verification steps
-- [ ] No secrets leaked in generated FIX-PROMPTS.md
-- [ ] Prompts tested on .openclaw (dry-run first)
-- [ ] Auto-apply gated by ASF-40 supervisor (trust ≥ 95)
-- [ ] Verification commands succeed and update AGENT-COMMUNICATION_LOG.md
+- [x] No secrets leaked in generated FIX-PROMPTS.md
+- [x] Prompts tested on .openclaw (dry-run first)
+- [x] Auto-apply gated by ASF-40 supervisor (trust ≥ 95)
+- [x] --dry-run and --supervisor-gate flags supported
+- [x] Verification commands succeed and update AGENT-COMMUNICATION-LOG.md
