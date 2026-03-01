@@ -1,4 +1,4 @@
-# ASF-47: Human-Readable Security Report
+# ASF-47 Human-Readable Report
 
 ## Open-Claw / Clawdbot / Moltbot Integration
 
@@ -8,24 +8,19 @@
 | Clawdbot (WhatsApp) | Skill trust + bridge activity report | ./full-asf-40-44-secure.sh --clawbot-report | ASF-41 / ASF-5 |
 | Moltbot (PC-control) | Voice/PC command + syscall audit report | ./full-asf-40-44-secure.sh --moltbot-report | ASF-42 / ASF-40 |
 
----
-
 ## Overview
 
-ASF-47 generates beautiful, human-readable security reports from ASF scans. Perfect for CIOs, Discord summaries, and monitoring Clawdbot-Moltbot-Open-Claw on your New Jersey box.
-
-## Features
-
-- Executive summary for stakeholders
-- Security score with breakdown
-- Actionable recommendations
-- Discord/Moltbot compatible formatting
-- Compliance status (SOC2, HIPAA)
+ASF-47 generates human-readable security reports from ASF scans. These reports are perfect for:
+- CIO summaries and audit trails
+- Discord/Moltbot monitoring channels
+- Daily security posture reviews
+- Compliance documentation
 
 ## Usage
 
+Generate a full security report:
+
 ```bash
-# Generate human-readable report for Clawdbot-Moltbot-Open-Claw
 cd ~/agent-security-framework
 ./full-asf-40-44-secure.sh
 python3 docs/asf-47-human-readable-report/generate-report.py --full --output HUMAN-SECURITY-REPORT.md
@@ -33,22 +28,11 @@ python3 docs/asf-47-human-readable-report/generate-report.py --full --output HUM
 
 ## Report Sections
 
-1. Executive Summary
-2. Security Score (0-100)
-3. Component Status
-4. Threats Detected
-5. Recommendations
-6. Compliance Status
+- Executive Summary
+- Security Score
+- Threat Detection
+- Trust Framework Status
+- Recommendations
 
 ---
-
-## Acceptance Criteria
-
-- [x] Integration table added
-- [x] Report generator script created
-- [x] Discord-compatible output
-- [x] CIO-friendly formatting
-
----
-
-*ASF-47 - Human-Readable Report Generator*
+*Agent Security Framework - Human-Readable Security Reports*
