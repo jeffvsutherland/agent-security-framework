@@ -68,3 +68,10 @@ ASF-15-docker/openclaw-state/
 
 # Files containing embedded secrets
 shared-messages/GITHUB-PUSH-INSTRUCTIONS.md
+-e 
+# Mission Control
+mc-api.sh
+workspace-*/mc-api.sh
+mc-auth-discover.py
+mc-fix-all.py
+mc-proxy-*.py
