@@ -126,3 +126,19 @@ For enterprise inquiries, contact the ASF team.
 ## Production-Ready Stack
 
 Run: ./full-asf-40-44-secure.sh
+
+---
+
+## Production-Ready Stack
+
+For full production security on your deployment (Clawdbot-Moltbot-Open-Claw), run the unified activation script after cloning the repo:
+
+```bash
+./full-asf-40-44-secure.sh
+```
+
+This deploys the full secured, supervised, and self-healing security stack.
+
+---
+
+*Agent Security Framework - Protecting AI Agents*
