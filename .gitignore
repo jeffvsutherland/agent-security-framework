@@ -68,10 +68,23 @@ ASF-15-docker/openclaw-state/
 
 # Files containing embedded secrets
 shared-messages/GITHUB-PUSH-INSTRUCTIONS.md
--e 
-# Mission Control
+# Mission Control scripts with embedded tokens (SECURITY FIX 2026-03-01)
 mc-api.sh
+mc-*.py
+mc-*.txt
+.mc-api-backup
+restore-mc-api.sh
 workspace-*/mc-api.sh
-mc-auth-discover.py
-mc-fix-all.py
-mc-proxy-*.py
+# MoltStack/Moltbook credential files
+moltstack-credentials.json
+moltstack-*.md
+fix-moltbook-credentials.py
+moltbook-auth.py
+moltbook-setup.py
+moltbook-proxy-auth.py
+check-moltbook-hot.py
+moltbook-fix-output.txt
+# Credential blocking scripts (contain patterns)
+bash/block_credentials.sh
+nodejs/block_credentials.js
+python/block_credentials.py
