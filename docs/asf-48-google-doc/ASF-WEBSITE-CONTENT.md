@@ -1,5 +1,13 @@
 # ASF Website Content - Agent Security Framework
 
+## Open-Claw / Clawdbot / Moltbot Integration
+
+| Component | Role on ASF Website | One-command activation | Ties to Core ASF |
+|------------------------|--------------------------------------------------|-------------------------------------------------|------------------|
+| Open-Claw host | Full isolation showcase | ./full-asf-40-44-secure.sh --openclaw | ASF-35 / ASF-38 |
+| Clawdbot (WhatsApp) | Skill monitoring + localhost bridge demo | ./full-asf-40-44-secure.sh --clawbot | ASF-41 / ASF-5 |
+| Moltbot (PC-control) | Voice/PC command gating demo | ./full-asf-40-44-secure.sh --moltbot | ASF-42 / ASF-40 |
+
 ## Overview
 
 The Agent Security Framework (ASF) provides comprehensive security for autonomous AI agents running on OpenClaw, Clawdbot, and Moltbot platforms.
@@ -98,6 +106,18 @@ cd agent-security-framework
 # Generate security report
 python3 asf-openclaw-scanner.py --report
 ```
+
+## Production-Ready Stack
+
+For full production security on your New Jersey box (Clawdbot-Moltbot-Open-Claw), run the unified activation script after cloning the repo:
+
+```bash
+git pull origin main
+cd ~/agent-security-framework
+./full-asf-40-44-secure.sh
+```
+
+This deploys the full secured, supervised stack that the ASF website promotes.
 
 ## Documentation
 
