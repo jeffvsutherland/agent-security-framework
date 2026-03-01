@@ -1,3 +1,0 @@
- Container openclaw-mission-control-backend-1 Restarting 
- Container openclaw-mission-control-backend-1 Started 
-exit: 0

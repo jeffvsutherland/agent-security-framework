@@ -59,6 +59,30 @@ def get_email_summary():
         pass
     return "Email check unavailable"
 
+def get_moltbook_trending():
+    """Get Moltbook trending status for ASF"""
+    try:
+        import os
+        memory_dir = '/workspace/agents/product-owner/memory'
+        
+        trending_info = []
+        if os.path.exists(memory_dir):
+            for f in sorted(os.listdir(memory_dir))[-3:]:
+                if f.endswith('.md'):
+                    with open(os.path.join(memory_dir, f), 'r') as file:
+                        content = file.read()
+                        for line in content.split('\n'):
+                            if 'moltbook' in line.lower() or 'upvot' in line.lower():
+                                if len(line) > 20 and len(line) < 150:
+                                    trending_info.append(line.strip())
+        
+        if trending_info:
+            return "📱 **Moltbook Trending:**\n" + "\n".join([f"• {t[:80]}" for t in trending_info[:3]])
+        
+        return "📱 **Moltbook:** No trending data - check manually"
+    except:
+        return "📱 **Moltbook:** Check manually at moltbook.com"
+
 def get_sprint_status():
     """Get current sprint information"""
     # Read from heartbeat state
@@ -67,8 +91,8 @@ def get_sprint_status():
             state = json.load(f)
             sprint = state.get('sprintStatus', {}).get('asf_sprint_2', {})
             return {
-                'name': 'ASF Sprint 2',
-                'day': 'Day 4 of 7',
+                'name': 'ASF Daily Sprint',
+                'day': 'Daily Sprint - ' + datetime.now().strftime('%Y-%m-%d'),
                 'completed': len(sprint.get('completed', [])),
                 'pending': sprint.get('pending', []),
                 'velocity': state.get('sprintStatus', {}).get('asf_sprint_1', {}).get('velocity', 21)
@@ -105,25 +129,49 @@ def get_yesterday_completed():
                 created = task.get('created_at', '')
                 if created:
                     created_date = datetime.fromisoformat(created.replace('Z', '+00:00')).date()
+                    # Only show previous day for IRS
                     if created_date == yesterday:
                         points = task.get('story_points', 0) or 0
-                        title = task.get('title', '')[:50]
-                        desc = task.get('description', '')[:80].replace('\n', ' ')
-                        completed.append(f"- {title} ({points} pts)\n  {desc}")
+                        title = task.get('title', '')[:55]
+                        # Get more description for IRS
+                        desc = task.get('description', '')[:120].replace('\n', ' ').strip()
+                        # Extract just the ID part, not the full title
+                        if '[' in title:
+                            asf_id = title.split('[')[1].split(']')[0]
+                        else:
+                            asf_id = 'ASF'
+                        completed.append(f"• {asf_id} ({points} pts)\n   {title}\n   Deliverable: {desc}")
                         total_points += points
         
         if not completed:
-            # Fallback: show all completed stories with points
+            # Show all completed stories with full details for IRS
             recent = []
             total = 0
             for task in data.get('items', []):
                 if task.get('status') == 'done' and task.get('story_points', 0):
                     points = task.get('story_points', 0)
-                    title = task.get('title', '')[:50]
-                    recent.append(f"- {title} ({points} pts)")
+                    title = task.get('title', '')[:55]
+                    created = task.get('created_at', '')[:10]
+                    desc = task.get('description', '')[:150].replace('\n', ' ').strip()
+                    
+                    # Extract ASF ID - avoid duplicates
+                    asf_id = 'ASF'
+                    if '[' in title:
+                        try:
+                            part = title.split('[')[1].split(']')[0]
+                            # Avoid duplicating like "[ASF-44] [ASF-44]"
+                            if 'ASF' in part and 'ASF' not in asf_id:
+                                asf_id = part
+                            elif 'ASF' not in part:
+                                asf_id = part
+                        except:
+                            pass
+                    
+                    recent.append(f"**{asf_id}** ({points} pts) - {created}\n   {title}\n   Deliverable: {desc}")
                     total += points
+            
             if recent:
-                return f"**Completed Stories (with points):**\n" + "\n".join(recent) + f"\n\n**Total: {total} points**"
+                return "**IRS: Completed Stories with Details:**\n\n" + "\n\n".join(recent) + f"\n\n**TOTAL POINTS: {total}**"
             return "No completed stories with points found"
         
         return f"**Yesterday's Completed Stories ({yesterday}):**\n" + "\n".join(completed) + f"\n\n**Total: {len(completed)} stories, {total_points} points**"
@@ -155,7 +203,7 @@ Date: {date}
 - Pending: {', '.join(sprint['pending']) if sprint['pending'] else 'None'}
 - Velocity: {sprint['velocity']} points (Sprint 1)
 
-**Today's #1 Priority:** Complete Discord bot deployment and ensure all agents are working on assigned stories
+**Today's #1 Priority:** Complete website deployment stories (ASF-46, ASF-47, ASF-48)
 """
     
     report += f"""
@@ -168,10 +216,12 @@ Date: {date}
 ## 📧 Email Status
 {get_email_summary()}
 
+## 📱 Moltbook Trending
+{get_moltbook_trending()}
+
 ## ⚠️ Key Alerts
-- ASF Sprint 2: Day 4 of 7 - Need to accelerate delivery
+- Daily Sprint: Need to complete stories for website deployment
 - OpenClaw vulnerability disclosure still pending
-- Moltbook ASF comment still at 0 upvotes after 13+ hours
 
 ## 🎯 Top 3 Priorities for Today
 1. Spawn all ASF agents and assign Jira stories

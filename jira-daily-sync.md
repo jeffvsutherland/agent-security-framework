@@ -17,12 +17,12 @@
    python3 /workspace/agent-security-framework/check-asf-status.py
    ```
    > **Note:** This script fetches LIVE data from Mission Control API.
-   > On host it connects to `localhost:8001`, in Docker to `host.docker.internal:8001`.
+   > On host: `localhost:8001` / In Docker: `host.docker.internal:8001`.
    > No Jira token needed — uses Mission Control agent token.
 
 2. **Compare with Yesterday's Memory:**
    - Check /workspace/memory/YYYY-MM-DD.md for completed work
-   - Identify stories marked complete but still "To Do" on the board
+   - Identify stories marked complete but still showing on the board
 
 3. **Update Story Status:**
    - Use Mission Control UI or mc-api to move stories to correct columns
