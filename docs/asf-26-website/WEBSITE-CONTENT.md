@@ -4,7 +4,11 @@
 
 ### Hero Section
 
-# Agent Security Framework (ASF)
+# 🔐 Agent Security Framework (ASF) for OpenClaw
+
+![OpenClaw](https://openclaw.ai/logo.png)
+
+*Built specifically for OpenClaw agent deployments — Clawdbot, Moltbot, and host isolation*
 
 **Protect Your AI Agents from Threats**
 
@@ -16,7 +20,7 @@ The comprehensive security solution for autonomous AI agent systems.
 
 ### What is ASF?
 
-The Agent Security Framework (ASF) is a comprehensive security solution designed specifically for autonomous AI agents. ASF provides:
+The Agent Security Framework (ASF) is a comprehensive security solution designed specifically for **OpenClaw** autonomous AI agents. ASF provides:
 
 - **Real-time Threat Detection** - Identify malicious skills and unauthorized agents
 - **Credential Theft Prevention** - Protect API keys and sensitive data
@@ -68,6 +72,34 @@ The Agent Security Framework (ASF) is a comprehensive security solution designed
 ### Security Score: 90/100
 
 Our latest scan shows OpenClaw with a security score of 90/100, with zero dangerous skills detected.
+
+---
+
+### Securing Clawdbot-Moltbot-Open-Claw
+
+ASF is purpose-built to secure the complete OpenClaw stack:
+
+- **Clawdbot (WhatsApp)** — Skill monitoring, localhost bridge protection
+- **Moltbot (PC Control)** — Voice/PC command gating and syscall monitoring  
+- **Open-Claw (Host Isolation)** — Container security and trust framework
+
+#### Zero-Hardcoded-Secrets Pattern
+All credentials are environment variables only. ASF扫描ensures no API keys, tokens, or passwords are ever hardcoded.
+
+[Secure Your OpenClaw Deployment →](https://github.com/jeffvsutherland/agent-security-framework)
+
+---
+
+### Securing Your OpenClaw Deployment
+
+ASF is purpose-built for OpenClaw installations. Here's how we protect your agents:
+
+- **Zero Hardcoded Secrets** - All credentials via environment variables only
+- **Agent Isolation** - Docker-based sandboxing per agent
+- **Runtime Monitoring** - Syscall tracing and prompt **Auto injection detection
+--Remediation** - Automatic security fixes when threats detected
+
+**[Deploy Secure OpenClaw →](https://github.com/jeffvsutherland/agent-security-framework)**
 
 ---
 
