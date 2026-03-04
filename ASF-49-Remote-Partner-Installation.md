@@ -1,13 +1,50 @@
 # ASF-49: Remote Partner Installation Guide
 
 **Created:** 2026-03-04
-**Status:** Review
+**Status:** Ready for Review
 
-## Overview
+## 🎯 Sprint Goal
+**"Partner Clawdbot instance deployed and verified secure within 4 hours of SSH access, with zero credential exposure."**
 
-This guide provides step-by-step instructions for deploying Clawdbot, OpenClaw, and ASF on a remote partner machine via SSH.
+---
 
-**Security Note:** This guide uses environment variables only. Never include real credentials.
+## 🎯 Objective
+Deploy Clawdbot, OpenClaw, and ASF on remote partner machine via SSH.
+
+## ✅ SECURITY MANDATE (CRITICAL)
+> **NEVER commit credentials. Use GitHub Secrets + temporary tokens only.**
+
+- ❌ NO: `ssh user@host` with password in code
+- ❌ NO: `export API_KEY="sk-xxx"` in scripts
+- ❌ NO: `git commit` with `.env` files
+- ✅ YES: GitHub Secrets + `os.getenv()` + temporary tokens
+- ✅ YES: `.env.example` template (no real values)
+- ✅ YES: 1-time SSH keys with expiration
+
+## ✅ INVEST Criteria
+- **Independent:** Can run standalone
+- **Negotiable:** Adapts to partner environment
+- **Valuable:** Enables partner deployment
+- **Estimable:** ~4 hours
+- **Small:** Single deployment package
+- **Testable:** Verify all services running
+
+## ✅ Definition of Done (DoD) Checklist
+- [ ] SSH key-based auth (no passwords)
+- [ ] Docker installed and verified
+- [ ] OpenClaw deployed
+- [ ] ASF security scan passed
+- [ ] All services running
+- [ ] Zero credentials in logs
+- [ ] Partner verification received
+
+## ✅ Security Acceptance Criteria
+- [ ] No passwords in any file
+- [ ] No API keys in any file
+- [ ] No SSH credentials in any file
+- [ ] Uses `.env.example` template only
+- [ ] GitHub Secrets referenced
+- [ ] Temporary tokens with expiration
 
 ---
 

@@ -1,5 +1,13 @@
 # Agent Security Framework - Website Content
 
+## 🔒 Powered by OpenClaw
+
+![OpenClaw Logo](https://openclaw.ai/logo.png)
+
+The Agent Security Framework (ASF) is the official security solution for **OpenClaw** — the open-source platform for secure autonomous AI agents.
+
+---
+
 ## Open-Claw / Clawdbot / Moltbot Integration
 
 | Component | Role on ASF Website | One-command activation | Ties to Core ASF |
@@ -104,40 +112,7 @@ Generates agent-executable prompts to fix security issues.
 
 ## Production-Ready Stack
 
-For full production security on your New Jersey box (Clawdbot-Moltbot-Open-Claw), run the unified activation script after cloning the repo:
-
-## Contact
-
-For enterprise inquiries, contact the ASF team.
-
----
-
-*Agent Security Framework - Protecting AI Agents*
-
-
-## Open-Claw / Clawdbot / Moltbot Integration
-
-| Component | Role on ASF Website | One-command activation | Ties to Core ASF |
-|------------------------|--------------------------------------------------|-------------------------------------------------|------------------|
-| Open-Claw host | Full isolation showcase | ./full-asf-40-44-secure.sh --openclaw | ASF-35 / ASF-38 |
-| Clawdbot (WhatsApp) | Skill monitoring demo | ./full-asf-40-44-secure.sh --clawbot | ASF-41 / ASF-5 |
-| Moltbot (PC-control) | Voice/PC command gating | ./full-asf-40-44-secure.sh --moltbot | ASF-42 / ASF-40 |
-
-## Production-Ready Stack
-
-Run: ./full-asf-40-44-secure.sh
-
----
-
-## Production-Ready Stack
-
-For full production security on your deployment (Clawdbot-Moltbot-Open-Claw), run the unified activation script after cloning the repo:
-
-```bash
-./full-asf-40-44-secure.sh
-```
-
-This deploys the full secured, supervised, and self-healing security stack.
+For full production security on your New Jersey box (Clawdbot-Moltbot-Open-Claw), run the unified activation script after cloning the repo.
 
 ---
 

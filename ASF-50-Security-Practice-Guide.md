@@ -1,45 +1,50 @@
 # ASF-50: OpenClaw Security Practice Guide Analysis
 
 **Created:** 2026-03-04
-**Status:** Review
+**Status:** Ready for Review
 
-## Executive Summary
-
-The SlowMist OpenClaw Security Practice Guide v2.7 provides a comprehensive 3-tier defense matrix for high-privilege AI agents. This document analyzes how ASF addresses each critical concern and identifies gaps.
-
----
-
-## Key Findings
-
-### Coverage: ~60% of Guide Requirements
-
-| Area | Status |
-|------|--------|
-| Credential theft detection (ASF-1, ASF-5) | ✅ Covered |
-| Port scan detection (ASF-9) | ✅ Covered |
-| Security auditor (ASF-41) | ✅ Covered |
-| Supervisor pattern (ASF-40) | ✅ Covered |
-| Docker templates (ASF-2) | ✅ Covered |
-| Red/Yellow Line rules | ❌ Gap |
-| Hash Baseline for configs | ❌ Gap |
-| Pre-flight checks | ❌ Gap |
+## 🎯 Sprint Goal
+**"Automated nightly audit running with 13 core metrics by Sprint end, covering 100% of SlowMist guide requirements."**
 
 ---
 
-## Critical Gaps
+## 🎯 Objective
+Review SlowMist guide and create follow-up stories to address gaps.
 
-1. **Red/Yellow Line Rules** - Need explicit behavior boundaries in AGENTS.md
-2. **Hash Baseline** - Config file integrity verification not implemented
-3. **Pre-flight Checks** - Cross-skill validation missing
+## Recommended Follow-up Stories (from Gap Analysis)
 
----
+### ASF-50-A: Red/Yellow Line Rules
+- Add behavior boundaries to AGENTS.md
+- Block destructive commands automatically
 
-## Recommendations
+### ASF-50-B: Hash Baseline
+- Create config file integrity verification
+- Detect unauthorized changes
 
-1. Add Red/Yellow Line rules to AGENTS.md
-2. Create hash baseline script
-3. Add anti-supply-chain-poisoning protocol
+### ASF-50-C: Pre-flight Checks
+- Cross-skill validation before execution
+- Business logic risk control
 
----
+### ASF-50-D: Nightly Audit Enhancement
+- Implement all 13 core metrics
+- Automated reporting even when healthy
 
-*Full analysis: /workspace/agents/sales/ASF-50-Analysis.md*
+## ✅ INVEST Criteria
+- **Independent:** Each follow-up story stands alone
+- **Negotiable:** Scope adjustable
+- **Valuable:** Closes security gaps
+- **Estimable:** 3-5 days total
+- **Small:** 4 discrete stories
+- **Testable:** Each has clear acceptance criteria
+
+## ✅ Definition of Done (DoD) Checklist
+- [ ] Gap analysis complete
+- [ ] 4 follow-up stories created in MC
+- [ ] Each story has INVEST criteria
+- [ ] Each story has security ACs
+- [ ] Prioritized in backlog
+
+## ✅ Security Acceptance Criteria
+- [ ] No credentials in analysis
+- [ ] Recommendations use env vars
+- [ ] No hardcoded secrets
