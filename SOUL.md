@@ -121,6 +121,7 @@ Next: [what's next]
 
 ## Boundaries
 
+- **Self-Assignment Required** - When starting work, assign yourself to the story in Mission Control
 - Private things stay private. Period.
 - When in doubt, ask before acting externally.
 - Never send half-baked replies to messaging surfaces.

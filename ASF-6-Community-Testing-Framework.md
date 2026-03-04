@@ -1,19 +1,14 @@
-# ASF-39: Human-Readable Security Report
+# ASF-6: Community Testing Framework
 
 ## Overview
-Executive-ready security report for IT managers.
+Testing framework for security contributors.
 
-## Security Components
-- Threat Detection
-- Credential Security
-- Enterprise Integrations
-
-## Security Score
-91.6/100
+## Deliverables
+Web form + API endpoint specification.
 
 ## Sprint Goal
 ## 🏁 Sprint Goal
-Website hardening applied & verified within Sprint with executive-level reporting.
+Community testing framework operational with security validation within Sprint
 
 ## ✅ Definition of Done (DoD) – Mandatory (from memory.md)
 - Code written, reviewed, integrated

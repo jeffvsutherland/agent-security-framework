@@ -1,16 +1,23 @@
-# ASF-50: Security Practice Guide
+# ASF-45: Security Fix Prompt Generator
 
 ## Overview
-Analysis of OpenClaw Security Practice Guide.
-
-## Gap Analysis
-30% coverage identified.
+Automated prompts for security hardening.
 
 ## Sprint Goal
-## 🏁 Sprint Goal
-Automated nightly audit running by Sprint end with all 13 core metrics.
+Automate security hardening with validation in under 10 minutes.
 
-## ✅ Definition of Done (DoD) – Mandatory (from memory.md)
+## Definition of Done
+- [ ] Code written
+- [ ] Documentation complete
+- [ ] Story in review
+- [ ] Grok Heavy passes
+
+Aligned with Clawdbot-Moltbot-Open-Claw Scrum Expansion Pack.
+
+## 🏁 Sprint Goal
+Automated security hardening prompts with validation in under 10 minutes.
+
+## ✅ Definition of Done (DoD) – Mandatory
 - Code written, reviewed, integrated
 - Automated tests pass (unit/integration + security scans)
 - **Zero secrets** (APIs, passwords, emails, keys, tokens) – verified by scan; use env vars/GitHub Secrets only
