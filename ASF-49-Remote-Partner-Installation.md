@@ -1,7 +1,7 @@
 # ASF-49: Remote Partner Installation
 
 ## Overview
-Guide for partner deployment.
+Guide for partner deployment of Clawdbot-Moltbot-Open-Claw.
 
 ## Security
 Use environment variables only. Never hardcode credentials.
@@ -20,12 +20,14 @@ Remote partner install process secured and documented for Clawdbot rollout.
 
 **Aligned with Clawdbot-Moltbot-Open-Claw Scrum Expansion Pack (soul/brain/memory.md sections)**
 
-### From Partner
+### Prerequisites
+
+#### From Partner
 - [ ] IP/hostname only (no credentials provided to ASF)
 - [ ] Sudo access on remote machine
 - [ ] Open ports: 22 (SSH), 80/443 (web), WebSocket for OpenClaw
 
-### From ASF Team
+#### From ASF Team
 - [ ] Installation scripts prepared
 - [ ] Temporary tokens via GitHub Secrets or vault (NEVER commit/store passwords or SSH keys)
 - [ ] Configuration files ready
