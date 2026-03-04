@@ -116,3 +116,14 @@ New priority: ASF-28 created for security policy framework.
 This approach maintains our existing bot infrastructure while adding the powerful message board coordination layer!
 ---
 **Aligned with Clawdbot-Moltbot-Open-Claw Scrum Expansion Pack (soul/brain/memory.md)**
+
+## ✅ Definition of Done (Complete Checklist)
+
+- [ ] Code/deliverables complete
+- [ ] Documentation updated  
+- [ ] Increment deployable
+- [ ] Committed to workspace
+- [ ] Story status: review → done
+- [ ] PO (Raven) accepts story
+- [ ] Security scan passed
+- [ ] Zero secrets confirmed

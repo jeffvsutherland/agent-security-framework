@@ -114,3 +114,14 @@ curl http://localhost:18789/health
 
 ---
 **Aligned with Clawdbot-Moltbot-Open-Claw Scrum Expansion Pack (soul/brain/memory.md)**
+
+## ✅ Definition of Done (Complete Checklist)
+
+- [ ] Code/deliverables complete
+- [ ] Documentation updated  
+- [ ] Increment deployable
+- [ ] Committed to workspace
+- [ ] Story status: review → done
+- [ ] PO (Raven) accepts story
+- [ ] Security scan passed
+- [ ] Zero secrets confirmed
