@@ -3,7 +3,7 @@
 **Created:** 2026-03-04
 **Status:** Ready for Review
 
-## 🎯 Sprint Goal
+## 🏁 Sprint Goal
 **"Prospects receive a clear, C-suite readable security report within 24 hours of request, increasing ASF adoption by 25%."**
 
 ---

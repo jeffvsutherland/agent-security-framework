@@ -3,7 +3,7 @@
 **Created:** 2026-03-04
 **Status:** Ready for Review
 
-## 🎯 Sprint Goal
+## 🏁 Sprint Goal
 **"Automated nightly audit running with 13 core metrics by Sprint end, covering 100% of SlowMist guide requirements."**
 
 ---
