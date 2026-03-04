@@ -52,13 +52,16 @@ Review SlowMist guide and create follow-up stories to address gaps.
 ---
 **Aligned with Clawdbot-Moltbot-Open-Claw Scrum Expansion Pack (soul/brain/memory.md)**
 
-## ✅ Definition of Done (Complete Checklist)
 
-- [ ] Code/deliverables complete
-- [ ] Documentation updated  
-- [ ] Increment deployable
-- [ ] Committed to workspace
-- [ ] Story status: review → done
-- [ ] PO (Raven) accepts story
-- [ ] Security scan passed
-- [ ] Zero secrets confirmed
+## 🏁 Sprint Goal
+Automated nightly audit running with 13 core metrics by Sprint end, covering 100% of SlowMist guide requirements.
+
+## ✅ Definition of Done (DoD) – Mandatory (from memory.md)
+- Code written, reviewed, integrated
+- Automated tests pass (unit/integration + security scans)
+- **Zero secrets** (APIs, passwords, emails, keys, tokens) – verified by scan; use env vars/GitHub Secrets only
+- Documented
+- Outcome validated against Sprint Goal
+- CI/CD pipeline green and releasable
+
+**Aligned with Clawdbot-Moltbot-Open-Claw Scrum Expansion Pack (soul/brain/memory.md sections)**

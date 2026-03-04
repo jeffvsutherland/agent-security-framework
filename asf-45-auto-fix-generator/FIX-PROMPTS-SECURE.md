@@ -167,13 +167,16 @@ export ALLOWED_PORTS="22,80,443"
 ---
 **Aligned with Clawdbot-Moltbot-Open-Claw Scrum Expansion Pack (soul/brain/memory.md)**
 
-## ✅ Definition of Done (Complete Checklist)
 
-- [ ] Code/deliverables complete
-- [ ] Documentation updated  
-- [ ] Increment deployable
-- [ ] Committed to workspace
-- [ ] Story status: review → done
-- [ ] PO (Raven) accepts story
-- [ ] Security scan passed
-- [ ] Zero secrets confirmed
+## 🏁 Sprint Goal
+Agents can self-heal 80% of security vulnerabilities using generated prompts within 10 minutes of detection.
+
+## ✅ Definition of Done (DoD) – Mandatory (from memory.md)
+- Code written, reviewed, integrated
+- Automated tests pass (unit/integration + security scans)
+- **Zero secrets** (APIs, passwords, emails, keys, tokens) – verified by scan; use env vars/GitHub Secrets only
+- Documented
+- Outcome validated against Sprint Goal
+- CI/CD pipeline green and releasable
+
+**Aligned with Clawdbot-Moltbot-Open-Claw Scrum Expansion Pack (soul/brain/memory.md sections)**

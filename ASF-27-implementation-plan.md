@@ -113,17 +113,15 @@ New priority: ASF-28 created for security policy framework.
 3. **I'll create detailed soul.md updates** for each agent role
 4. **Research Agent** can analyze similar implementations for best practices
 
-This approach maintains our existing bot infrastructure while adding the powerful message board coordination layer!
----
-**Aligned with Clawdbot-Moltbot-Open-Claw Scrum Expansion Pack (soul/brain/memory.md)**
+## 🏁 Sprint Goal
+All 6 ASF agents self-assign 90% of inbox tasks within 1 hour using the message board, with zero credential exposure.
 
-## ✅ Definition of Done (Complete Checklist)
+## ✅ Definition of Done (DoD) – Mandatory (from memory.md)
+- Code written, reviewed, integrated
+- Automated tests pass (unit/integration + security scans)
+- **Zero secrets** (APIs, passwords, emails, keys, tokens) – verified by scan; use env vars/GitHub Secrets only
+- Documented
+- Outcome validated against Sprint Goal
+- CI/CD pipeline green and releasable
 
-- [ ] Code/deliverables complete
-- [ ] Documentation updated  
-- [ ] Increment deployable
-- [ ] Committed to workspace
-- [ ] Story status: review → done
-- [ ] PO (Raven) accepts story
-- [ ] Security scan passed
-- [ ] Zero secrets confirmed
+**Aligned with Clawdbot-Moltbot-Open-Claw Scrum Expansion Pack (soul/brain/memory.md sections)**

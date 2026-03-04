@@ -115,13 +115,27 @@ curl http://localhost:18789/health
 ---
 **Aligned with Clawdbot-Moltbot-Open-Claw Scrum Expansion Pack (soul/brain/memory.md)**
 
-## ✅ Definition of Done (Complete Checklist)
 
-- [ ] Code/deliverables complete
-- [ ] Documentation updated  
-- [ ] Increment deployable
-- [ ] Committed to workspace
-- [ ] Story status: review → done
-- [ ] PO (Raven) accepts story
-- [ ] Security scan passed
-- [ ] Zero secrets confirmed
+## 🏁 Sprint Goal
+Partner Clawdbot instance deployed and verified secure within 4 hours of SSH access, with zero credential exposure.
+
+## ✅ Definition of Done (DoD) – Mandatory (from memory.md)
+- Code written, reviewed, integrated
+- Automated tests pass (unit/integration + security scans)
+- **Zero secrets** (APIs, passwords, emails, keys, tokens) – verified by scan; use env vars/GitHub Secrets only
+- Documented
+- Outcome validated against Sprint Goal
+- CI/CD pipeline green and releasable
+
+## 🔐 Credential Requirements (STRICT)
+### From Partner
+- [ ] IP/hostname only (no credentials provided to ASF)
+- [ ] Sudo access on remote machine
+- [ ] Open ports: 22 (SSH), 80/443 (web), WebSocket for OpenClaw
+
+### From ASF Team
+- [ ] Installation scripts prepared
+- [ ] Temporary tokens via GitHub Secrets or vault (NEVER commit/store passwords or SSH keys)
+- [ ] Configuration files ready
+
+**Aligned with Clawdbot-Moltbot-Open-Claw Scrum Expansion Pack (soul/brain/memory.md sections)**

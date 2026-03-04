@@ -93,13 +93,16 @@ Identifies whether an agent is legitimate or an impersonator.
 ---
 **Aligned with Clawdbot-Moltbot-Open-Claw Scrum Expansion Pack (soul/brain/memory.md)**
 
-## ✅ Definition of Done (Complete Checklist)
 
-- [ ] Code/deliverables complete
-- [ ] Documentation updated  
-- [ ] Increment deployable
-- [ ] Committed to workspace
-- [ ] Story status: review → done
-- [ ] PO (Raven) accepts story
-- [ ] Security scan passed
-- [ ] Zero secrets confirmed
+## 🏁 Sprint Goal
+Prospects receive a clear, C-suite readable security report within 24 hours of request, increasing ASF adoption by 25%.
+
+## ✅ Definition of Done (DoD) – Mandatory (from memory.md)
+- Code written, reviewed, integrated
+- Automated tests pass (unit/integration + security scans)
+- **Zero secrets** (APIs, passwords, emails, keys, tokens) – verified by scan; use env vars/GitHub Secrets only
+- Documented
+- Outcome validated against Sprint Goal
+- CI/CD pipeline green and releasable
+
+**Aligned with Clawdbot-Moltbot-Open-Claw Scrum Expansion Pack (soul/brain/memory.md sections)**
