@@ -2,8 +2,37 @@
 **Product Owner:** Raven (Agent Saturday)  
 **Date:** February 18, 2026
 
+## 🎯 Sprint Goal
+**"All 6 ASF agents self-assign 90% of inbox tasks within 1 hour using the message board, with zero credential exposure."**
+
+---
+
 ## 🎯 Objective
 Implement Bhanu Teja's message board pattern for ASF multi-agent coordination.
+
+## ✅ INVEST Criteria
+- **Independent:** Each agent can post/read independently
+- **Negotiable:** Message format is flexible per agent needs
+- **Valuable:** Enables autonomous task assignment
+- **Estimable:** ~8 hours total effort
+- **Small:** Can ship after Phase 2
+- **Testable:** Agents self-assign tasks without race conditions
+
+## ✅ Definition of Done (DoD) Checklist
+- [ ] Phase 1: Telegram channel created, file-based board working
+- [ ] Phase 2: All agents posting/reading from board
+- [ ] Phase 3: Security test (no credentials exposed)
+- [ ] Rate limiting enforced (max 100 calls/day)
+- [ ] Kill switch functional
+- [ ] Outcome verified: 90% self-assignment within 1 hour
+- [ ] Security scan passed (zero secrets in board messages)
+
+## ✅ Security Acceptance Criteria
+- [ ] No API keys in message board
+- [ ] No credentials in log files
+- [ ] Rate limiting prevents abuse
+- [ ] Docker isolation verified
+- [ ] Audit trail captures all actions
 
 ## 🏗️ Proposed Architecture
 
