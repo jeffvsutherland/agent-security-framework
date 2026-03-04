@@ -1,0 +1,11 @@
+[90m16:42:30[39m [32m[health-monitor][39m [36m[telegram:research] health-monitor: restarting (reason: stuck)[39m
+[90m16:42:31[39m [34m[telegram][39m [36m[research] starting provider (@ASFResearchBot)[39m
+17:02:47 [31m[tools] read failed: ENOENT: no such file or directory, access '/workspace/agents/research/memory/2026-03-04.md'[39m
+[90m17:12:30[39m [32m[health-monitor][39m [36m[telegram:research] health-monitor: restarting (reason: stuck)[39m
+[90m17:12:31[39m [34m[telegram][39m [36m[research] starting provider (@ASFResearchBot)[39m
+[90m17:42:30[39m [32m[health-monitor][39m [36m[telegram:research] health-monitor: restarting (reason: stuck)[39m
+[90m17:42:31[39m [34m[telegram][39m [36m[research] starting provider (@ASFResearchBot)[39m
+17:57:21 [31m[tools] exec failed: bash: /workspace/agents/research/mc-api.sh: No such file or directory[39m
+[90m18:12:30[39m [32m[health-monitor][39m [36m[telegram:research] health-monitor: restarting (reason: stuck)[39m
+[90m18:12:31[39m [34m[telegram][39m [36m[research] starting provider (@ASFResearchBot)[39m
+DONE
