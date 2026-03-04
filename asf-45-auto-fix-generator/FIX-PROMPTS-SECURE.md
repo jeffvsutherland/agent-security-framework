@@ -163,3 +163,6 @@ export ALLOWED_PORTS="22,80,443"
 ---
 
 *Status: Ready for security scan + review*
+
+---
+**Aligned with Clawdbot-Moltbot-Open-Claw Scrum Expansion Pack (soul/brain/memory.md)**

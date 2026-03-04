@@ -89,3 +89,6 @@ Identifies whether an agent is legitimate or an impersonator.
 ---
 
 *Full report: /workspace/agents/sales/ASF-39-Security-Report.md*
+
+---
+**Aligned with Clawdbot-Moltbot-Open-Claw Scrum Expansion Pack (soul/brain/memory.md)**

@@ -111,3 +111,6 @@ curl http://localhost:18789/health
 ---
 
 *Full proposal: /workspace/proposals/REMOTE-PARTNER-INSTALLATION.md*
+
+---
+**Aligned with Clawdbot-Moltbot-Open-Claw Scrum Expansion Pack (soul/brain/memory.md)**

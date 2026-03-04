@@ -48,3 +48,6 @@ Review SlowMist guide and create follow-up stories to address gaps.
 - [ ] No credentials in analysis
 - [ ] Recommendations use env vars
 - [ ] No hardcoded secrets
+
+---
+**Aligned with Clawdbot-Moltbot-Open-Claw Scrum Expansion Pack (soul/brain/memory.md)**
