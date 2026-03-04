@@ -8,7 +8,7 @@ Analysis of OpenClaw Security Practice Guide.
 
 ## Sprint Goal
 ## 🏁 Sprint Goal
-[Insert one clear goal here, e.g. "Message board coordination fully operational with 90% self-assignment within 1 hour" or "Remote partner install process secured and documented for Clawdbot rollout"]
+Automated nightly audit running by Sprint end with all 13 core metrics.
 
 ## ✅ Definition of Done (DoD) – Mandatory (from memory.md)
 - Code written, reviewed, integrated

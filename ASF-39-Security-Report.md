@@ -13,7 +13,7 @@ Executive-ready security report for IT managers.
 
 ## Sprint Goal
 ## 🏁 Sprint Goal
-[Insert one clear goal here, e.g. "Message board coordination fully operational with 90% self-assignment within 1 hour" or "Remote partner install process secured and documented for Clawdbot rollout"]
+Website hardening applied & verified within Sprint with executive-level reporting.
 
 ## ✅ Definition of Done (DoD) – Mandatory (from memory.md)
 - Code written, reviewed, integrated
