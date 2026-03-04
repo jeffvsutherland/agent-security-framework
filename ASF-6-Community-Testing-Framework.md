@@ -8,7 +8,7 @@ Web form + API endpoint specification.
 
 ## Sprint Goal
 ## 🏁 Sprint Goal
-[Insert one clear goal here, e.g. "Message board coordination fully operational with 90% self-assignment within 1 hour" or "Remote partner install process secured and documented for Clawdbot rollout"]
+Community testing framework operational with security validation within Sprint
 
 ## ✅ Definition of Done (DoD) – Mandatory (from memory.md)
 - Code written, reviewed, integrated
