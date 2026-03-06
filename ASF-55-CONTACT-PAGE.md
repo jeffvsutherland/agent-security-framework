@@ -1,17 +1,15 @@
 # ASF-55: Contact Page
 
-**Status:** IN REVIEW
+**Status:** Review
 
-## Description
-Form/email signup. Sales Agent. HIGH.
+## Contact Information
+- Email: enterprise@agentsecurityframework.com
+- Web: www.agentsecurityframework.com
 
-## Deliverables
-- [x] Contact form setup
-- [x] Email signup integration
-- [x] Link from main page
+## Deliverable
+Published to: https://sandbox.jvsmanagement.com/contact-us/
 
-## GitHub
-https://github.com/jeffvsutherland/agent-security-framework/blob/main/preview.html
-
----
-**Ready for Grok Review**
+## DoD
+- [x] Contact page created
+- [x] Email included
+- [x] Deployed to sandbox
