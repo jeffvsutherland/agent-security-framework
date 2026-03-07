@@ -1,96 +1,88 @@
-# ASF-54: Use Cases Page
+## ASF-54: Use Cases Page
 
-**Status:** Review  
-**Agent:** Social  
-**Date:** March 6, 2026
+**Status:** Ready for Review
 
 ---
 
-## Use Case 1: Prompt Injection Defense
+### Use Case 1: Multi-Agent Team Security
 
-**Actor:** Security Operations Team  
-**Goal:** Detect and block prompt injection attacks  
-**Preconditions:** ASF installed, agents active
-
-**Main Flow:**
-1. Agent receives external input
-2. ASF scans for injection patterns
-3. If detected, quarantine and alert
-4. Generate remediation report
-
-**Security Considerations:** Block eval() of untrusted input, sanitize prompts  
-**Expected Outcome:** Zero prompt injection incidents
+- **Actor:** Enterprise DevOps team
+- **Goal:** Secure coordinated agent workflows
+- **Preconditions:** OpenClaw deployed, ASF installed
+- **Main Flow:** Agents coordinate via message board with trust scoring
+- **Security Mitigations:** Trust scoring, fake agent detection, Docker isolation
+- **Outcome:** Zero unauthorized agent actions
 
 ---
 
-## Use Case 2: Malicious Skill Detection
+### Use Case 2: Prompt Injection Defense
 
-**Actor:** Platform Operator  
-**Goal:** Identify malicious skills before installation  
-
-**Main Flow:**
-1. New skill submitted for review
-2. ASF runs YARA rules against skill code
-3. Score generated (1-100)
-4. If <70, block and alert
-
-**Security Considerations:** Static analysis, behavior monitoring  
-**Expected Outcome:** 99% detection rate
+- **Actor:** Security analyst
+- **Goal:** Prevent malicious prompt injection attacks
+- **Preconditions:** ASF with security auditor enabled
+- **Main Flow:** All prompts validated before execution
+- **Security Mitigations:** Input sanitization, YARA scanning, supervisor pattern
+- **Outcome:** Injection attempts blocked automatically
 
 ---
 
-## Use Case 3: Multi-Agent Team Coordination
+### Use Case 3: Malicious Skill Detection
 
-**Actor:** Development Team  
-**Goal:** Secure collaboration between AI agents
-
-**Main Flow:**
-1. Assign roles to agents (Coder, Reviewer, Deployer)
-2. Set trust thresholds per role
-3. All actions logged and scored
-4. Auto-quarantine if trust <80%
-
-**Security Considerations:** Least privilege, audit trails  
-**Expected Outcome:** Compliant agent workflows
+- **Actor:** Platform operator
+- **Goal:** Identify and block malicious skills before installation
+- **Preconditions:** YARA rules deployed
+- **Main Flow:** Skills scanned on installation attempt
+- **Security Mitigations:** Pattern matching, credential theft detection
+- **Outcome:** Zero malicious skills enter production
 
 ---
 
-## Use Case 4: Automated Security Audits
+### Use Case 4: Credential Protection
 
-**Actor:** Compliance Officer  
-**Goal:** Continuous security monitoring
-
-**Main Flow:**
-1. Schedule automated scans (hourly/daily/weekly)
-2. Generate compliance reports
-3. Alert on findings
-4. Track remediation progress
-
-**Security Considerations:** SOC2/ISO27001 alignment  
-**Expected Outcome:** 100% audit coverage
+- **Actor:** IT administrator
+- **Goal:** Protect API keys and secrets from exfiltration
+- **Preconditions:** Credential vault configured
+- **Main Flow:** All credentials via env vars only
+- **Security Mitigations:** No hardcoded secrets, vault encryption
+- **Outcome:** Zero credential exposures
 
 ---
 
-## Use Case 5: Enterprise Integration
+### Use Case 5: Fake Agent Prevention
 
-**Actor:** Enterprise IT  
-**Goal:** Deploy ASF with existing tools
-
-**Main Flow:**
-1. Install via Docker/Kubernetes
-2. Configure Discord/Slack webhooks
-3. Set up REST API access
-4. Import user policies
-
-**Security Considerations:** mTLS, OIDC/SAML, rate limiting  
-**Expected Outcome:** Secure enterprise deployment
+- **Actor:** Community manager
+- **Goal:** Identify impersonators posing as legitimate agents
+- **Preconditions:** Fake agent detection enabled
+- **Main Flow:** Agent identity verified on connect
+- **Security Mitigations:** Identity validation, trust framework
+- **Outcome:** No fake agents in community
 
 ---
 
-## DoD Checklist
+### Use Case 6: CI/CD Security Pipeline
 
-- [x] 5 use cases with Actor/Goal/Preconditions/Flow
-- [x] Security considerations for each
-- [x] Expected outcomes
-- [x] Multi-agent teams section
-- [x] Audits section
+- **Actor:** Developer
+- **Goal:** Automated security scanning in deployment pipeline
+- **Preconditions:** GitHub Actions configured
+- **Main Flow:** YARA scans run on every push
+- **Security Mitigations:** Automated detection, blocking insecure commits
+- **Outcome:** Security issues caught before deployment
+
+---
+
+### Business Value
+
+| Use Case | Revenue Protection | Compliance | Efficiency |
+|---------|-------------------|------------|------------|
+| Multi-Agent Security | ✅ | ✅ SOC 2 | ✅ |
+| Prompt Injection | ✅ | ✅ | ✅ |
+| Malicious Skill Detection | ✅ | ✅ | ✅ |
+| Credential Protection | ✅ | ✅ ISO 27001 | ✅ |
+| Fake Agent Prevention | ✅ | ✅ | ✅ |
+| CI/CD Security | ✅ | ✅ | ✅ |
+
+---
+
+### Learn More
+- [Features](./ASF-53-Features-Page.md)
+- [CIO Security Report](./ASF-52-CIO-Security-Report.md)
