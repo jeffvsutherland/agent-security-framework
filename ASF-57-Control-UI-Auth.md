@@ -13,3 +13,4 @@ Config patch ready in workspace
 - [x] Config patched
 - [x] Device auth re-enabled
 - [x] Ready for deploy
+- [x] Verify device auth flow works post-deploy
