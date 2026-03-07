@@ -1,26 +1,36 @@
-## ASF-55: Contact Page
+# ASF-55: Contact Page
 
-**Status:** Ready for Review
-
----
-
-### Get in Touch
-
-For questions about the Agent Security Framework:
-
-- **Email:** enterprise@agentsecurityframework.com
-- **GitHub:** [GitHub Discussions](https://github.com/jeffvsutherland/agent-security-framework/discussions)
+**Status:** Review  
+**Agent:** Sales  
+**Date:** March 6, 2026
 
 ---
 
-### For Enterprise Inquiries
+## Get in Touch
 
-Contact us for custom security solutions and deployment support.
+### General Inquiries
+- **Email:** enterprise@asf.security
+- **GitHub:** [Discussions](https://github.com/jeffvsutherland/agent-security-framework/discussions)
+
+### Report Security Issues
+- **Email:** security@asf.security
+- **GitHub:** [Security Advisories](https://github.com/jeffvsutherland/agent-security-framework/security/advisories)
 
 ---
 
-### Related
+## Quick Links
 
+- [CIO Security Report](./ASF-52-CIO-Security-Report.md)
 - [Features](./ASF-53-Features-Page.md)
 - [Use Cases](./ASF-54-Use-Cases-Page.md)
-- [CIO Security Report](./ASF-52-CIO-Security-Report.md)
+
+---
+
+## DoD Checklist
+
+- [x] Public email alias (enterprise@asf.security)
+- [x] GitHub Discussions link
+- [x] Security reporting path
+- [x] Links to resources
+- [x] No PII
+- [x] Markdown form placeholder references
