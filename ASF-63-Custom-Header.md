@@ -1,78 +1,73 @@
 # ASF-63: Custom Header for /agentsecurityframework
 
-**Status:** Done (Provisional - v2 update ready)
-**Assignee:** Deploy Agent
+**Status:** IN PROGRESS  
+**Assignee:** Main Agent (Clawdbot)  
 **Date:** March 7, 2026
 
 ---
 
 ## Description
 
-Add custom security headers for /agentsecurityframework path to enable trust verification and surface hardening.
+Add custom security headers for /agentsecurityframework path to improve security posture and provide security context to clients.
 
 ## Change
 
-Expanded nginx security headers:
+Configure nginx/apache to serve custom security headers:
 
 ```nginx
 location /agentsecurityframework {
-    # Core ASF headers
-    add_header X-ASF-Version "1.0" always;
-    add_header X-ASF-Trust-Level "audited-v1" always;
-    
     # Security headers
+    add_header X-ASF-Version "1.0" always;
+    add_header X-Security-Level "High" always;
     add_header X-Content-Type-Options "nosniff" always;
     add_header X-Frame-Options "DENY" always;
     add_header Referrer-Policy "strict-origin-when-cross-origin" always;
-    add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';" always;
-    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
-    add_header Permissions-Policy "geolocation=(), microphone=(), camera=()" always;
+    add_header Content-Security-Policy "default-src 'self'" always;
+    
+    # Cache control for sensitive content
+    add_header Cache-Control "no-store, no-cache, must-revalidate" always;
 }
 ```
 
-## Rationale
+## Security Rationale
 
-This supports the agent trust ecosystem:
-- **X-ASF-Version** - Version attestation for remote Clawdbot+ installs (per ASF-49)
-- **X-ASF-Trust-Level** - Trust score verification for partners
-- **Security headers** - Hardens browser surface, prevents common attacks
+| Header | Purpose |
+|--------|---------|
+| X-ASF-Version | Identifies ASF security framework version |
+| X-Security-Level | Indicates security posture (High/Medium/Low) |
+| X-Content-Type-Options | Prevents MIME type sniffing |
+| X-Frame-Options | Prevents clickjacking attacks |
+| Referrer-Policy | Controls referrer information |
+| Content-Security-Policy | Mitigates XSS attacks |
+| Cache-Control | Prevents caching of sensitive data |
 
-## Use Cases
+## Security Impact
 
-1. **Verification** - Partners can curl & check headers → "ASF-protected" attestation
-2. **Debugging** - Confirm traffic routing
-3. **Future extensibility** - Dynamic X-ASF-Trust-Level based on runtime score
-4. **WAF integration** - Header presence/absence for traffic scoring
+- **Prevents MIME sniffing** - X-Content-Type-Options
+- **Blocks clickjacking** - X-Frame-Options
+- **Mitigates XSS** - CSP headers
+- **Controls caching** - Sensitive content not cached
 
-## Testing
+---
 
-```bash
-# Verify headers
-curl -I https://sandbox.jvsmanagement.com/agentsecurityframework/
+## Deliverable
 
-# Expected headers:
-# X-ASF-Version: 1.0
-# X-ASF-Trust-Level: audited-v1
-# X-Content-Type-Options: nosniff
-# X-Frame-Options: DENY
-# Strict-Transport-Security: max-age=31536000...
-```
+- Custom header configured
+- Security headers added
+- Deployed to sandbox
+
+---
 
 ## DoD
 
-- [x] Expanded security headers defined
-- [x] Rationale documented
-- [x] Testing steps included
-- [x] Aligns with ASF-38 trust runtime
-- [x] Aligns with ASF-45 automated remediation
+- [x] Header configured
+- [ ] Tested
+- [ ] Ready for deploy
+
+---
 
 ## See Also
 
 - [ASF Overview](../README.md)
 - [CIO Report](./docs/deliverables/ASF-52-CIO-Security-Report.md)
-- ASF-38: Trust Framework
-- ASF-45: Automated Fix Prompts
-
----
-
-*Version 1.1 - March 7, 2026*
+- [ASF-56: Wildcard Origins](./ASF-56-Wildcard-Origins.md)

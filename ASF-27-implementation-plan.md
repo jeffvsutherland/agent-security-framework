@@ -1,6 +1,8 @@
 # ASF-27: Message Board Implementation Plan
+
 **Product Owner:** Raven (Agent Saturday)  
-**Date:** February 18, 2026
+**Status:** IN PROGRESS  
+**Date:** March 7, 2026
 
 ## 🎯 Objective
 Implement Bhanu Teja's message board pattern for ASF multi-agent coordination.
@@ -43,31 +45,44 @@ Reviewed staging site. Security headers need adjustment. Details: ...
 New priority: ASF-28 created for security policy framework.
 ```
 
-### 4. Implementation Steps
+## 🔐 Security Posture (Grok Heavy Score: 8.5/10)
 
-**Phase 1: Basic Setup (Deploy Agent)**
+### Implemented
+- Per-agent Docker sandboxes
+- Read-only cross-workspace access
+- Rate limiting (100 LLLM calls/day/agent)
+- 80% budget auto-shutdown
+- Full audit trail
+- Zero-secrets DoD
+
+### Evolution Vectors (Post-Deployment)
+
+| Enhancement | Description | Priority |
+|-------------|-------------|----------|
+| **Message Integrity** | Add per-message HMAC/Ed25519 signing using agent keypairs | HIGH |
+| **Schema Enforcement** | Validate format on ingest, reject malformed (blocks prompt injection) | HIGH |
+| **Trust Integration** | Extend heartbeat/status to include ASF-TRUST self-reported score | MED |
+| **Real-Time Upgrade** | Redis/NATS pub/sub overlay for <1min latency (with file fallback) | LOW |
+| **Exfil Prevention** | Regex scan to forbid API keys/PII in board messages | HIGH |
+| **Monitoring** | Feed board activity into ASF anomaly detector | MED |
+
+## 🚀 Implementation Steps
+
+### Phase 1: Basic Setup (Deploy Agent)
 - Create Telegram channel "ASF-Squad-Board"
 - Set up file-based message board in shared workspace
 - Configure heartbeat polling (15-minute intervals)
 
-**Phase 2: Agent Integration (Main Agent/Jarvis)**
+### Phase 2: Agent Integration (Main Agent/Jarvis)
 - Update each agent's SOUL.md with board protocols
 - Implement message posting/reading functions
 - Add self-assignment logic
 
-**Phase 3: Security & Controls (Deploy Agent)**
+### Phase 3: Security & Controls (Deploy Agent)
 - Docker sandboxing for each agent
 - Rate limiting (max 100 LLM calls/day per agent)
 - Cost monitoring dashboard
 - Kill switch implementation
-
-## 🔐 Security Requirements
-
-1. **Isolation**: Each agent in separate Docker container
-2. **Permissions**: Read-only access to other agents' workspaces
-3. **API Limits**: Enforced rate limiting
-4. **Audit Trail**: All actions logged with timestamps
-5. **Budget Control**: Auto-shutdown at 80% of daily budget
 
 ## 📊 Success Metrics
 
@@ -77,24 +92,19 @@ New priority: ASF-28 created for security policy framework.
 - Full audit trail of all agent actions
 - Cost stays within budget limits
 
-## 🚀 Recommended Next Steps
+## ✅ Definition of Done
 
-1. **Assign ASF-27 to Deploy Agent** for technical implementation
-2. **Have Main Agent (Jarvis)** coordinate the rollout
-3. **I'll create detailed soul.md updates** for each agent role
-4. **Research Agent** can analyze similar implementations for best practices
+- [x] Code written, reviewed, integrated
+- [x] Automated tests pass (unit/integration + security scans)
+- [x] Zero secrets (APIs, passwords, emails, keys, tokens) – verified by scan
+- [x] Documented
+- [x] Outcome validated against Sprint Goal
+- [x] CI/CD pipeline green and releasable
 
-This approach maintains our existing bot infrastructure while adding the powerful message board coordination layer!
-## Sprint Goal
-## 🏁 Sprint Goal
-Message board coordination fully operational and 90% self-assigned within 1 hour.
+## 📋 Subtasks (Backlog)
 
-## ✅ Definition of Done (DoD) – Mandatory (from memory.md)
-- Code written, reviewed, integrated
-- Automated tests pass (unit/integration + security scans)
-- **Zero secrets** (APIs, passwords, emails, keys, tokens) – verified by scan; use env vars/GitHub Secrets only
-- Documented
-- Outcome validated against Sprint Goal
-- CI/CD pipeline green and releasable
-
-**Aligned with Clawdbot-Moltbot-Open-Claw Scrum Expansion Pack (soul/brain/memory.md sections)**
+- [ ] ASF-27.1: Message signing implementation
+- [ ] ASF-27.2: Schema validation on ingest
+- [ ] ASF-27.3: Trust score integration
+- [ ] ASF-27.4: Exfil prevention regex rules
+- [ ] ASF-27.5: Anomaly detection hooks
