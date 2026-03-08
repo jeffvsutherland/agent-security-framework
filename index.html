@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Security Framework | ASF</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            line-height: 1.6;
+        }
+        .header {
+            background: #161b22;
+            border-bottom: 1px solid #30363d;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 18px;
+        }
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #58a6ff, #1f6feb);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        .nav a {
+            color: #8b949e;
+            text-decoration: none;
+            margin-left: 24px;
+            font-size: 14px;
+        }
+        .nav a:hover { color: #58a6ff; }
+        .hero {
+            text-align: center;
+            padding: 80px 24px;
+            background: linear-gradient(180deg, #161b22 0%, #0d1117 100%);
+        }
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            background: linear-gradient(90deg, #58a6ff, #79c0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero p {
+            font-size: 20px;
+            color: #8b949e;
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: #238636;
+            color: #fff;
+        }
+        .btn-primary:hover { background: #2ea043; }
+        .btn-secondary {
+            background: #21262d;
+            color: #c9d1d9;
+            border: 1px solid #30363d;
+            margin-left: 12px;
+        }
+        .btn-secondary:hover { background: #30363d; }
+        .score-badge {
+            display: inline-block;
+            background: #21262d;
+            border: 1px solid #30363d;
+            border-radius: 24px;
+            padding: 8px 20px;
+            margin-top: 24px;
+        }
+        .score-badge span {
+            color: #3fb950;
+            font-weight: 700;
+        }
+        .section {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 60px 24px;
+        }
+        .section h2 {
+            font-size: 28px;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+        .feature {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 24px;
+        }
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 16px;
+        }
+        .feature h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        .feature p {
+            color: #8b949e;
+            font-size: 14px;
+        }
+        .use-cases {
+            background: #161b22;
+            border-radius: 12px;
+            padding: 32px;
+            margin-top: 40px;
+        }
+        .use-cases h3 {
+            margin-bottom: 20px;
+            color: #fff;
+        }
+        .use-case {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid #30363d;
+        }
+        .use-case:last-child { border-bottom: none; }
+        .use-case-icon {
+            font-size: 24px;
+        }
+        .footer {
+            background: #161b22;
+            border-top: 1px solid #30363d;
+            padding: 32px 24px;
+            text-align: center;
+            color: #8b949e;
+            font-size: 14px;
+        }
+        .footer a {
+            color: #58a6ff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">🦞</div>
+            <span>OpenClaw ASF</span>
+        </div>
+        <nav class="nav">
+            <a href="#features">Features</a>
+            <a href="#use-cases">Use Cases</a>
+            <a href="https://github.com/jeffvsutherland/agent-security-framework" target="_blank">GitHub</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div style="font-size: 64px; margin-bottom: 16px;">🦞</div>
+        <h1>Agent Security Framework</h1>
+        <p style="font-size: 18px; color: #8b949e; max-width: 700px; margin: 0 auto 16px;">
+            🦞 <strong>Secure Your OpenClaw Deployment</strong><br>
+            The comprehensive security solution for OpenClaw, Clawdbot, and Moltbot agent systems.
+        </p>
+        <div>
+            <a href="https://github.com/jeffvsutherland/agent-security-framework" class="btn btn-primary">Get Started on GitHub →</a>
+            <a href="https://github.com/openclaw/openclaw" class="btn btn-secondary">OpenClaw Repo</a>
+        </div>
+        <div class="score-badge">
+            🔒 Security Score: <span>90/100</span> — Zero dangerous skills detected
+        </div>
+    </section>
+
+    <section class="section" id="features">
+        <h2>🛡️ Protecting OpenClaw & Ecosystem</h2>
+        <p style="text-align: center; color: #8b949e; margin-bottom: 32px;">
+            ASF secures the entire Clawdbot-Moltbot-OpenClaw stack
+        </p>
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">🦞</div>
+                <h3>OpenClaw Host Security</h3>
+                <p>Secure your OpenClaw deployment with isolation, syscall monitoring, and zero-trust architecture.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">💬</div>
+                <h3>Clawdbot Protection</h3>
+                <p>WhatsApp bridge security with skill trust verification and activity auditing.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🌐</div>
+                <h3>Enterprise Integrations</h3>
+                <p>Discord Bot with fake agent detection, Slack App for workspace verification, REST API with rate limiting.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">📊</div>
+                <h3>Security Dashboard</h3>
+                <p>Real-time monitoring, incident reporting, and comprehensive audit trails.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="use-cases" id="use-cases">
+            <h3>Use Cases</h3>
+            <div class="use-case">
+                <div class="use-case-icon">🏢</div>
+                <div>
+                    <strong>Platform Operators</strong>
+                    <p>Protect your agent marketplace from malicious skills</p>
+                </div>
+            </div>
+            <div class="use-case">
+                <div class="use-case-icon">🏢</div>
+                <div>
+                    <strong>Enterprise Users</strong>
+                    <p>Secure internal AI agent deployments</p>
+                </div>
+            </div>
+            <div class="use-case">
+                <div class="use-case-icon">💻</div>
+                <div>
+                    <strong>Developers</strong>
+                    <p>Build secure agent applications with confidence</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>🦞 <strong>OpenClaw</strong> — Open source autonomous AI agent platform</p>
+        <p style="margin-top: 12px;">
+            <a href="https://github.com/jeffvsutherland/agent-security-framework">ASF GitHub</a> · 
+            <a href="https://github.com/openclaw/openclaw">OpenClaw</a> ·
+            <a href="https://raw.githubusercontent.com/jeffvsutherland/agent-security-framework/main/cio-reports/20260304-CIO-SECURITY-REPORT.md">CIO Security Report</a> ·
+            <a href="#">Contact</a>
+        </p>
+    </footer>
+</body>
+</html>
