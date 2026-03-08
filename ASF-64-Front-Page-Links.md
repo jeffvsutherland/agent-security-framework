@@ -1,7 +1,7 @@
 # ASF-64: Connect Front Page Links
 
-**Status:** DONE  
-**Assignee:** Social Agent  
+**Status:** REVIEW (BLOCKED)  
+**Assignee:** Sales Agent  
 **Date:** March 8, 2026
 
 ---
@@ -10,30 +10,30 @@
 
 Connect all navigation links on the ASF front page to their respective content pages.
 
-## Links Connected
+## BLOCKER
 
-| Page | Link | Target File | Status |
-|------|------|-------------|--------|
-| CIO Report | ./docs/deliverables/ASF-52-CIO-Security-Report.md | ASF-52-...md | ✅ |
-| Features | ./docs/deliverables/ASF-53-Features-Page.md | ASF-53-...md | ✅ |
-| Use Cases | ./docs/deliverables/ASF-54-Use-Cases-Page.md | ASF-54-...md | ✅ |
-| Contact | ./docs/deliverables/ASF-55-Contact-Page.md | ASF-55-...md | ✅ |
-| Security Audit | ./ASF-51-Exposure-Audit.md | ASF-51-...md | ✅ |
-| Rate Limiting | ./ASF-59-Rate-Limiting.md | ASF-59-...md | ✅ |
+The scrumai.org header is blocking the website content. The fixed/sticky header overlays the "Get Started on GitHub" button and makes it unclickable.
 
-## Testing
+## Links to Connect (Ready)
 
-- Verified: All four links resolve and render correctly in GitHub preview
-- Tested: No broken anchors or 404s
+| Page | Link | Status |
+|------|------|--------|
+| CIO Report | ./docs/deliverables/ASF-52-CIO-Security-Report.md | ✅ Ready |
+| Features | ./docs/deliverables/ASF-53-Features-Page.md | ✅ Ready |
+| Use Cases | ./docs/deliverables/ASF-54-Use-Cases-Page.md | ✅ Ready |
+| Contact | ./docs/deliverables/ASF-55-Contact-Page.md | ✅ Ready |
+| Security Audit | ./ASF-51-Exposure-Audit.md | ✅ Ready |
+| Rate Limiting | ./ASF-59-Rate-Limiting.md | ✅ Ready |
 
----
+## Fix Required
+
+Need to remove/adjust the scrumai.org header before links are clickable.
 
 ## DoD
 
-- [x] Links connected
-- [x] Navigation working
-- [x] Tested on GitHub preview
-- [x] All 6 story links connected
+- [x] Links ready in content
+- [ ] Header blocking issue resolved
+- [ ] All links clickable on live site
 
 ---
 
@@ -42,4 +42,4 @@ Connect all navigation links on the ASF front page to their respective content p
 - [ASF Overview](../README.md)
 - [CIO Report](./docs/deliverables/ASF-52-CIO-Security-Report.md)
 
-*Last updated: March 8, 2026 – All links verified.*
+*Last updated: March 8, 2026 - BLOCKED by header overlay*
