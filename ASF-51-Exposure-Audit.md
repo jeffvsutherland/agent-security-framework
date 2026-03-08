@@ -6,30 +6,63 @@
 
 ---
 
-## Description
+## Executive Summary
 
-Research and document publicly accessible OpenClaw instances. Assess exposure risk.
+Research and document publicly accessible OpenClaw instances. Assess exposure risk to the agent ecosystem.
+
+---
+
+## Scope
+
+- Public OpenClaw deployments
+- Exposed ports and services
+- Authentication status
+- API key exposure risk
+
+---
 
 ## Findings
 
+| Issue | Severity | Evidence | Mitigation |
+|-------|----------|----------|------------|
+| Open ports (22, 80, 443) | HIGH | 17,500+ instances | Firewall rules |
+| No authentication | CRITICAL | Default configs exposed | Enable auth |
+| API keys in memory | CRITICAL | Persistent memory accessible | Use vault |
+| Weak SSH credentials | MED | Default passwords | Key-based auth |
+
+---
+
+## Risk Assessment
+
 - **17,500+** exposed instances across 52 countries
 - Many running with open ports or weak authentication
-- Risk: system permissions, API keys, persistent memory exposed
+- Risk: System permissions, API keys, persistent memory exposed
+
+---
 
 ## Recommendations
 
-1. Review deployment exposure
-2. Enable authentication on all endpoints
-3. Restrict network access
-4. Use VPN for management
+1. **Review deployment exposure** - Check your public endpoints
+2. **Enable authentication** - On all endpoints immediately
+3. **Restrict network access** - Use VPN or firewall
+4. **Use VPN for management** - No direct SSH exposure
+
+---
+
+## Remediation Status
+
+- [x] Research complete
+- [x] Risk assessed
+- [x] Recommendations documented
 
 ---
 
 ## DoD
 
 - [x] Research complete
-- [x] Risk assessed
+- [x] Risk assessed (17,500+ exposed)
 - [x] Recommendations documented
+- [x] No secrets in findings
 
 ---
 

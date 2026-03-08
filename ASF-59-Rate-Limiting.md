@@ -8,9 +8,11 @@
 
 ## Description
 
-Configure gateway authentication rate limiting to prevent brute force attacks.
+Configure gateway authentication rate limiting to prevent brute force and DoS attacks.
 
 ## Configuration
+
+### OpenClaw Gateway Config
 
 ```json
 {
@@ -20,18 +22,41 @@ Configure gateway authentication rate limiting to prevent brute force attacks.
 }
 ```
 
-## Security Impact
+### NGINX Example
+
+```nginx
+limit_req_zone $binary_remote_addr zone=one:10m rate=10r/s;
+
+server {
+    location /api/ {
+        limit_req zone=one burst=20 nodelay;
+    }
+    
+    location /auth/ {
+        limit_req zone=one burst=5 nodelay;
+    }
+}
+```
+
+## Security Rationale
 
 - **Prevents brute force** - Max 10 attempts per minute
+- **Blocks DoS attacks** - Rate limiting on all endpoints
 - **Account lockout** - 5 minute lockout after threshold
-- **Rate limiting** - Protects auth endpoints
+
+## Security Impact
+
+- Prevents rogue agents or prompt floods
+- Protects authentication endpoints
+- Reduces attack surface
 
 ---
 
 ## DoD
 
 - [x] Rate limiting configured
-- [x] Tested
+- [x] Config documented
+- [x] Security rationale included
 - [x] Ready for deploy
 
 ---
@@ -39,3 +64,4 @@ Configure gateway authentication rate limiting to prevent brute force attacks.
 ## See Also
 
 - [ASF Overview](../README.md)
+- [CIO Report](./docs/deliverables/ASF-52-CIO-Security-Report.md)
