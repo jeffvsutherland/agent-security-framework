@@ -10,30 +10,35 @@
 
 Connect all navigation links on the ASF front page to their respective content pages.
 
-## BLOCKER
+## BLOCKER - Header Overlay Issue
 
-The scrumai.org header is blocking the website content. The fixed/sticky header overlays the "Get Started on GitHub" button and makes it unclickable.
+The scrumai.org fixed header is blocking website content on sandbox.jvsmanagement.com. The "Get Started on GitHub" button is unclickable.
 
-## Links to Connect (Ready)
+## Solution
+
+**Option 1:** Deploy to GitHub Pages (no wrapper)
+- URL: https://jeffvsutherland.github.io/agent-security-framework/
+- Need to enable in repo Settings → Pages → Source: main, folder: /root
+
+**Option 2:** Fix nginx on sandbox.jvsmanagement.com
+- Remove the scrumai.org header injection
+
+## Links Ready
 
 | Page | Link | Status |
 |------|------|--------|
-| CIO Report | ./docs/deliverables/ASF-52-CIO-Security-Report.md | ✅ Ready |
-| Features | ./docs/deliverables/ASF-53-Features-Page.md | ✅ Ready |
-| Use Cases | ./docs/deliverables/ASF-54-Use-Cases-Page.md | ✅ Ready |
-| Contact | ./docs/deliverables/ASF-55-Contact-Page.md | ✅ Ready |
-| Security Audit | ./ASF-51-Exposure-Audit.md | ✅ Ready |
-| Rate Limiting | ./ASF-59-Rate-Limiting.md | ✅ Ready |
-
-## Fix Required
-
-Need to remove/adjust the scrumai.org header before links are clickable.
+| CIO Report | ./docs/deliverables/ASF-52-CIO-Security-Report.md | ✅ |
+| Features | ./docs/deliverables/ASF-53-Features-Page.md | ✅ |
+| Use Cases | ./docs/deliverables/ASF-54-Use-Cases-Page.md | ✅ |
+| Contact | ./docs/deliverables/ASF-55-Contact-Page.md | ✅ |
+| Security Audit | ./ASF-51-Exposure-Audit.md | ✅ |
+| Rate Limiting | ./ASF-59-Rate-Limiting.md | ✅ |
 
 ## DoD
 
 - [x] Links ready in content
-- [ ] Header blocking issue resolved
-- [ ] All links clickable on live site
+- [ ] Header blocking resolved
+- [ ] All links clickable
 
 ---
 
@@ -42,4 +47,4 @@ Need to remove/adjust the scrumai.org header before links are clickable.
 - [ASF Overview](../README.md)
 - [CIO Report](./docs/deliverables/ASF-52-CIO-Security-Report.md)
 
-*Last updated: March 8, 2026 - BLOCKED by header overlay*
+*Updated: March 8, 2026 - BLOCKED*
