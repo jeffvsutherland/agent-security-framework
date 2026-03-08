@@ -1,6 +1,7 @@
 # ASF-59: Gateway Rate Limiting Configuration
 
-**Status:** IN REVIEW  
+**Status:** DONE  
+**Review:** Grok Heavy Approved  
 **Date:** March 2026  
 **Purpose:** Prevent DoS/abuse from rogue agents or prompt floods
 
