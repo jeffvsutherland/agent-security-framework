@@ -1,5 +1,8 @@
 ## ASF-54: Use Cases Page
 
+**Status:** TO DO  
+**Assignee:** Sales Agent
+
 ### Purpose
 Showcase ASF security capabilities through practical enterprise use cases.
 

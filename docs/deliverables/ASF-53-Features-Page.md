@@ -1,5 +1,8 @@
 ## ASF-53: Features Page
 
+**Status:** TO DO  
+**Assignee:** Sales Agent
+
 ### Purpose
 Create features page for ASF website showcasing security capabilities with 90/100 security score.
 

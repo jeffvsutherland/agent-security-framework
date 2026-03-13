@@ -1,6 +1,6 @@
 # ASF-49: Remote Partner Installation - Clawdbot + OpenClaw
 
-**Status:** In Progress
+**Status:** DONE
 **Assignee:** Deploy Agent
 **Date:** March 8, 2026
 
