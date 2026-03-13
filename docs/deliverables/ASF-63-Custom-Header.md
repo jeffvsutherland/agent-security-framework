@@ -1,5 +1,7 @@
 # ASF-63: Custom Security Headers for /agentsecurityframework
 
+**Status:** DONE  
+
 ## Overview
 Add custom security headers to the /agentsecurityframework path for verification, debugging, and trust attestation.
 
