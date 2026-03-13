@@ -28,6 +28,12 @@ Connect all navigation links on the ASF front page to their respective content p
 | GitHub Release | ./docs/deliverables/ASF-62-GitHub-Release.md | docs/deliverables/ASF-62-GitHub-Release.md | ✅ |
 | Custom Header | ./docs/deliverables/ASF-63-Custom-Header.md | docs/deliverables/ASF-63-Custom-Header.md | ✅ |
 
+## Tools & Commands
+
+| Tool | Link | Target File | Status |
+|------|------|-------------|--------|
+| CIO Report Command | ./ASF-67-CIO-Command.md | ASF-67-CIO-Command.md | ✅ |
+
 ---
 
 ## Verification
