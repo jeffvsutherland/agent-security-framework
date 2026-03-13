@@ -28,6 +28,10 @@ The scrumai.org fixed header is blocking website content on sandbox.jvsmanagemen
 | Page | Link | Status |
 |------|------|--------|
 | CIO Report | ./docs/deliverables/ASF-52-CIO-Security-Report.md | ✅ |
+| CIO Command | ./docs/deliverables/ASF-67-Simple-CIO-Command.md | ✅ |
+| Features | ./docs/deliverables/ASF-53-Features-Page.md | ✅ |
+| Use Cases | ./docs/deliverables/ASF-54-Use-Cases-Page.md | ✅ |
+| Contact | ./docs/deliverables/ASF-55-Contact-Page.md | ✅ |
 | Features | ./docs/deliverables/ASF-53-Features-Page.md | ✅ |
 | Use Cases | ./docs/deliverables/ASF-54-Use-Cases-Page.md | ✅ |
 | Contact | ./docs/deliverables/ASF-55-Contact-Page.md | ✅ |
