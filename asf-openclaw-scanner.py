@@ -259,14 +259,45 @@ parser = argparse.ArgumentParser()
 parser.add_argument("skills_path", nargs="?", default=None)
 args, unknown = parser.parse_known_args()
 
+def find_skills_path():
+    """Find the skills directory - check multiple common locations"""
+    # If explicitly provided, use that
+    if args.skills_path:
+        if os.path.exists(args.skills_path):
+            return args.skills_path
+        return None
+    
+    # Check common paths in order
+    paths_to_check = [
+        os.path.expanduser('~/clawd/skills'),  # OpenClaw default
+        os.path.expanduser('~/Library/Application Support/OpenClaw/skills'),  # Mac
+        os.path.expanduser('~/.openclaw/skills'),  # Config dir
+        '/workspace/skills',  # Linux container
+        '/app/skills',  # Linux container alt
+    ]
+    
+    # Also check agent subdirectories
+    clawd = os.path.expanduser('~/clawd')
+    if os.path.exists(clawd):
+        for item in os.listdir(clawd):
+            agent_skills = os.path.join(clawd, item, 'skills')
+            if os.path.isdir(agent_skills) and os.listdir(agent_skills):
+                paths_to_check.insert(0, agent_skills)  # Check agent dirs first
+    
+    for path in paths_to_check:
+        if os.path.exists(path) and os.listdir(path):
+            return path
+    
+    return '/app/skills'  # Fallback
+
 def main():
     """Main scanner function"""
     print_header()
     
     results = []
     
-    # Check OpenClaw skills directory
-    skills_path = '/app/skills'
+    # Find skills path
+    skills_path = find_skills_path()
     print(f"📁 Scanning OpenClaw skills in {skills_path}")
     print("────────────────────────────────────────────────────────────────")
     

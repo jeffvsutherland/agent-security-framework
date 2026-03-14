@@ -1,12 +1,12 @@
 #!/bin/bash
-# curl -sSL https://raw.githubusercontent.com/jeffvsutherland/agent-security-framework/main/asf-security-report.sh | bash
+# curl -fsSL https://raw.githubusercontent.com/jeffvsutherland/agent-security-framework/main/asf-cio-security-report.sh | bash
 
 OUTPUT_FILE="ASF-CIO-SECURITY-REPORT.md"
 DATE=$(date '+%Y-%m-%d %H:%M:%S')
 
 echo "🛡️ Generating CIO Security Report..."
 
-# Clean old scan results to ensure fresh scan
+# Clean old scan results
 rm -f asf-openclaw-scan-report.json ~/asf-openclaw-scan-report.json
 
 # Download scanner if not present
@@ -16,35 +16,9 @@ if [ ! -f "asf-openclaw-scanner.py" ]; then
     chmod +x asf-openclaw-scanner.py
 fi
 
-# Run scanner - try each path and use the one that finds skills
+# Run scanner - let it auto-detect skills path
 echo "Running security scan..."
-SCAN_OUTPUT=""
-
-# Try scanning agent subdirectories in ~/clawd first
-for AGENT_DIR in ~/clawd/agents/*/skills; do
-    if [ -d "$AGENT_DIR" ] && [ "$(ls -A "$AGENT_DIR" 2>/dev/null)" ]; then
-        echo "Trying: $AGENT_DIR"
-        SCAN_OUTPUT=$(python3 asf-openclaw-scanner.py "$AGENT_DIR" 2>&1)
-        if echo "$SCAN_OUTPUT" | grep -q "Skills Scanned"; then
-            echo "Found skills in: $AGENT_DIR"
-            break
-        fi
-    fi
-done
-
-# If no skills found, try root level directories
-if ! echo "$SCAN_OUTPUT" | grep -q "Skills Scanned"; then
-    for SKILLS_PATH in "$HOME/clawd/skills" "$HOME/Library/Application Support/OpenClaw/skills" "./skills" "/workspace/skills" "/app/skills"; do
-        if [ -d "$SKILLS_PATH" ] && [ "$(ls -A "$SKILLS_PATH" 2>/dev/null)" ]; then
-            echo "Trying: $SKILLS_PATH"
-            SCAN_OUTPUT=$(python3 asf-openclaw-scanner.py "$SKILLS_PATH" 2>&1)
-            if echo "$SCAN_OUTPUT" | grep -q "Skills Scanned"; then
-                echo "Found skills in: $SKILLS_PATH"
-                break
-            fi
-        fi
-    done
-fi
+python3 asf-openclaw-scanner.py 2>&1 || true
 
 # Find JSON
 JSON_FILE=""
@@ -60,7 +34,7 @@ if [ -n "$JSON_FILE" ] && [ -r "$JSON_FILE" ]; then
     WARNINGS=$(python3 -c "import json; print(json.load(open('$JSON_FILE')).get('summary',{}).get('warning_skills',0))" 2>/dev/null || echo "0")
     DANGERS=$(python3 -c "import json; print(json.load(open('$JSON_FILE')).get('summary',{}).get('danger_skills',0))" 2>/dev/null || echo "0")
     
-    # Get unfixed skills from fixes_status
+    # Get unfixed skills
     UNFIXED_LIST=$(python3 -c "
 import json
 try:
@@ -72,26 +46,11 @@ except: print('Unknown')
 " 2>/dev/null || echo "Unknown")
 fi
 
-if [ "$SCORE" -eq 100 ]; then
-    STATUS="✅ PERFECT"
-elif [ "$SCORE" -ge 90 ]; then
-    STATUS="✅ EXCELLENT"
-elif [ "$SCORE" -ge 70 ]; then
-    STATUS="⚠️ ACCEPTABLE"
-else
-    STATUS="❌ CRITICAL"
-fi
+# Status
+if [ "$SCORE" -eq 100 ]; then STATUS="✅ PERFECT"; elif [ "$SCORE" -ge 90 ]; then STATUS="✅ EXCELLENT"; elif [ "$SCORE" -ge 70 ]; then STATUS="⚠️ ACCEPTABLE"; else STATUS="❌ CRITICAL"; fi
 [ "$DANGERS" -eq 0 ] && CRIT="✅ None" || CRIT="❌ ACTION REQUIRED"
 [ "$WARNINGS" -gt 0 ] && WARN_STATUS="⚠️ $WARNINGS to review" || WARN_STATUS="✅ None"
-if [ "$SCORE" -eq 100 ]; then
-    MEANING="100% secured - PERFECT!"
-elif [ "$SCORE" -ge 90 ]; then
-    MEANING="well-protected"
-elif [ "$SCORE" -ge 70 ]; then
-    MEANING="adequately protected"
-else
-    MEANING="requiring attention"
-fi
+[ "$SCORE" -eq 100 ] && MEANING="fully secured - 100/100!" || [ "$SCORE" -ge 90 ] && MEANING="well-protected" || [ "$SCORE" -ge 70 ] && MEANING="adequately protected" || MEANING="requiring attention"
 SAFE=$((52 - WARNINGS - DANGERS)); [ $SAFE -lt 0 ] && SAFE=0
 
 # Generate report
@@ -119,44 +78,6 @@ cat > "$OUTPUT_FILE" << EOF
 
 **Unfixed Skills:** $UNFIXED_LIST
 
-**Point Deduction:** Each unfixed skill deducts points from 100.
-
-EOF
-
-# Add specific fix commands if there are unfixed skills
-if [ "$UNFIXED_LIST" != "" ]; then
-cat >> "$OUTPUT_FILE" << 'EOF'
-
-### How to Fix (run on your machine):
-
-EOF
-python3 -c "
-import json
-try:
-    with open('$JSON_FILE') as f:
-        data = json.load(f)
-        fixes = data.get('fixes_status', {})
-        for skill, status in fixes.items():
-            if status == 'NOT_FIXED':
-                if 'openai' in skill:
-                    print(f'**{skill}**: Delete or replace with secure version')
-                    print('```bash')
-                    print(f'rm -rf ~/clawd/skills/{skill}')
-                    print(f'# Or get secure version from GitHub')
-                    print('```')
-                    print()
-                elif 'nano' in skill:
-                    print(f'**{skill}**: Delete deprecated skill')
-                    print('```bash')
-                    print(f'rm -rf ~/clawd/skills/{skill}')
-                    print('```')
-                    print()
-except: pass
-" >> "$OUTPUT_FILE"
-fi
-
-cat >> "$OUTPUT_FILE" << 'EOF'
-
 ---
 
 ## What This Score Means
@@ -178,66 +99,20 @@ Your security score of **$SCORE/100** indicates the system is **$MEANING**.
 
 ## Issues
 
-EOF
-
-# Dynamic warning skills from JSON
-if [ "$WARNINGS" -gt 0 ] && [ -n "$JSON_FILE" ]; then
-cat >> "$OUTPUT_FILE" << 'EOF'
-### Warnings ($WARNINGS skills)
-
-EOF
-python3 -c "
-import json
-try:
-    with open('$JSON_FILE') as f:
-        data = json.load(f)
-        warnings = data.get('warning_skills', [])
-        if warnings:
-            print('| Skill | Issue | Business Impact | Recommended Action |')
-            print('|-------|-------|-----------------|-------------------|')
-            for w in warnings:
-                name = w.get('name', 'unknown')
-                issues = '; '.join(w.get('issues', ['concern']))[:40]
-                print(f'| {name} | {issues} | Medium risk | Review if needed |')
-        else:
-            print('No warning skills in scan.')
-except: print('Could not read warnings.')
-" >> "$OUTPUT_FILE"
-fi
-
-if [ "$DANGERS" -gt 0 ]; then
-cat >> "$OUTPUT_FILE" << EOF
-
-### Critical Issues ($DANGERS)
-
-⚠️ **IMMEDIATE ACTION REQUIRED**
-
-EOF
-else
-cat >> "$OUTPUT_FILE" << EOF
-
 ### Critical Issues
 
-✅ **None** - No critical issues found
-
-EOF
-fi
-
-cat >> "$OUTPUT_FILE" << EOF
+$([ "$DANGERS" -eq 0 ] && echo "✅ **None** - No critical issues found" || echo "🚨 **$DANGERS** critical issue(s) found")
 
 ---
 
 ## Next Steps
 
 1. System is $MEANING
-2. Review warnings if any
-3. Run scanner in OpenClaw for details
+2. Run scanner in OpenClaw for details
 
 ---
 *Generated by ASF Security Framework*
 EOF
 
-echo "✅ Report: $OUTPUT_FILE"
+echo "✅ CIO Report: $OUTPUT_FILE"
 cat "$OUTPUT_FILE"
-# Force refresh Sat Mar 14 17:50:31 UTC 2026
-# CDN refresh Sat Mar 14 18:17:16 UTC 2026
