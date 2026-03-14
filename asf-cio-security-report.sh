@@ -18,7 +18,7 @@ fi
 
 # Run the security scan (full scanner saves JSON)
 echo "Running ASF security scan..."
-python3 asf-openclaw-scanner.py ~/clawd/skills >/dev/null 2>&1 || python3 asf-openclaw-scanner.py >/dev/null 2>&1 || true
+python3 asf-openclaw-scanner.py /app/skills >/dev/null 2>&1 || python3 asf-openclaw-scanner.py >/dev/null 2>&1 || true
 
 # Find and load the JSON report
 JSON_FILE=""
@@ -140,21 +140,21 @@ The following security components are working correctly:
 
 EOF
 
-# Add warning details - use dynamic data from scanner
+# Add warning details - use dynamic data from scanner JSON
 if [ "$WARNINGS" -gt 0 ]; then
-# Build warning table from FIX_STATUS
 WARNING_TABLE=$(python3 -c "
 import json
-fixes = $FIX_STATUS
-rows = []
-for skill, status in fixes.items():
-    if status == 'NOT_FIXED':
-        issue = 'Security vulnerability or misconfiguration'
-        impact = 'Could be exploited if vulnerability discovered'
-        action = 'Apply ASF security fixes or remove skill'
-        rows.append(f'| {skill} | {issue} | {impact} | {action} |')
-print('\n'.join(rows) if rows else '| No unfixed skills found | - | All skills secured | - |')
-")
+with open('$JSON_FILE') as f:
+    data = json.load(f)
+warnings = data.get('warning_skills', [])
+if warnings:
+    for w in warnings:
+        name = w.get('name', 'unknown')
+        issues = '; '.join(w.get('issues', ['Security concern']))[:50]
+        print(f'| {name} | {issues} | Medium risk | Review and address |')
+else:
+    print('| No warning skills found | | |')
+" 2>/dev/null || echo "| Unable to parse | | |")
 
 cat >> "$OUTPUT_FILE" << EOF
 
@@ -176,7 +176,7 @@ if [ "$DANGERS" -gt 0 ]; then
 # Get dangerous skills from scanner JSON
 DANGER_SKILLS=$(python3 -c "
 import json
-with open('$SCAN_FILE') as f:
+with open('$JSON_FILE') as f:
     data = json.load(f)
     dangers = data.get('dangerous_skills', [])
     if dangers:
