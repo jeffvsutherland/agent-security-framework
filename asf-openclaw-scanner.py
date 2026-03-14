@@ -343,7 +343,7 @@ def main():
         'dangerous_skills': dangerous_results
     }
     
-    report_path = '/workspace/asf-openclaw-scan-report.json'
+    report_path = 'asf-openclaw-scan-report.json' if os.path.exists('/workspace') else 'asf-openclaw-scan-report.json'
     with open(report_path, 'w') as f:
         json.dump(report, f, indent=2)
     
