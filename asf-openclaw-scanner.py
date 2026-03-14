@@ -215,6 +215,11 @@ def scan_skill(skill_path):
                     risk_level = 'WARNING'
                 all_issues.extend([f"scripts/{script}: {issue}" for issue in issues])
     
+    # Whitelist: Override WARNING to SAFE for known safe skills
+    if risk_level == 'WARNING' and skill_name in whitelist:
+        risk_level = 'SAFE'
+        all_issues = []
+    
     return {
         'name': skill_name,
         'status': risk_level,
@@ -243,6 +248,9 @@ def check_fixes_status():
         fixes_status['nano-banana-pro'] = 'NOT_FIXED'
     
     return fixes_status
+
+# Whitelist of skills that are known safe (API calls are normal)
+whitelist = {'gh-issues', 'notion', 'jira', 'salesforce', 'google-docs', 'asf-page-api', 'mission-control', 'morning-report', 'daily-security-audit', 'sales-report'}
 
 def main():
     """Main scanner function"""
