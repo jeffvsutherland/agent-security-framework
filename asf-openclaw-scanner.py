@@ -239,9 +239,9 @@ def check_fixes_status(skills_path):
            os.path.exists(os.path.join(skill_path, 'scripts', 'gen-secure')):
             fixes_status['openai-image-gen'] = 'FIXED'
         else:
-            fixes_status['openai-image-gen'] = 'NOT_FIXED'
+            fixes_status['openai-image-gen'] = f'NOT_FIXED (remove with: rm -rf {skill_path})'
     else:
-        fixes_status['openai-image-gen'] = 'NOT_APPLICABLE'
+        fixes_status['openai-image-gen'] = 'NOT_PRESENT'
     
     # Check nano-banana-pro in the scanned skills directory
     skill_path = os.path.join(skills_path, 'nano-banana-pro')
@@ -251,9 +251,9 @@ def check_fixes_status(skills_path):
            os.path.exists(os.path.join(skill_path, 'scripts', 'generate_image-secure')):
             fixes_status['nano-banana-pro'] = 'FIXED'
         else:
-            fixes_status['nano-banana-pro'] = 'NOT_FIXED'
+            fixes_status['nano-banana-pro'] = f'NOT_FIXED (remove with: rm -rf {skill_path})'
     else:
-        fixes_status['nano-banana-pro'] = 'NOT_APPLICABLE'
+        fixes_status['nano-banana-pro'] = 'NOT_PRESENT'
     
     return fixes_status
 
@@ -349,7 +349,7 @@ def main():
         print("   No dangerous skills found! 🎉")
     
     # Calculate security score - only penalize dangers and unfixed issues
-    unfixed_count = sum(1 for s, status in fixes_status.items() if status == 'NOT_FIXED')
+    unfixed_count = sum(1 for s, status in fixes_status.items() if 'NOT_FIXED' in status)
     security_score = 100 - (danger_skills * 10 + unfixed_count * 2)
     security_score = max(0, min(100, security_score))
     

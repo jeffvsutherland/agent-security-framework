@@ -63,8 +63,8 @@ import json
 try:
     data = json.load(open('$JSON_FILE'))
     fixes = data.get('fixes_status', {})
-    unfixed = [f'{k}: {v}' for k, v in fixes.items() if v == 'NOT_FIXED']
-    print(', '.join(unfixed) if unfixed else 'All skills secured')
+    unfixed = [f'{k}: {v}' for k, v in fixes.items() if 'NOT' in v]
+    print('; '.join(unfixed) if unfixed else 'All skills secured')
 except: print('Unknown')
 " 2>/dev/null || echo "Unknown")
 fi
