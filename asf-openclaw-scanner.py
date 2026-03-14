@@ -269,7 +269,7 @@ def main():
     
     # Also check various locations as fallback
     possible_paths = [
-        '/workspace/skills',
+        os.environ.get('HOME', '.') + '/.openclaw/'.skills',
         '/app/skills',
         os.path.expanduser('~/clawd/skills'),
         './skills',
