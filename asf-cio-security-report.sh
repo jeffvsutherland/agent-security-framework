@@ -13,13 +13,19 @@ if [ ! -f "asf-openclaw-scanner.py" ]; then
     chmod +x asf-openclaw-scanner.py
 fi
 
-# Run scanner (try common skill paths - Linux, Mac, Docker)
+# Run scanner - try each path and use the one that finds skills
 echo "Running security scan..."
-python3 asf-openclaw-scanner.py /app/skills 2>&1 || \
-python3 asf-openclaw-scanner.py ~/clawd/skills 2>&1 || \
-python3 asf-openclaw-scanner.py ~/Library/Application\ Support/OpenClaw/skills 2>&1 || \
-python3 asf-openclaw-scanner.py ./skills 2>&1 || \
-python3 asf-openclaw-scanner.py 2>&1 || true
+SCAN_OUTPUT=""
+for SKILLS_PATH in "/app/skills" "$HOME/clawd/skills" "$HOME/Library/Application Support/OpenClaw/skills" "./skills"; do
+    if [ -d "$SKILLS_PATH" ]; then
+        echo "Trying skills path: $SKILLS_PATH"
+        SCAN_OUTPUT=$(python3 asf-openclaw-scanner.py "$SKILLS_PATH" 2>&1)
+        if echo "$SCAN_OUTPUT" | grep -q "Skills Scanned"; then
+            echo "Found skills in: $SKILLS_PATH"
+            break
+        fi
+    fi
+done
 
 # Find JSON
 JSON_FILE=""
