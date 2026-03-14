@@ -99,6 +99,8 @@ cat > "$OUTPUT_FILE" << EOF
 
 **Unfixed Skills:** $UNFIXED_LIST
 
+**Point Deduction:** Each unfixed skill deducts 5 points from 100.
+
 ---
 
 ## What This Score Means
