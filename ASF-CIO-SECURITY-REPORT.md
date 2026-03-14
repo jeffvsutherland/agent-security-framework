@@ -1,6 +1,6 @@
 # ASF Security Report - Executive Summary
 
-**Generated:** 2026-03-14 17:27:23  
+**Generated:** 2026-03-14 17:30:50  
 **System:** OpenClaw Agent Platform  
 **Security Score:** 90/100
 
@@ -11,7 +11,7 @@
 | Metric | Value | Status |
 |--------|-------|--------|
 | Security Score | 90/100 | ✅ EXCELLENT |
-| Safe Skills | 2 | ✅ Pass |
+| Safe Skills | 50 | ✅ Pass |
 | Warning Skills | 2 | ⚠️ Review |
 | Critical Issues | 0 | ✅ None |
 
@@ -62,7 +62,7 @@ These skills have potential security concerns that should be reviewed:
 
 | Skill | Issue | Business Impact | Recommended Action |
 |-------|-------|-----------------|-------------------|
-| No warning skills found | | |
+| No warning skills identified | | |
 
 **Why This Matters:** These are informational warnings for skills that make external API calls. This is normal for integration skills. No action required unless specific concerns.
 

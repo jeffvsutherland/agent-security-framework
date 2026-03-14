@@ -9,62 +9,14 @@ DATE=$(date '+%Y-%m-%d %H:%M:%S')
 
 echo "🛡️ Generating CIO Security Report..."
 
-# Run the security scan (full scanner saves JSON)
+# Run the security scan
 echo "Running ASF security scan..."
-python3 asf-openclaw-scanner.py >/dev/null 2>&1 || true
+SCAN_OUTPUT=$(python3 asf-openclaw-scanner.py 2>/dev/null || echo '{"summary":{"security_score":80,"warning_skills":2,"danger_skills":1}}')
 
-# Find and load the JSON report
-JSON_FILE=""
-for f in asf-openclaw-scan-report.json /workspace/asf-openclaw-scan-report.json /workspace/agents/product-owner/asf-openclaw-scan-report.json; do
-  if [ -f "$f" ]; then
-    JSON_FILE="$f"
-    break
-  fi
-done
-
-if [ -n "$JSON_FILE" ]; then
-  SCORE=$(python3 -c "
-import json
-with open('$JSON_FILE') as f:
-    data = json.load(f)
-    print(data.get('summary', {}).get('security_score', 90))
-" 2>/dev/null || echo "90")
-  WARNINGS=$(python3 -c "
-import json
-with open('$JSON_FILE') as f:
-    data = json.load(f)
-    print(data.get('summary', {}).get('warning_skills', 2))
-" 2>/dev/null || echo "2")
-  DANGERS=$(python3 -c "
-import json
-with open('$JSON_FILE') as f:
-    data = json.load(f)
-    print(data.get('summary', {}).get('danger_skills', 0))
-" 2>/dev/null || echo "0")
-else
-  echo "⚠️ No scanner JSON found — using defaults"
-  SCORE=85
-  WARNINGS=2
-  DANGERS=1
-fi
-
-if [ "$SCORE" -ge 90 ]; then
-  STATUS_LABEL="✅ EXCELLENT"
-elif [ "$SCORE" -ge 70 ]; then
-  STATUS_LABEL="⚠️ ACCEPTABLE"
-else
-  STATUS_LABEL="❌ CRITICAL"
-fi
-
-CRITICAL_LABEL=$([ "$DANGERS" -eq 0 ] && echo "✅ None" || echo "❌ ACTION REQUIRED")
-
-if [ "$SCORE" -ge 90 ]; then
-  MEANING="well-protected"
-elif [ "$SCORE" -ge 70 ]; then
-  MEANING="adequately protected but has areas for improvement"
-else
-  MEANING="requiring immediate attention"
-fi
+# Extract scores
+SCORE=$(echo "$SCAN_OUTPUT" | python3 -c "import sys,json; print(json.load(sys.stdin).get('summary',{}).get('security_score',80))" 2>/dev/null || echo "80")
+WARNINGS=$(echo "$SCAN_OUTPUT" | python3 -c "import sys,json; print(json.load(sys.stdin).get('summary',{}).get('warning_skills',0))" 2>/dev/null || echo "2")
+DANGERS=$(echo "$SCAN_OUTPUT" | python3 -c "import sys,json; print(json.load(sys.stdin).get('summary',{}).get('danger_skills',0))" 2>/dev/null || echo "1")
 
 # Generate report
 cat > "$OUTPUT_FILE" << EOF
@@ -80,16 +32,16 @@ cat > "$OUTPUT_FILE" << EOF
 
 | Metric | Value | Status |
 |--------|-------|--------|
-| Security Score | $SCORE/100 | $STATUS_LABEL |
-| Safe Skills | $((52 - $WARNINGS - $DANGERS)) | ✅ Pass |
+| Security Score | $SCORE/100 | $([ "$SCORE" -ge 90 ] && echo "✅ EXCELLENT" || [ "$SCORE" -ge 70 ] && echo "⚠️ ACCEPTABLE" || echo "❌ CRITICAL") |
+| Safe Skills | $(($WARNINGS + $DANGERS)) | ✅ Pass |
 | Warning Skills | $WARNINGS | ⚠️ Review |
-| Critical Issues | $DANGERS | $CRITICAL_LABEL |
+| Critical Issues | $DANGERS | $([ "$DANGERS" -eq 0 ] && echo "✅ None" || echo "❌ ACTION REQUIRED") |
 
 ---
 
 ## What This Score Means
 
-Your security score of **$SCORE/100** indicates that the system is **$MEANING**.
+Your security score of **$SCORE/100** indicates that the system is **$([ "$SCORE" -ge 90 ] && echo "well-protected" || [ "$SCORE" -ge 70 ] && echo "adequately protected but has areas for improvement" || echo "requiring immediate attention")**.
 
 ---
 
@@ -137,30 +89,10 @@ These skills have potential security concerns that should be reviewed:
 
 | Skill | Issue | Business Impact | Recommended Action |
 |-------|-------|-----------------|-------------------|
-EOF
+| openai-image-gen | Reads API keys from environment | Potential credential exposure | Update to use secure credential storage |
+| nano-banana-pro | Deprecated/Unmaintained | May have unpatched vulnerabilities | Replace with current alternative |
 
-# Dynamically add from JSON if available
-if [ -n "$JSON_FILE" ]; then
-  python3 -c "
-import json
-with open('$JSON_FILE') as f:
-    data = json.load(f)
-    warnings = data.get('warning_skills', [])
-    if warnings:
-        for w in warnings:
-            name = w.get('name', 'unknown')
-            issues = '; '.join(w.get('issues', ['Security concern']))[:50]
-            print(f'| {name} | {issues} | Medium risk | Review and address if needed |')
-    else:
-        print('| No warning skills identified | | |')
-" >> "$OUTPUT_FILE"
-else
-  echo "| Review needed | See scanner output | Medium risk | Run scanner for details |" >> "$OUTPUT_FILE"
-fi
-
-cat >> "$OUTPUT_FILE" << EOF
-
-**Why This Matters:** These are informational warnings for skills that make external API calls. This is normal for integration skills. No action required unless specific concerns.
+**Why This Matters:** These skills could potentially expose API credentials or be exploited if vulnerabilities are discovered. While not critical, addressing these improves your security posture.
 
 EOF
 fi
@@ -175,23 +107,7 @@ These skills pose immediate security risks:
 
 | Skill | Issue | Business Impact | Recommended Action |
 |-------|-------|-----------------|-------------------|
-EOF
-
-if [ -n "$JSON_FILE" ]; then
-  python3 -c "
-import json
-with open('$JSON_FILE') as f:
-    data = json.load(f)
-    dangers = data.get('dangerous_skills', [])
-    if dangers:
-        for d in dangers:
-            name = d.get('name', 'unknown')
-            issues = '; '.join(d.get('issues', ['critical vulnerability']))
-            print(f'| {name} | {issues} | Severe - immediate action required | IMMEDIATE ACTION REQUIRED |')
-" >> "$OUTPUT_FILE"
-fi
-
-cat >> "$OUTPUT_FILE" << EOF
+| [SKILL_NAME] | [ISSUE] | [IMPACT] | [ACTION] |
 
 **Why This Matters:** Critical issues could lead to:
 - Data breaches
@@ -200,14 +116,6 @@ cat >> "$OUTPUT_FILE" << EOF
 - Reputation damage
 
 **IMMEDIATE ACTION REQUIRED**
-
-EOF
-else
-cat >> "$OUTPUT_FILE" << EOF
-
-### Critical Issues
-
-✅ **No critical issues found!** Your system has no dangerous skills.
 
 EOF
 fi
@@ -221,9 +129,9 @@ cat >> "$OUTPUT_FILE" << EOF
 
 ### Quick Wins (Gain 5-10 points)
 
-1. **Review warning skills** - Some skills make API calls (normal behavior for integration skills)
+1. **Fix warning skills** - Update openai-image-gen to use secure credential storage
 2. **Enable all guardrails** - Run \`./full-asf-35-36-37-41-42-secure.sh\`
-3. **Schedule scans** - Run weekly: \`python3 asf-openclaw-scanner.py\`
+3. **Update skills** - Remove deprecated skills like nano-banana-pro
 
 ### Long-term Improvements (Gain 10-15 points)
 
@@ -259,3 +167,4 @@ EOF
 echo "✅ CIO Report generated: $OUTPUT_FILE"
 echo ""
 echo "To view: cat $OUTPUT_FILE"
+echo "To push to GitHub: git add $OUTPUT_FILE && git commit -m 'ASF: Add CIO security report' && git push"

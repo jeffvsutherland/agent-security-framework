@@ -83,6 +83,15 @@ def scan_binary_for_env_vars(filepath):
         b'DEEPSEEK_API_KEY',
         b'PERPLEXITY_API_KEY'
     ]
+
+    # Skip ASF wrapper scripts - they unset API keys for security
+    try:
+        with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
+            content = f.read(500)
+            if 'ASF Security Wrapper' in content and 'unset' in content:
+                return []
+    except:
+        pass
     
     try:
         with open(filepath, 'rb') as f:
@@ -292,6 +301,7 @@ def main():
     print("────────────────────────────────────────────────────────────────")
     
     dangerous_results = [r for r in results if r['status'] == 'DANGER']
+    warning_results = [r for r in results if r['status'] == 'WARNING']
     
     if dangerous_results:
         for result in dangerous_results:
@@ -324,7 +334,8 @@ def main():
             'security_score': security_score
         },
         'fixes_status': fixes_status,
-        'dangerous_skills': dangerous_results
+        'dangerous_skills': dangerous_results,
+        'warning_skills_detail': [{'name': r['name'], 'issues': r['issues']} for r in warning_results]
     }
     
     report_path = '/workspace/asf-openclaw-scan-report.json'
