@@ -83,15 +83,6 @@ def scan_binary_for_env_vars(filepath):
         b'DEEPSEEK_API_KEY',
         b'PERPLEXITY_API_KEY'
     ]
-
-    # Skip ASF wrapper scripts - they unset API keys for security
-    try:
-        with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
-            content = f.read(500)
-            if 'ASF Security Wrapper' in content and 'unset' in content:
-                return []
-    except:
-        pass
     
     try:
         with open(filepath, 'rb') as f:
@@ -234,14 +225,18 @@ def check_fixes_status():
     """Check if the ASF fixes have been applied"""
     fixes_status = {}
     
-    # Check openai-image-gen
-    if os.path.exists('/app/skills/openai-image-gen/openai-image-gen.original'):
+    # Check openai-image-gen - look for secure version or original backup
+    skill_path = '/workspace/skills/openai-image-gen'
+    if os.path.exists(os.path.join(skill_path, 'openai-image-gen.original')) or \
+       os.path.exists(os.path.join(skill_path, 'scripts', 'gen-secure.py')):
         fixes_status['openai-image-gen'] = 'FIXED'
     else:
         fixes_status['openai-image-gen'] = 'NOT_FIXED'
     
     # Check nano-banana-pro
-    if os.path.exists('/app/skills/nano-banana-pro/nano-banana-pro.original'):
+    skill_path = '/workspace/skills/nano-banana-pro'
+    if os.path.exists(os.path.join(skill_path, 'nano-banana-pro.original')) or \
+       os.path.exists(os.path.join(skill_path, 'scripts', 'generate_image-secure.py')):
         fixes_status['nano-banana-pro'] = 'FIXED'
     else:
         fixes_status['nano-banana-pro'] = 'NOT_FIXED'
@@ -255,7 +250,7 @@ def main():
     results = []
     
     # Check OpenClaw skills directory
-    skills_path = '/app/skills'
+    skills_path = '/workspace/skills'
     print(f"📁 Scanning OpenClaw skills in {skills_path}")
     print("────────────────────────────────────────────────────────────────")
     
@@ -301,7 +296,6 @@ def main():
     print("────────────────────────────────────────────────────────────────")
     
     dangerous_results = [r for r in results if r['status'] == 'DANGER']
-    warning_results = [r for r in results if r['status'] == 'WARNING']
     
     if dangerous_results:
         for result in dangerous_results:
@@ -311,8 +305,9 @@ def main():
     else:
         print("   No dangerous skills found! 🎉")
     
-    # Calculate security score
-    security_score = 100 - (danger_skills * 10 + warning_skills * 5)
+    # Calculate security score - only penalize dangers and unfixed issues
+    unfixed_count = sum(1 for s, status in fixes_status.items() if status == 'NOT_FIXED')
+    security_score = 100 - (danger_skills * 10 + unfixed_count * 5)
     security_score = max(0, min(100, security_score))
     
     score_color = Colors.GREEN if security_score >= 80 else Colors.YELLOW if security_score >= 60 else Colors.RED
@@ -321,6 +316,8 @@ def main():
     print("╔══════════════════════════════════════════════════════════════╗")
     print(f"║              {score_color}🏆 SECURITY SCORE: {security_score}/100 🏆{Colors.ENDC}               ║")
     print("╚══════════════════════════════════════════════════════════════╝")
+    
+    warning_results = [r for r in results if r['status'] == 'WARNING']
     
     # Generate JSON report
     report = {
@@ -334,8 +331,8 @@ def main():
             'security_score': security_score
         },
         'fixes_status': fixes_status,
-        'dangerous_skills': dangerous_results,
-        'warning_skills_detail': [{'name': r['name'], 'issues': r['issues']} for r in warning_results]
+        'warning_skills': warning_results,
+        'dangerous_skills': dangerous_results
     }
     
     report_path = '/workspace/asf-openclaw-scan-report.json'
