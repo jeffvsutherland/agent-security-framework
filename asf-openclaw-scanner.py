@@ -267,13 +267,25 @@ def main():
     results = []
     
     # Check for command-line argument or use default
-    skills_path = sys.argv[1] if len(sys.argv) > 1 else '/workspace/skills'
+    # Try to find skills directory - check common locations
+    potential_paths = [
+        sys.argv[1] if len(sys.argv) > 1 else None,
+        os.path.expanduser('~/Library/Application Support/OpenClaw/skills'),
+        os.path.expanduser('~/clawd/skills'),
+        '/workspace/skills',
+        '/app/skills',
+    ]
     
-    # Also check ~/clawd/skills as fallback
-    if not os.path.exists(skills_path):
-        home_skills = os.path.expanduser('~/clawd/skills')
-        if os.path.exists(home_skills):
-            skills_path = home_skills
+    skills_path = None
+    for p in potential_paths:
+        if p and os.path.exists(p) and os.path.isdir(p):
+            skills_path = p
+            break
+    
+    if not skills_path:
+        print("⚠️  No skills directory found!")
+        print("   Tried:", [p for p in potential_paths if p])
+        skills_path = potential_paths[-1]  # Use last as fallback
     
     print(f"📁 Scanning OpenClaw skills in {skills_path}")
     print("────────────────────────────────────────────────────────────────")
