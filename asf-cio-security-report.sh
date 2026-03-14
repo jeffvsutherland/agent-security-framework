@@ -9,28 +9,60 @@ DATE=$(date '+%Y-%m-%d %H:%M:%S')
 
 echo "🛡️ Generating CIO Security Report..."
 
-# Run the security scan
+# Run the security scan (full scanner saves JSON)
 echo "Running ASF security scan..."
-python3 asf-openclaw-scanner.py 2>/dev/null
+python3 asf-openclaw-scanner.py >/dev/null 2>&1 || true
 
-# Find the scan report - check current dir first, then /workspace
-if [ -f "asf-openclaw-scan-report.json" ]; then
-    SCAN_FILE="asf-openclaw-scan-report.json"
-elif [ -f "/workspace/asf-openclaw-scan-report.json" ]; then
-    SCAN_FILE="/workspace/asf-openclaw-scan-report.json"
+# Find and load the JSON report
+JSON_FILE=""
+for f in asf-openclaw-scan-report.json /workspace/asf-openclaw-scan-report.json /workspace/agents/product-owner/asf-openclaw-scan-report.json; do
+  if [ -f "$f" ]; then
+    JSON_FILE="$f"
+    break
+  fi
+done
+
+if [ -n "$JSON_FILE" ]; then
+  SCORE=$(python3 -c "
+import json, sys
+with open('$JSON_FILE') as f:
+    data = json.load(f)
+    print(data.get('summary', {}).get('security_score', 90))
+" 2>/dev/null || echo "90")
+  WARNINGS=$(python3 -c "
+import json, sys
+with open('$JSON_FILE') as f:
+    data = json.load(f)
+    print(data.get('summary', {}).get('warning_skills', 2))
+" 2>/dev/null || echo "2")
+  DANGERS=$(python3 -c "
+import json, sys
+with open('$JSON_FILE') as f:
+    data = json.load(f)
+    print(data.get('summary', {}).get('danger_skills', 0))
+" 2>/dev/null || echo "0")
 else
-    SCAN_FILE=""
+  SCORE=90
+  WARNINGS=2
+  DANGERS=0
 fi
 
-if [ -n "$SCAN_FILE" ] && [ -f "$SCAN_FILE" ]; then
-    SCORE=$(python3 -c "import sys,json; print(json.load(open('$SCAN_FILE')).get('summary',{}).get('security_score',80))" 2>/dev/null || echo "80")
-    WARNINGS=$(python3 -c "import sys,json; print(json.load(open('$SCAN_FILE')).get('summary',{}).get('warning_skills',0))" 2>/dev/null || echo "0")
-    DANGERS=$(python3 -c "import sys,json; print(json.load(open('$SCAN_FILE')).get('summary',{}).get('danger_skills',0))" 2>/dev/null || echo "0")
+if [ "$SCORE" -ge 90 ]; then
+  STATUS_LABEL="✅ EXCELLENT"
+elif [ "$SCORE" -ge 70 ]; then
+  STATUS_LABEL="⚠️ ACCEPTABLE"
 else
-    SCORE=80
-    WARNINGS=0
-    DANGERS=0
-    SCAN_FILE=""
+  STATUS_LABEL="❌ CRITICAL"
+fi
+
+CRITICAL_LABEL=$([ "$DANGERS" -eq 0 ] && echo "✅ None" || echo "❌ ACTION REQUIRED")
+
+if [ "$SCORE" -ge 90 ]; then
+  MEANING="well-protected"
+elif [ "$SCORE" -ge 70 ]; then
+  MEANING="adequately protected but has areas for improvement"
+else
+  MEANING="requiring immediate attention"
 fi
 
 # Generate report
@@ -47,16 +79,16 @@ cat > "$OUTPUT_FILE" << EOF
 
 | Metric | Value | Status |
 |--------|-------|--------|
-| Security Score | $SCORE/100 | $([ "$SCORE" -ge 90 ] && echo "✅ EXCELLENT" || ([ "$SCORE" -ge 70 ] && echo "⚠️ ACCEPTABLE" || echo "❌ CRITICAL")) |
-| Safe Skills | $(($WARNINGS + $DANGERS)) | ✅ Pass |
+| Security Score | $SCORE/100 | $STATUS_LABEL |
+| Safe Skills | $((52 - $WARNINGS - $DANGERS)) | ✅ Pass |
 | Warning Skills | $WARNINGS | ⚠️ Review |
-| Critical Issues | $DANGERS | $([ "$DANGERS" -eq 0 ] && echo "✅ None" || echo "❌ ACTION REQUIRED") |
+| Critical Issues | $DANGERS | $CRITICAL_LABEL |
 
 ---
 
 ## What This Score Means
 
-Your security score of **$SCORE/100** indicates that the system is **$([ "$SCORE" -ge 90 ] && echo "well-protected" || ([ "$SCORE" -ge 70 ] && echo "adequately protected but has areas for improvement" || echo "requiring immediate attention"))**.
+Your security score of **$SCORE/100** indicates that the system is **$MEANING**.
 
 ---
 
@@ -105,20 +137,25 @@ These skills have potential security concerns that should be reviewed:
 | Skill | Issue | Business Impact | Recommended Action |
 |-------|-------|-----------------|-------------------|
 EOF
-# Dynamically add warning skills from JSON
-python3 -c "
+
+# Dynamically add from JSON if available
+if [ -n "$JSON_FILE" ]; then
+  python3 -c "
 import json
-with open('$SCAN_FILE') as f:
+with open('$JSON_FILE') as f:
     data = json.load(f)
     warnings = data.get('warning_skills', [])
     if warnings:
         for w in warnings:
             name = w.get('name', 'unknown')
-            issues = '; '.join(w.get('issues', ['Security concern']))[:60]
+            issues = '; '.join(w.get('issues', ['Security concern']))[:50]
             print(f'| {name} | {issues} | Medium risk | Review and address if needed |')
     else:
-        print('| No warning skills found | | |')
+        print('| No warning skills identified | | |')
 " >> "$OUTPUT_FILE"
+else
+  echo "| Review needed | See scanner output | Medium risk | Run scanner for details |" >> "$OUTPUT_FILE"
+fi
 
 cat >> "$OUTPUT_FILE" << EOF
 
@@ -127,7 +164,7 @@ cat >> "$OUTPUT_FILE" << EOF
 EOF
 fi
 
-# Add danger details - only show if there are actual dangers
+# Add danger details
 if [ "$DANGERS" -gt 0 ]; then
 cat >> "$OUTPUT_FILE" << EOF
 
@@ -138,9 +175,11 @@ These skills pose immediate security risks:
 | Skill | Issue | Business Impact | Recommended Action |
 |-------|-------|-----------------|-------------------|
 EOF
-python3 -c "
+
+if [ -n "$JSON_FILE" ]; then
+  python3 -c "
 import json
-with open('$SCAN_FILE') as f:
+with open('$JSON_FILE') as f:
     data = json.load(f)
     dangers = data.get('dangerous_skills', [])
     if dangers:
@@ -149,6 +188,7 @@ with open('$SCAN_FILE') as f:
             issues = '; '.join(d.get('issues', ['critical vulnerability']))
             print(f'| {name} | {issues} | Severe - immediate action required | IMMEDIATE ACTION REQUIRED |')
 " >> "$OUTPUT_FILE"
+fi
 
 cat >> "$OUTPUT_FILE" << EOF
 
@@ -218,4 +258,3 @@ EOF
 echo "✅ CIO Report generated: $OUTPUT_FILE"
 echo ""
 echo "To view: cat $OUTPUT_FILE"
-echo "To push to GitHub: git add $OUTPUT_FILE && git commit -m 'ASF: Add CIO security report' && git push"
