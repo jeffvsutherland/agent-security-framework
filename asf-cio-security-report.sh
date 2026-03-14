@@ -24,27 +24,28 @@ done
 
 if [ -n "$JSON_FILE" ]; then
   SCORE=$(python3 -c "
-import json, sys
+import json
 with open('$JSON_FILE') as f:
     data = json.load(f)
     print(data.get('summary', {}).get('security_score', 90))
 " 2>/dev/null || echo "90")
   WARNINGS=$(python3 -c "
-import json, sys
+import json
 with open('$JSON_FILE') as f:
     data = json.load(f)
     print(data.get('summary', {}).get('warning_skills', 2))
 " 2>/dev/null || echo "2")
   DANGERS=$(python3 -c "
-import json, sys
+import json
 with open('$JSON_FILE') as f:
     data = json.load(f)
     print(data.get('summary', {}).get('danger_skills', 0))
 " 2>/dev/null || echo "0")
 else
-  SCORE=90
+  echo "⚠️ No scanner JSON found — using defaults"
+  SCORE=85
   WARNINGS=2
-  DANGERS=0
+  DANGERS=1
 fi
 
 if [ "$SCORE" -ge 90 ]; then
