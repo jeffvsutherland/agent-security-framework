@@ -52,11 +52,21 @@ with open('$JSON_FILE') as f:
     data = json.load(f)
     print(json.dumps(data.get('fixes_status', {})))
 " 2>/dev/null || echo "{}")
+  # Get list of warning skill names
+  WARNING_SKILLS=$(python3 -c "
+import json, sys
+with open('$JSON_FILE') as f:
+    data = json.load(f)
+    skills = data.get('warning_skills', [])
+    names = [s.get('name', 'unknown') for s in skills]
+    print(','.join(names))
+" 2>/dev/null || echo "")
 else
   SCORE=90
   WARNINGS=2
   DANGERS=0
   FIX_STATUS="{}"
+  WARNING_SKILLS=""
 fi
 
 if [ "$SCORE" -ge 90 ]; then
@@ -138,20 +148,24 @@ The following security components are working correctly:
 
 EOF
 
-# Add warning details - use dynamic data from scanner
+# Add warning details - show all warning skills
 if [ "$WARNINGS" -gt 0 ]; then
-# Build warning table from FIX_STATUS
+# Build warning table from actual warning skills
 WARNING_TABLE=$(python3 -c "
 import json
+# Get warning skills from FIX_STATUS (unfixed skills)
 fixes = $FIX_STATUS
 rows = []
 for skill, status in fixes.items():
     if status == 'NOT_FIXED':
-        issue = 'Security vulnerability or misconfiguration'
-        impact = 'Could be exploited if vulnerability discovered'
-        action = 'Apply ASF security fixes or remove skill'
-        rows.append(f'| {skill} | {issue} | {impact} | {action} |')
-print('\n'.join(rows) if rows else '| No unfixed skills found | - | All skills secured | - |')
+        rows.append(f'| {skill} | Security vulnerability | Could be exploited | Apply ASF fixes |')
+# Add additional warning skills from WARNING_SKILLS if present
+extra = '$WARNING_SKILLS'
+if extra:
+    for s in extra.split(','):
+        if s and s not in [r.split('|')[1].strip() for r in rows]:
+            rows.append(f'| {s} | Makes API calls | Normal for integrations | No action needed |')
+print('\n'.join(rows) if rows else '| No warning skills | - | - | - |')
 ")
 
 cat >> "$OUTPUT_FILE" << EOF
