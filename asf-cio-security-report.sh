@@ -71,7 +71,7 @@ fi
 
 [ "$SCORE" -ge 90 ] && STATUS="✅ EXCELLENT" || [ "$SCORE" -ge 70 ] && STATUS="⚠️ ACCEPTABLE" || STATUS="❌ CRITICAL"
 [ "$DANGERS" -eq 0 ] && CRIT="✅ None" || CRIT="❌ ACTION REQUIRED"
-[ "$SCORE" -ge 90 ] && MEANING="well-protected" || [ "$SCORE" -ge 70 ] && MEANING="adequately protected" || MEANING="requiring attention"
+[ "$SCORE" -eq 100 ] && MEANING="fully secured - 100/100!" || [ "$SCORE" -ge 90 ] && MEANING="well-protected" || [ "$SCORE" -ge 70 ] && MEANING="adequately protected" || MEANING="requiring attention"
 SAFE=$((52 - WARNINGS - DANGERS)); [ $SAFE -lt 0 ] && SAFE=0
 
 # Generate report
