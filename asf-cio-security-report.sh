@@ -71,6 +71,7 @@ fi
 
 [ "$SCORE" -ge 90 ] && STATUS="✅ EXCELLENT" || [ "$SCORE" -ge 70 ] && STATUS="⚠️ ACCEPTABLE" || STATUS="❌ CRITICAL"
 [ "$DANGERS" -eq 0 ] && CRIT="✅ None" || CRIT="❌ ACTION REQUIRED"
+[ "$WARNINGS" -gt 0 ] && WARN_STATUS="⚠️ Review" || WARN_STATUS="✅ None"
 [ "$SCORE" -eq 100 ] && MEANING="fully secured - 100/100!" || [ "$SCORE" -ge 90 ] && MEANING="well-protected" || [ "$SCORE" -ge 70 ] && MEANING="adequately protected" || MEANING="requiring attention"
 SAFE=$((52 - WARNINGS - DANGERS)); [ $SAFE -lt 0 ] && SAFE=0
 
@@ -90,7 +91,7 @@ cat > "$OUTPUT_FILE" << EOF
 |--------|-------|--------|
 | Security Score | $SCORE/100 | $STATUS |
 | Safe Skills | $SAFE | ✅ Pass |
-| Warning Skills | $WARNINGS | ⚠️ Review |
+| Warning Skills | $WARNINGS | $WARN_STATUS |
 | Critical Issues | $DANGERS | $CRIT |
 
 ---
