@@ -1,5 +1,5 @@
 #!/bin/bash
-# curl -sSL https://raw.githubusercontent.com/jeffvsutherland/agent-security-framework/main/asf-cio-security-report.sh | bash
+# curl -sSL https://raw.githubusercontent.com/jeffvsutherland/agent-security-framework/main/asf-security-report.sh | bash
 
 OUTPUT_FILE="ASF-CIO-SECURITY-REPORT.md"
 DATE=$(date '+%Y-%m-%d %H:%M:%S')
