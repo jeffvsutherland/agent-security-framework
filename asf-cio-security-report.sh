@@ -28,12 +28,23 @@ for f in asf-openclaw-scan-report.json /workspace/asf-openclaw-scan-report.json 
 done
 
 # Default
-SCORE=100; WARNINGS=0; DANGERS=0
+SCORE=100; WARNINGS=0; DANGERS=0; UNFIXED_LIST=""
 
 if [ -n "$JSON_FILE" ] && [ -r "$JSON_FILE" ]; then
     SCORE=$(python3 -c "import json; print(json.load(open('$JSON_FILE')).get('summary',{}).get('security_score',100))" 2>/dev/null || echo "100")
     WARNINGS=$(python3 -c "import json; print(json.load(open('$JSON_FILE')).get('summary',{}).get('warning_skills',0))" 2>/dev/null || echo "0")
     DANGERS=$(python3 -c "import json; print(json.load(open('$JSON_FILE')).get('summary',{}).get('danger_skills',0))" 2>/dev/null || echo "0")
+    
+    # Get unfixed skills from fixes_status
+    UNFIXED_LIST=$(python3 -c "
+import json
+try:
+    data = json.load(open('$JSON_FILE'))
+    fixes = data.get('fixes_status', {})
+    unfixed = [f'{k}: {v}' for k, v in fixes.items() if v == 'NOT_FIXED']
+    print(', '.join(unfixed) if unfixed else 'All skills secured')
+except: print('Unknown')
+" 2>/dev/null || echo "Unknown")
 fi
 
 [ "$SCORE" -ge 90 ] && STATUS="✅ EXCELLENT" || [ "$SCORE" -ge 70 ] && STATUS="⚠️ ACCEPTABLE" || STATUS="❌ CRITICAL"
@@ -59,6 +70,12 @@ cat > "$OUTPUT_FILE" << EOF
 | Safe Skills | $SAFE | ✅ Pass |
 | Warning Skills | $WARNINGS | ⚠️ Review |
 | Critical Issues | $DANGERS | $CRIT |
+
+---
+
+## Score Details
+
+**Unfixed Skills:** $UNFIXED_LIST
 
 ---
 

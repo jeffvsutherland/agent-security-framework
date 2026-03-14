@@ -227,25 +227,33 @@ def scan_skill(skill_path):
         'files_scanned': scanned_files
     }
 
-def check_fixes_status():
-    """Check if the ASF fixes have been applied"""
+def check_fixes_status(skills_path):
+    """Check if the ASF fixes have been applied in the scanned skills directory"""
     fixes_status = {}
     
-    # Check openai-image-gen - look for secure version or original backup
-    skill_path = '/workspace/skills/openai-image-gen'
-    if os.path.exists(os.path.join(skill_path, 'openai-image-gen.original')) or \
-       os.path.exists(os.path.join(skill_path, 'scripts', 'gen-secure.py')):
-        fixes_status['openai-image-gen'] = 'FIXED'
+    # Check openai-image-gen in the scanned skills directory
+    skill_path = os.path.join(skills_path, 'openai-image-gen')
+    if os.path.exists(skill_path):
+        if os.path.exists(os.path.join(skill_path, 'openai-image-gen.original')) or \
+           os.path.exists(os.path.join(skill_path, 'scripts', 'gen-secure.py')) or \
+           os.path.exists(os.path.join(skill_path, 'scripts', 'gen-secure')):
+            fixes_status['openai-image-gen'] = 'FIXED'
+        else:
+            fixes_status['openai-image-gen'] = 'NOT_FIXED'
     else:
-        fixes_status['openai-image-gen'] = 'NOT_FIXED'
+        fixes_status['openai-image-gen'] = 'NOT_APPLICABLE'
     
-    # Check nano-banana-pro
-    skill_path = '/workspace/skills/nano-banana-pro'
-    if os.path.exists(os.path.join(skill_path, 'nano-banana-pro.original')) or \
-       os.path.exists(os.path.join(skill_path, 'scripts', 'generate_image-secure.py')):
-        fixes_status['nano-banana-pro'] = 'FIXED'
+    # Check nano-banana-pro in the scanned skills directory
+    skill_path = os.path.join(skills_path, 'nano-banana-pro')
+    if os.path.exists(skill_path):
+        if os.path.exists(os.path.join(skill_path, 'nano-banana-pro.original')) or \
+           os.path.exists(os.path.join(skill_path, 'scripts', 'generate_image-secure.py')) or \
+           os.path.exists(os.path.join(skill_path, 'scripts', 'generate_image-secure')):
+            fixes_status['nano-banana-pro'] = 'FIXED'
+        else:
+            fixes_status['nano-banana-pro'] = 'NOT_FIXED'
     else:
-        fixes_status['nano-banana-pro'] = 'NOT_FIXED'
+        fixes_status['nano-banana-pro'] = 'NOT_APPLICABLE'
     
     return fixes_status
 
@@ -306,7 +314,7 @@ def main():
     print()
     
     # Check for fix status
-    fixes_status = check_fixes_status()
+    fixes_status = check_fixes_status(skills_path)
     print("🔧 ASF Fix Status:")
     for skill, status in fixes_status.items():
         icon = '✅' if status == 'FIXED' else '❌'
