@@ -300,9 +300,6 @@ def main():
     print(f"📁 Scanning OpenClaw skills in {skills_path}")
     print("────────────────────────────────────────────────────────────────")
     
-    # Whitelist of skills that are known safe (make API calls as part of normal operation)
-    whitelist = {'gh-issues', 'notion', 'jira', 'salesforce', 'google-docs', 'asf-page-api', 'mission-control', 'morning-report', 'daily-security-audit', 'sales-report'}
-    
     if os.path.exists(skills_path):
         skills = sorted(os.listdir(skills_path))
         for skill_dir in skills:
