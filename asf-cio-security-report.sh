@@ -13,10 +13,12 @@ if [ ! -f "asf-openclaw-scanner.py" ]; then
     chmod +x asf-openclaw-scanner.py
 fi
 
-# Run scanner (try common skill paths)
+# Run scanner (try common skill paths - Linux, Mac, Docker)
 echo "Running security scan..."
 python3 asf-openclaw-scanner.py /app/skills 2>/dev/null || \
 python3 asf-openclaw-scanner.py ~/clawd/skills 2>/dev/null || \
+python3 asf-openclaw-scanner.py ~/Library/Application\ Support/OpenClaw/skills 2>/dev/null || \
+python3 asf-openclaw-scanner.py ./skills 2>/dev/null || \
 python3 asf-openclaw-scanner.py 2>/dev/null || true
 
 # Find JSON
