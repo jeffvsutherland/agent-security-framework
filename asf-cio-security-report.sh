@@ -6,6 +6,9 @@ DATE=$(date '+%Y-%m-%d %H:%M:%S')
 
 echo "🛡️ Generating CIO Security Report..."
 
+# Clean old scan results to ensure fresh scan
+rm -f asf-openclaw-scan-report.json ~/asf-openclaw-scan-report.json
+
 # Download scanner if not present
 if [ ! -f "asf-openclaw-scanner.py" ]; then
     echo "Downloading security scanner..."
