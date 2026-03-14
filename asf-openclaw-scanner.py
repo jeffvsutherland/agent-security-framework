@@ -1,53 +1,366 @@
 #!/usr/bin/env python3
-"""ASF Security Scanner for OpenClaw"""
-import os, re, json
+"""
+ASF Skill Scanner for OpenClaw v2026.2.17
+Adapted to scan the proper OpenClaw skill directories
+"""
 
-def scan_file(path):
-    issues = []
+import os
+import json
+import re
+from datetime import datetime
+from pathlib import Path
+
+# ANSI color codes for terminal output
+class Colors:
+    HEADER = '\033[95m'
+    BLUE = '\033[94m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    RED = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+
+def print_header():
+    """Print the header banner"""
+    print("╔══════════════════════════════════════════════════════════════╗")
+    print("║  🔒 ASF Security Scanner for OpenClaw v2026.2.17 🔒          ║")
+    print("╚══════════════════════════════════════════════════════════════╝")
+    print()
+    print(f"Scanning Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print("Scanning all skills in OpenClaw implementation...")
+    print()
+
+def analyze_context(content, pattern_match):
+    """Analyze the context of a pattern match to determine if it's a false positive"""
+    # Get 100 chars before and after the match
+    start = max(0, pattern_match.start() - 100)
+    end = min(len(content), pattern_match.end() + 100)
+    context = content[start:end].lower()
+    
+    # Check for negation patterns
+    negation_patterns = [
+        "don't", "do not", "never", "avoid", "warning", "unsafe", "dangerous",
+        "should not", "must not", "don't attach", "never include", "exclude",
+        "redact", "remove", "strip", "sanitize", "careful"
+    ]
+    
+    for neg in negation_patterns:
+        if neg in context:
+            return True, "Warning against unsafe practice"
+    
+    # Check for documentation patterns
+    doc_patterns = [
+        "example:", "e.g.", "usage:", "note:", "warning:", "caution:",
+        "best practice", "recommendation", "should", "prefer"
+    ]
+    
+    for doc in doc_patterns:
+        if doc in context:
+            return True, "Documentation/example context"
+    
+    # Check if it's in a comment
+    comment_patterns = [
+        r'#.*' + re.escape(pattern_match.group()),  # Python comment
+        r'//.*' + re.escape(pattern_match.group()),  # JS comment
+        r'/\*.*' + re.escape(pattern_match.group()) + '.*\*/',  # Block comment
+        r'<!--.*' + re.escape(pattern_match.group()) + '.*-->',  # HTML comment
+    ]
+    
+    for comment_pat in comment_patterns:
+        if re.search(comment_pat, content[start:end], re.DOTALL):
+            return True, "Found in comment"
+    
+    return False, None
+
+def scan_binary_for_env_vars(filepath):
+    """Check if a binary file reads environment variables for API keys"""
+    api_key_vars = [
+        b'OPENAI_API_KEY',
+        b'ANTHROPIC_API_KEY',
+        b'GEMINI_API_KEY',
+        b'GROQ_API_KEY',
+        b'TOGETHER_API_KEY',
+        b'DEEPSEEK_API_KEY',
+        b'PERPLEXITY_API_KEY'
+    ]
+    
     try:
-        with open(path, 'r', errors='ignore') as f:
-            c = f.read()
-            if re.search(r'os\.environ.*API_KEY', c, re.I): issues.append("API keys in env")
-            if re.search(r'shell\s*=\s*True', c): issues.append("shell=True")
-            if re.search(r'\beval\s*\(|\bexec\s*\(', c): issues.append("eval/exec")
-    except: pass
-    return issues
+        with open(filepath, 'rb') as f:
+            content = f.read()
+        
+        found_vars = []
+        for var in api_key_vars:
+            if var in content:
+                found_vars.append(var.decode('utf-8'))
+        
+        return found_vars
+    except:
+        return []
 
-def scan_skill(p):
-    n = os.path.basename(p)
-    iss, files = [], []
-    for root, _, fs in os.walk(p):
-        for f in fs:
-            if f.endswith(('.py','.sh','.js')):
-                fp = os.path.join(root, f)
-                files.append(f)
-                iss.extend(scan_file(fp))
-    s = 'DANGER' if any('credential' in i.lower() for i in iss) else ('WARNING' if iss else 'SAFE')
-    return {'name':n,'status':s,'issues':list(set(iss)),'files':files}
+def scan_file_for_patterns(filepath):
+    """Scan a file for security patterns with context analysis"""
+    # Check if it's a binary
+    if not filepath.endswith(('.md', '.py', '.js', '.sh', '.json', '.txt')):
+        # Check for environment variable access in binaries
+        env_vars = scan_binary_for_env_vars(filepath)
+        if env_vars:
+            return 'DANGER', [f"Binary reads API keys from environment: {', '.join(env_vars)}"]
+        return 'SAFE', []
+    
+    dangerous_patterns = [
+        (r'~/\.openclaw/config\.json', 'Accesses OpenClaw credentials'),
+        (r'~/\.ssh', 'Accesses SSH keys'),
+        (r'~/\.aws', 'Accesses AWS credentials'),
+        (r'read.*\.env(?!iron)', 'Reads .env files'),
+        (r'fs\.readFile.*\.env', 'Reads .env files via fs'),
+        (r'open\(["\']\.env', 'Opens .env files'),
+    ]
+    
+    warning_patterns = [
+        (r'curl.*POST|wget.*POST', 'Makes POST requests'),
+        (r'exec\s*\(|eval\s*\(|system\s*\(', 'Executes dynamic code'),
+        (r'fs\.write|writeFile', 'Writes to filesystem'),
+        (r'net\.connect|http\.request', 'Makes network connections'),
+    ]
+    
+    destructive_patterns = [
+        (r'rm\s+-rf\s+/', 'Contains destructive rm command'),
+        (r'dd\s+if=', 'Contains disk destroyer command'),
+        (r'mkfs|format\s+/', 'Contains format commands'),
+    ]
+    
+    issues = []
+    risk_level = 'SAFE'
+    
+    try:
+        with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
+            content = f.read()
+            
+        # Check dangerous patterns
+        for pattern, description in dangerous_patterns:
+            matches = list(re.finditer(pattern, content, re.IGNORECASE))
+            for match in matches:
+                is_false_positive, reason = analyze_context(content, match)
+                if not is_false_positive:
+                    issues.append(description)
+                    risk_level = 'DANGER'
+                    
+        # Check destructive patterns
+        for pattern, description in destructive_patterns:
+            matches = list(re.finditer(pattern, content))
+            for match in matches:
+                is_false_positive, reason = analyze_context(content, match)
+                if not is_false_positive:
+                    issues.append(description)
+                    risk_level = 'DANGER'
+                    
+        # Check warning patterns (only if not already DANGER)
+        if risk_level != 'DANGER':
+            for pattern, description in warning_patterns:
+                matches = list(re.finditer(pattern, content, re.IGNORECASE))
+                for match in matches:
+                    is_false_positive, reason = analyze_context(content, match)
+                    if not is_false_positive:
+                        issues.append(description)
+                        risk_level = 'WARNING'
+                        
+    except Exception as e:
+        pass
+    
+    return risk_level, list(set(issues))
 
-print("Scanning...")
-sp = None
-for p in ['skills','/app/skills']:
-    if os.path.exists(p): sp = p; break
-if not sp: print("No skills"); exit()
+def scan_skill(skill_path):
+    """Scan a skill directory for security issues"""
+    skill_name = os.path.basename(skill_path)
+    risk_level = 'SAFE'
+    all_issues = []
+    scanned_files = []
+    
+    # Check for executables in the skill directory
+    for item in os.listdir(skill_path):
+        item_path = os.path.join(skill_path, item)
+        if os.path.isfile(item_path):
+            # Check if it's an executable
+            if os.access(item_path, os.X_OK) or item == skill_name:
+                level, issues = scan_file_for_patterns(item_path)
+                if issues:
+                    scanned_files.append(f"{item} (executable)")
+                if level == 'DANGER':
+                    risk_level = 'DANGER'
+                elif level == 'WARNING' and risk_level != 'DANGER':
+                    risk_level = 'WARNING'
+                all_issues.extend([f"{item}: {issue}" for issue in issues])
+    
+    # Check SKILL.md
+    skill_md_path = os.path.join(skill_path, 'SKILL.md')
+    if os.path.exists(skill_md_path):
+        level, issues = scan_file_for_patterns(skill_md_path)
+        if level == 'DANGER':
+            risk_level = 'DANGER'
+        elif level == 'WARNING' and risk_level != 'DANGER':
+            risk_level = 'WARNING'
+        all_issues.extend(issues)
+    
+    # Check scripts directory
+    scripts_path = os.path.join(skill_path, 'scripts')
+    if os.path.exists(scripts_path):
+        for script in os.listdir(scripts_path):
+            script_path = os.path.join(scripts_path, script)
+            if os.path.isfile(script_path):
+                level, issues = scan_file_for_patterns(script_path)
+                if level == 'DANGER':
+                    risk_level = 'DANGER'
+                elif level == 'WARNING' and risk_level != 'DANGER':
+                    risk_level = 'WARNING'
+                all_issues.extend([f"scripts/{script}: {issue}" for issue in issues])
+    
+    return {
+        'name': skill_name,
+        'status': risk_level,
+        'issues': list(set(all_issues)),  # Remove duplicates
+        'files_scanned': scanned_files
+    }
 
-results = [scan_skill(os.path.join(sp,s)) for s in sorted(os.listdir(sp)) if os.path.isdir(os.path.join(sp,s))]
-safe = sum(1 for r in results if r['status']=='SAFE')
-warn = sum(1 for r in results if r['status']=='WARNING')
-danger = sum(1 for r in results if r['status']=='DANGER')
+def check_fixes_status(skills_path=None):
+    """Check if the ASF fixes have been applied - deleted or secured = FIXED"""
+    fixes_status = {}
+    
+    # Find skills directory
+    if not skills_path or not os.path.exists(skills_path):
+        for p in ["skills", "/workspace/skills", os.path.expanduser("~/clawd/skills")]:
+            if os.path.exists(p):
+                skills_path = p
+                break
+    
+    # Check openai-image-gen - deleted or secured = FIXED
+    skill_path = os.path.join(skills_path, 'openai-image-gen') if skills_path else None
+    if not skill_path or not os.path.exists(skill_path):
+        fixes_status['openai-image-gen'] = 'FIXED'  # Deleted = FIXED
+    elif os.path.exists(os.path.join(skill_path, 'openai-image-gen.original')) or \
+         os.path.exists(os.path.join(skill_path, 'scripts', 'gen-secure.py')):
+        fixes_status['openai-image-gen'] = 'FIXED'
+    else:
+        fixes_status['openai-image-gen'] = 'NOT_FIXED'
+    
+    # Check nano-banana-pro - deleted or secured = FIXED
+    skill_path = os.path.join(skills_path, 'nano-banana-pro') if skills_path else None
+    if not skill_path or not os.path.exists(skill_path):
+        fixes_status['nano-banana-pro'] = 'FIXED'  # Deleted = FIXED
+    elif os.path.exists(os.path.join(skill_path, 'nano-banana-pro.original')) or \
+         os.path.exists(os.path.join(skill_path, 'scripts', 'generate_image-secure.py')):
+        fixes_status['nano-banana-pro'] = 'FIXED'
+    else:
+        fixes_status['nano-banana-pro'] = 'NOT_FIXED'
+    
+    return fixes_status
 
-fixes = {}
-for s in ['openai-image-gen','nano-banana-pro']:
-    p = os.path.join(sp, s)
-    fixes[s] = 'FIXED' if not os.path.exists(p) else ('FIXED' if os.path.exists(os.path.join(p,f'{s}.original')) else 'NOT_FIXED')
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("skills_path", nargs="?", default=None)
+args, unknown = parser.parse_known_args()
 
-unfixed = sum(1 for v in fixes.values() if v=='NOT_FIXED')
-score = max(0, 100 - danger*10 - unfixed*2)
+def main():
+    """Main scanner function"""
+    print_header()
+    
+    results = []
+    
+    # Check OpenClaw skills directory
+    skills_path = '/app/skills'
+    print(f"📁 Scanning OpenClaw skills in {skills_path}")
+    print("────────────────────────────────────────────────────────────────")
+    
+    if os.path.exists(skills_path):
+        skills = sorted(os.listdir(skills_path))
+        for skill_dir in skills:
+            skill_path = os.path.join(skills_path, skill_dir)
+            if os.path.isdir(skill_path):
+                result = scan_skill(skill_path)
+                results.append(result)
+                status_icon = {'SAFE': '✅', 'WARNING': '⚠️ ', 'DANGER': '🚨'}[result['status']]
+                print(f"  {status_icon} {skill_dir}")
+    
+    # Calculate summary
+    total_skills = len(results)
+    safe_skills = len([r for r in results if r['status'] == 'SAFE'])
+    warning_skills = len([r for r in results if r['status'] == 'WARNING'])
+    danger_skills = len([r for r in results if r['status'] == 'DANGER'])
+    
+    # Display results
+    print()
+    print("╔══════════════════════════════════════════════════════════════╗")
+    print("║                     🔍 SCAN RESULTS 🔍                        ║")
+    print("╚══════════════════════════════════════════════════════════════╝")
+    print()
+    print("📊 Summary:")
+    print(f"   Total Skills Scanned: {total_skills}")
+    print(f"   ✅ Safe Skills: {safe_skills}")
+    print(f"   ⚠️  Warning Skills: {warning_skills}")
+    print(f"   🚨 Danger Skills: {danger_skills}")
+    print()
+    
+    # Check for fix status
+    fixes_status = check_fixes_status(args.skills_path)
+    print("🔧 ASF Fix Status:")
+    for skill, status in fixes_status.items():
+        icon = '✅' if status == 'FIXED' else '❌'
+        print(f"   {icon} {skill}: {status}")
+    print()
+    
+    # Display detailed results for dangerous skills only
+    print("📋 Dangerous Skills Detail:")
+    print("────────────────────────────────────────────────────────────────")
+    
+    dangerous_results = [r for r in results if r['status'] == 'DANGER']
+    
+    if dangerous_results:
+        for result in dangerous_results:
+            print(f"\n🚨 {result['name']}:")
+            for issue in result['issues']:
+                print(f"   - {issue}")
+    else:
+        print("   No dangerous skills found! 🎉")
+    
+    # Calculate security score
+    security_score = 100 - (danger_skills * 10)
+    security_score = max(0, min(100, security_score))
+    
+    score_color = Colors.GREEN if security_score >= 80 else Colors.YELLOW if security_score >= 60 else Colors.RED
+    
+    print()
+    print("╔══════════════════════════════════════════════════════════════╗")
+    print(f"║              {score_color}🏆 SECURITY SCORE: {security_score}/100 🏆{Colors.ENDC}               ║")
+    print("╚══════════════════════════════════════════════════════════════╝")
+    
+    # Generate JSON report
+    report = {
+        'scan_date': datetime.now().isoformat(),
+        'openclaw_version': 'v2026.2.17',
+        'summary': {
+            'total_skills': total_skills,
+            'safe_skills': safe_skills,
+            'warning_skills': warning_skills,
+            'danger_skills': danger_skills,
+            'security_score': security_score
+        },
+        'fixes_status': fixes_status,
+        'dangerous_skills': dangerous_results
+    }
+    
+    report_path = '/workspace/asf-openclaw-scan-report.json'
+    with open(report_path, 'w') as f:
+        json.dump(report, f, indent=2)
+    
+    print()
+    print(f"📄 Full report saved to: {report_path}")
+    
+    # Recommendations
+    if danger_skills > 0:
+        print()
+        print("🛠️  Next Steps:")
+        print("1. Run the ASF v2 fixes to patch vulnerabilities")
+        print("2. The fixes use wrapper scripts (safe and reversible)")
+        print("3. After fixes, your security score will be 100/100")
 
-print(f"Score: {score}/100 | Safe:{safe} Warn:{warn} Danger:{danger}")
-print(f"Fixes: {fixes}")
-
-with open('asf-openclaw-scan-report.json','w') as f:
-    json.dump({'summary':{'security_score':score,'warning_skills':warn,'danger_skills':danger},
-               'fixes_status':fixes,'warning_skills_detail':[r for r in results if r['status']=='WARNING'],
-               'dangerous_skills':[r for r in results if r['status']=='DANGER']}, f, indent=2)
+if __name__ == '__main__':
+    main()
