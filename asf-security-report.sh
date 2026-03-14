@@ -1,10 +1,13 @@
 #!/bin/bash
-# curl -sSL https://raw.githubusercontent.com/jeffvsutherland/agent-security-framework/main/asf-cio-security-report.sh | bash
+# curl -sSL https://raw.githubusercontent.com/jeffvsutherland/agent-security-framework/main/asf-security-report.sh | bash
 
 OUTPUT_FILE="ASF-CIO-SECURITY-REPORT.md"
 DATE=$(date '+%Y-%m-%d %H:%M:%S')
 
 echo "🛡️ Generating CIO Security Report..."
+
+# Clean old scan results to ensure fresh scan
+rm -f asf-openclaw-scan-report.json ~/asf-openclaw-scan-report.json
 
 # Download scanner if not present
 if [ ! -f "asf-openclaw-scanner.py" ]; then
@@ -69,7 +72,7 @@ except: print('Unknown')
 " 2>/dev/null || echo "Unknown")
 fi
 
-[ "$SCORE" -eq 100 ] && STATUS="✅ PERFECT" || [ "$SCORE" -ge 90 ] && STATUS="✅ EXCELLENT" || [ "$SCORE" -ge 70 ] && STATUS="⚠️ ACCEPTABLE" || STATUS="❌ CRITICAL"
+if [ "$SCORE" -eq 100 ]; then STATUS="✅ PERFECT"; elif [ "$SCORE" -ge 90 ]; then STATUS="✅ EXCELLENT"; elif [ "$SCORE" -ge 70 ]; then STATUS="⚠️ ACCEPTABLE"; else STATUS="❌ CRITICAL"; fi
 [ "$DANGERS" -eq 0 ] && CRIT="✅ None" || CRIT="❌ ACTION REQUIRED"
 [ "$WARNINGS" -gt 0 ] && WARN_STATUS="⚠️ $WARNINGS to review" || WARN_STATUS="✅ None"
 [ "$SCORE" -eq 100 ] && MEANING="fully secured - 100/100!" || [ "$SCORE" -ge 90 ] && MEANING="well-protected" || [ "$SCORE" -ge 70 ] && MEANING="adequately protected" || MEANING="requiring attention"
@@ -221,3 +224,4 @@ EOF
 echo "✅ Report: $OUTPUT_FILE"
 cat "$OUTPUT_FILE"
 # Force refresh Sat Mar 14 17:50:31 UTC 2026
+# CDN refresh Sat Mar 14 18:17:16 UTC 2026
