@@ -1,16 +1,25 @@
 {
-  "scan_date": "2026-02-28T16:24:27.437670",
-  "openclaw_version": "v2026.2.17",
   "summary": {
-    "total_skills": 52,
-    "safe_skills": 50,
-    "warning_skills": 2,
-    "danger_skills": 0,
-    "security_score": 90
+    "security_score": 96,
+    "warning_skills": 1,
+    "danger_skills": 0
   },
   "fixes_status": {
     "openai-image-gen": "NOT_FIXED",
     "nano-banana-pro": "NOT_FIXED"
   },
+  "warning_skills_detail": [
+    {
+      "name": "daily-security-audit",
+      "status": "WARNING",
+      "issues": [
+        "shell=True",
+        "eval/exec"
+      ],
+      "files": [
+        "skill.sh"
+      ]
+    }
+  ],
   "dangerous_skills": []
 }
