@@ -226,11 +226,12 @@ def check_fixes_status(skills_path):
     """Check if the ASF fixes have been applied"""
     fixes_status = {}
     
-    # Get skills path - check multiple locations
-    skills_path = skills_path  # Use passed path
-    # Removed old path logicskills', '/workspace/skills', '~/clawd/skills']
-    skills_path = None
-    for p in skills_paths:
+    # Use passed skills_path or find one
+    if not skills_path or not os.path.exists(skills_path):
+        for p in ['skills', '/workspace/skills', '~/clawd/skills']:
+            if os.path.exists(os.path.expanduser(p)):
+                skills_path = os.path.expanduser(p)
+                break
         expanded = os.path.expanduser(p)
         if os.path.exists(expanded):
             skills_path = expanded
