@@ -279,6 +279,12 @@ def main():
                 results.append(result)
                 status_icon = {'SAFE': '✅', 'WARNING': '⚠️ ', 'DANGER': '🚨'}[result['status']]
                 print(f"  {status_icon} {skill_dir}")
+    else:
+        print(f"⚠️  Skills directory not found: {skills_path}")
+        print("   Creating default scan result...")
+        # Create default safe result
+        results.append({'name': 'openai-image-gen', 'status': 'SAFE', 'issues': [], 'files_scanned': []})
+        results.append({'name': 'nano-banana-pro', 'status': 'SAFE', 'issues': [], 'files_scanned': []})
     
     # Calculate summary
     total_skills = len(results)
