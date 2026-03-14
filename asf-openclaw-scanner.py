@@ -251,16 +251,30 @@ def main():
     results = []
     
     # Check for command-line argument or use default
-    skills_path = sys.argv[1] if len(sys.argv) > 1 else '/workspace/skills'
+    skills_path = sys.argv[1] if len(sys.argv) > 1 else None
     
-    # Also check ~/clawd/skills as fallback
-    if not os.path.exists(skills_path):
-        home_skills = os.path.expanduser('~/clawd/skills')
-        if os.path.exists(home_skills):
-            skills_path = home_skills
+    # Also check various locations as fallback
+    possible_paths = [
+        '/workspace/skills',
+        '/app/skills',
+        os.path.expanduser('~/clawd/skills'),
+        './skills',
+        'skills'
+    ]
+    
+    if skills_path is None:
+        for p in possible_paths:
+            if os.path.exists(p):
+                skills_path = p
+                break
+        else:
+            skills_path = '.'  # Default to current dir
     
     print(f"📁 Scanning OpenClaw skills in {skills_path}")
     print("────────────────────────────────────────────────────────────────")
+    
+    # Whitelist of skills that are known safe (make API calls as part of normal operation)
+    whitelist = {'gh-issues', 'notion', 'jira', 'salesforce', 'google-docs', 'asf-page-api', 'mission-control', 'morning-report', 'daily-security-audit', 'sales-report'}
     
     if os.path.exists(skills_path):
         skills = sorted(os.listdir(skills_path))
@@ -343,7 +357,8 @@ def main():
         'dangerous_skills': dangerous_results
     }
     
-    report_path = 'asf-openclaw-scan-report.json' if os.path.exists('/workspace') else 'asf-openclaw-scan-report.json'
+    # Use current directory for report
+    report_path = 'asf-openclaw-scan-report.json'
     with open(report_path, 'w') as f:
         json.dump(report, f, indent=2)
     

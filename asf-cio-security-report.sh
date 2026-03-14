@@ -9,12 +9,10 @@ DATE=$(date '+%Y-%m-%d %H:%M:%S')
 
 echo "🛡️ Generating CIO Security Report..."
 
-# Download scanner if not present
-if [ ! -f "asf-openclaw-scanner.py" ]; then
-    echo "Downloading security scanner..."
-    curl -sSL https://raw.githubusercontent.com/jeffvsutherland/agent-security-framework/main/asf-openclaw-scanner.py -o asf-openclaw-scanner.py
-    chmod +x asf-openclaw-scanner.py
-fi
+# Always download latest scanner to ensure fixes are applied
+echo "Downloading latest security scanner..."
+curl -sSL "https://raw.githubusercontent.com/jeffvsutherland/agent-security-framework/main/asf-openclaw-scanner.py?v=$(date +%s)" -o asf-openclaw-scanner.py
+chmod +x asf-openclaw-scanner.py
 
 # Run the security scan (full scanner saves JSON)
 echo "Running ASF security scan..."
