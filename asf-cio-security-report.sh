@@ -69,9 +69,9 @@ except: print('Unknown')
 " 2>/dev/null || echo "Unknown")
 fi
 
-[ "$SCORE" -ge 90 ] && STATUS="✅ EXCELLENT" || [ "$SCORE" -ge 70 ] && STATUS="⚠️ ACCEPTABLE" || STATUS="❌ CRITICAL"
+[ "$SCORE" -eq 100 ] && STATUS="✅ PERFECT" || [ "$SCORE" -ge 90 ] && STATUS="✅ EXCELLENT" || [ "$SCORE" -ge 70 ] && STATUS="⚠️ ACCEPTABLE" || STATUS="❌ CRITICAL"
 [ "$DANGERS" -eq 0 ] && CRIT="✅ None" || CRIT="❌ ACTION REQUIRED"
-[ "$WARNINGS" -gt 0 ] && WARN_STATUS="⚠️ Review" || WARN_STATUS="✅ None"
+[ "$WARNINGS" -gt 0 ] && WARN_STATUS="⚠️ $WARNINGS to review" || WARN_STATUS="✅ None"
 [ "$SCORE" -eq 100 ] && MEANING="fully secured - 100/100!" || [ "$SCORE" -ge 90 ] && MEANING="well-protected" || [ "$SCORE" -ge 70 ] && MEANING="adequately protected" || MEANING="requiring attention"
 SAFE=$((52 - WARNINGS - DANGERS)); [ $SAFE -lt 0 ] && SAFE=0
 
