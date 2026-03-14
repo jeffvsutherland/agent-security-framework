@@ -7,6 +7,7 @@ Adapted to scan the proper OpenClaw skill directories
 import os
 import json
 import re
+import sys
 from datetime import datetime
 from pathlib import Path
 
@@ -249,8 +250,15 @@ def main():
     
     results = []
     
-    # Check OpenClaw skills directory
-    skills_path = '/workspace/skills'
+    # Check for command-line argument or use default
+    skills_path = sys.argv[1] if len(sys.argv) > 1 else '/workspace/skills'
+    
+    # Also check ~/clawd/skills as fallback
+    if not os.path.exists(skills_path):
+        home_skills = os.path.expanduser('~/clawd/skills')
+        if os.path.exists(home_skills):
+            skills_path = home_skills
+    
     print(f"📁 Scanning OpenClaw skills in {skills_path}")
     print("────────────────────────────────────────────────────────────────")
     
