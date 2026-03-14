@@ -267,13 +267,14 @@ def main():
     results = []
     
     # Check for command-line argument or use default
-    # Try to find skills directory - check common locations
+    # Try to find skills directory - check common locations (order matters!)
     potential_paths = [
         sys.argv[1] if len(sys.argv) > 1 else None,
-        os.path.expanduser('~/Library/Application Support/OpenClaw/skills'),
-        os.path.expanduser('~/clawd/skills'),
-        '/workspace/skills',
-        '/app/skills',
+        os.path.expanduser('~/clawd/skills'),           # OpenClaw default
+        os.path.expanduser('~/Library/Application Support/OpenClaw/skills'),  # Mac alternative
+        os.path.expanduser('~/.openclaw/skills'),       # Config dir
+        '/workspace/skills',                            # Linux container
+        '/app/skills',                                 # Linux container alt
     ]
     
     skills_path = None
