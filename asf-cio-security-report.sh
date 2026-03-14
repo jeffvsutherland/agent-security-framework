@@ -99,7 +99,43 @@ cat > "$OUTPUT_FILE" << EOF
 
 **Unfixed Skills:** $UNFIXED_LIST
 
-**Point Deduction:** Each unfixed skill deducts 5 points from 100.
+**Point Deduction:** Each unfixed skill deducts points from 100.
+
+EOF
+
+# Add specific fix commands if there are unfixed skills
+if [ "$UNFIXED_LIST" != "" ]; then
+cat >> "$OUTPUT_FILE" << 'EOF'
+
+### How to Fix (run on your machine):
+
+EOF
+python3 -c "
+import json
+try:
+    with open('$JSON_FILE') as f:
+        data = json.load(f)
+        fixes = data.get('fixes_status', {})
+        for skill, status in fixes.items():
+            if status == 'NOT_FIXED':
+                if 'openai' in skill:
+                    print(f'**{skill}**: Delete or replace with secure version')
+                    print('```bash')
+                    print(f'rm -rf ~/clawd/skills/{skill}')
+                    print(f'# Or get secure version from GitHub')
+                    print('```')
+                    print()
+                elif 'nano' in skill:
+                    print(f'**{skill}**: Delete deprecated skill')
+                    print('```bash')
+                    print(f'rm -rf ~/clawd/skills/{skill}')
+                    print('```')
+                    print()
+except: pass
+" >> "$OUTPUT_FILE"
+fi
+
+cat >> "$OUTPUT_FILE" << 'EOF'
 
 ---
 
