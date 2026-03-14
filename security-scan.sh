@@ -1,12 +1,12 @@
 #!/bin/bash
-# Run fresh: curl -sL https://raw.githubusercontent.com/jeffvsutherland/agent-security-framework/main/security-scan.sh | bash
+# Run: curl -sL https://raw.githubusercontent.com/jeffvsutherland/agent-security-framework/main/security-scan.sh | bash
 
 OUTPUT="security-report.md"
 DATE=$(date '+%Y-%m-%d %H:%M:%S')
 
 echo "🛡️ Security Scan..."
 
-# Find JSON (freshest first - current dir)
+# Find JSON (freshest first)
 JSON=""
 for f in "asf-openclaw-scan-report.json" "./asf-openclaw-scan-report.json" "/workspace/asf-openclaw-scan-report.json"; do
     [ -f "$f" ] && JSON="$f" && break
@@ -21,7 +21,7 @@ else
     SCORE=100; WARN=0; DANG=0
 fi
 
-# FIX: 100 should be EXCELLENT, not ACCEPTABLE
+# 100 = EXCELLENT
 if [ "$SCORE" -eq 100 ]; then
     STATUS="✅ EXCELLENT"
 elif [ "$SCORE" -ge 90 ]; then
@@ -43,38 +43,30 @@ cat > "$OUTPUT" << EOF
 | | |
 |---|---|
 | Score | $SCORE/100 $STATUS |
-| Warnings | $WARN $([ $WARN -eq 0 ] && echo "✅ None" || echo "⚠️ Review") |
-| Critical | $DANG $([ $DANG -eq 0 ] && echo "✅ None" || echo "❌ ACTION") |
+| Warnings | $WARN $([ $WARN -eq 0 ] && echo "✅" || echo "⚠️") |
+| Critical | $DANG $([ $DANG -eq 0 ] && echo "✅" || echo "❌") |
 
 EOF
 
 if [ "$SCORE" -lt 100 ]; then
-    UNFIXED=$(python3 -c "
-import json
-for skill, status in json.load(open('$JSON')).get('fixes_status', {}).items():
-    if status == 'NOT_FIXED':
-        print(f'  - {skill}: NOT_FIXED (-2 pts)')
-" 2>/dev/null)
-    [ -z "$UNFIXED" ] && UNFIXED="  (none)"
-    
-    cat >> "$OUTPUT" << EOF
-
-## Point Loss Details
-
-$UNFIXED
+    cat >> "$OUTPUT" << 'EOF'
+## Point Loss
 
 EOF
+    if [ "$WARN" -gt 0 ]; then
+        echo "- Warning skills: $WARN × 2pts" >> "$OUTPUT"
+    fi
+    if [ "$DANG" -gt 0 ]; then
+        echo "- Critical skills: $DANG × 10pts" >> "$OUTPUT"
+    fi
+    echo "" >> "$OUTPUT"
 fi
 
 cat >> "$OUTPUT" << EOF
 
-## Components ✅
+## Status
 
-- ASF-42 Syscall Monitor ✅
-- ASF-41 Guardrail ✅
-- ASF-38 Trust Score ✅
-- ASF-37 Spam Filter ✅
-- ASF-5 YARA Scanner ✅
+$( [ "$SCORE" -eq 100 ] && echo "✅ System is fully secured" || echo "⚠️ See issues above")
 
 ---
 
