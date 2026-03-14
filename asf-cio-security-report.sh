@@ -72,7 +72,7 @@ except: print('Unknown')
 " 2>/dev/null || echo "Unknown")
 fi
 
-[ "$SCORE" -eq 100 ] && STATUS="✅ PERFECT" || [ "$SCORE" -ge 90 ] && STATUS="✅ EXCELLENT" || [ "$SCORE" -ge 70 ] && STATUS="⚠️ ACCEPTABLE" || STATUS="❌ CRITICAL"
+if [ "$SCORE" -eq 100 ]; then STATUS="✅ PERFECT"; elif [ "$SCORE" -ge 90 ]; then STATUS="✅ EXCELLENT"; elif [ "$SCORE" -ge 70 ]; then STATUS="⚠️ ACCEPTABLE"; else STATUS="❌ CRITICAL"; fi
 [ "$DANGERS" -eq 0 ] && CRIT="✅ None" || CRIT="❌ ACTION REQUIRED"
 [ "$WARNINGS" -gt 0 ] && WARN_STATUS="⚠️ $WARNINGS to review" || WARN_STATUS="✅ None"
 [ "$SCORE" -eq 100 ] && MEANING="fully secured - 100/100!" || [ "$SCORE" -ge 90 ] && MEANING="well-protected" || [ "$SCORE" -ge 70 ] && MEANING="adequately protected" || MEANING="requiring attention"
