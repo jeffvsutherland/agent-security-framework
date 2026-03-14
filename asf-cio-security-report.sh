@@ -16,16 +16,32 @@ fi
 # Run scanner - try each path and use the one that finds skills
 echo "Running security scan..."
 SCAN_OUTPUT=""
-for SKILLS_PATH in "/app/skills" "$HOME/clawd/skills" "$HOME/Library/Application Support/OpenClaw/skills" "./skills"; do
-    if [ -d "$SKILLS_PATH" ]; then
-        echo "Trying skills path: $SKILLS_PATH"
-        SCAN_OUTPUT=$(python3 asf-openclaw-scanner.py "$SKILLS_PATH" 2>&1)
+
+# Try scanning agent subdirectories in ~/clawd first
+for AGENT_DIR in ~/clawd/agents/*/skills; do
+    if [ -d "$AGENT_DIR" ] && [ "$(ls -A "$AGENT_DIR" 2>/dev/null)" ]; then
+        echo "Trying: $AGENT_DIR"
+        SCAN_OUTPUT=$(python3 asf-openclaw-scanner.py "$AGENT_DIR" 2>&1)
         if echo "$SCAN_OUTPUT" | grep -q "Skills Scanned"; then
-            echo "Found skills in: $SKILLS_PATH"
+            echo "Found skills in: $AGENT_DIR"
             break
         fi
     fi
 done
+
+# If no skills found, try root level directories
+if ! echo "$SCAN_OUTPUT" | grep -q "Skills Scanned"; then
+    for SKILLS_PATH in "$HOME/clawd/skills" "$HOME/Library/Application Support/OpenClaw/skills" "./skills" "/workspace/skills" "/app/skills"; do
+        if [ -d "$SKILLS_PATH" ] && [ "$(ls -A "$SKILLS_PATH" 2>/dev/null)" ]; then
+            echo "Trying: $SKILLS_PATH"
+            SCAN_OUTPUT=$(python3 asf-openclaw-scanner.py "$SKILLS_PATH" 2>&1)
+            if echo "$SCAN_OUTPUT" | grep -q "Skills Scanned"; then
+                echo "Found skills in: $SKILLS_PATH"
+                break
+            fi
+        fi
+    done
+fi
 
 # Find JSON
 JSON_FILE=""
