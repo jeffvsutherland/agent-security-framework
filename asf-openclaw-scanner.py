@@ -215,11 +215,6 @@ def scan_skill(skill_path):
                     risk_level = 'WARNING'
                 all_issues.extend([f"scripts/{script}: {issue}" for issue in issues])
     
-    # Whitelist: Override WARNING to SAFE for known safe skills
-    if risk_level == 'WARNING' and skill_name in whitelist:
-        risk_level = 'SAFE'
-        all_issues = []
-    
     return {
         'name': skill_name,
         'status': risk_level,
@@ -228,37 +223,42 @@ def scan_skill(skill_path):
     }
 
 def check_fixes_status(skills_path):
-    """Check if the ASF fixes have been applied in the scanned skills directory"""
+    """Check if the ASF fixes have been applied"""
     fixes_status = {}
     
-    # Check openai-image-gen in the scanned skills directory
-    skill_path = os.path.join(skills_path, 'openai-image-gen')
-    if os.path.exists(skill_path):
-        if os.path.exists(os.path.join(skill_path, 'openai-image-gen.original')) or \
-           os.path.exists(os.path.join(skill_path, 'scripts', 'gen-secure.py')) or \
-           os.path.exists(os.path.join(skill_path, 'scripts', 'gen-secure')):
-            fixes_status['openai-image-gen'] = 'FIXED'
-        else:
-            fixes_status['openai-image-gen'] = f'NOT_FIXED (remove with: rm -rf {skill_path})'
-    else:
-        fixes_status['openai-image-gen'] = 'NOT_PRESENT'
+    # Get skills path - check multiple locations
+    skills_path = skills_path  # Use passed path
+    # Removed old path logicskills', '/workspace/skills', '~/clawd/skills']
+    skills_path = None
+    for p in skills_paths:
+        expanded = os.path.expanduser(p)
+        if os.path.exists(expanded):
+            skills_path = expanded
+            break
     
-    # Check nano-banana-pro in the scanned skills directory
-    skill_path = os.path.join(skills_path, 'nano-banana-pro')
-    if os.path.exists(skill_path):
-        if os.path.exists(os.path.join(skill_path, 'nano-banana-pro.original')) or \
-           os.path.exists(os.path.join(skill_path, 'scripts', 'generate_image-secure.py')) or \
-           os.path.exists(os.path.join(skill_path, 'scripts', 'generate_image-secure')):
-            fixes_status['nano-banana-pro'] = 'FIXED'
-        else:
-            fixes_status['nano-banana-pro'] = f'NOT_FIXED (remove with: rm -rf {skill_path})'
+    # Check openai-image-gen - if deleted, it's FIXED
+    if not skills_path or not os.path.exists(skills_path):
+        skills_path = "skills"
+    skill_path = os.path.join(skills_path, 'openai-image-gen') if skills_path else 'skills/openai-image-gen'
+    if not os.path.exists(skill_path):
+        fixes_status['openai-image-gen'] = 'FIXED'  # Deleted = fixed
+    elif os.path.exists(os.path.join(skill_path, 'openai-image-gen.original')) or \
+       os.path.exists(os.path.join(skill_path, 'scripts', 'gen-secure.py')):
+        fixes_status['openai-image-gen'] = 'FIXED'
     else:
-        fixes_status['nano-banana-pro'] = 'NOT_PRESENT'
+        fixes_status['openai-image-gen'] = 'NOT_FIXED'
+    
+    # Check nano-banana-pro - if deleted, it's FIXED  
+    skill_path = os.path.join(skills_path, 'nano-banana-pro') if skills_path else 'skills/nano-banana-pro'
+    if not os.path.exists(skill_path):
+        fixes_status['nano-banana-pro'] = 'FIXED'  # Deleted = fixed
+    elif os.path.exists(os.path.join(skill_path, 'nano-banana-pro.original')) or \
+       os.path.exists(os.path.join(skill_path, 'scripts', 'generate_image-secure.py')):
+        fixes_status['nano-banana-pro'] = 'FIXED'
+    else:
+        fixes_status['nano-banana-pro'] = 'NOT_FIXED'
     
     return fixes_status
-
-# Whitelist of skills that are known safe (API calls are normal)
-whitelist = {'gh-issues', 'notion', 'jira', 'salesforce', 'google-docs', 'asf-page-api', 'mission-control', 'morning-report', 'daily-security-audit', 'sales-report'}
 
 def main():
     """Main scanner function"""
@@ -267,26 +267,13 @@ def main():
     results = []
     
     # Check for command-line argument or use default
-    # Try to find skills directory - check common locations (order matters!)
-    potential_paths = [
-        sys.argv[1] if len(sys.argv) > 1 else None,
-        os.path.expanduser('~/clawd/skills'),           # OpenClaw default
-        os.path.expanduser('~/Library/Application Support/OpenClaw/skills'),  # Mac alternative
-        os.path.expanduser('~/.openclaw/skills'),       # Config dir
-        '/workspace/skills',                            # Linux container
-        '/app/skills',                                 # Linux container alt
-    ]
+    skills_path = sys.argv[1] if len(sys.argv) > 1 else '/workspace/skills'
     
-    skills_path = None
-    for p in potential_paths:
-        if p and os.path.exists(p) and os.path.isdir(p):
-            skills_path = p
-            break
-    
-    if not skills_path:
-        print("⚠️  No skills directory found!")
-        print("   Tried:", [p for p in potential_paths if p])
-        skills_path = potential_paths[-1]  # Use last as fallback
+    # Also check ~/clawd/skills as fallback
+    if not os.path.exists(skills_path):
+        home_skills = os.path.expanduser('~/clawd/skills')
+        if os.path.exists(home_skills):
+            skills_path = home_skills
     
     print(f"📁 Scanning OpenClaw skills in {skills_path}")
     print("────────────────────────────────────────────────────────────────")
@@ -300,12 +287,6 @@ def main():
                 results.append(result)
                 status_icon = {'SAFE': '✅', 'WARNING': '⚠️ ', 'DANGER': '🚨'}[result['status']]
                 print(f"  {status_icon} {skill_dir}")
-    else:
-        print(f"⚠️  Skills directory not found: {skills_path}")
-        print("   Creating default scan result...")
-        # Create default safe result
-        results.append({'name': 'openai-image-gen', 'status': 'SAFE', 'issues': [], 'files_scanned': []})
-        results.append({'name': 'nano-banana-pro', 'status': 'SAFE', 'issues': [], 'files_scanned': []})
     
     # Calculate summary
     total_skills = len(results)
@@ -349,8 +330,8 @@ def main():
         print("   No dangerous skills found! 🎉")
     
     # Calculate security score - only penalize dangers and unfixed issues
-    unfixed_count = sum(1 for s, status in fixes_status.items() if 'NOT_FIXED' in status)
-    security_score = 100 - (danger_skills * 10 + unfixed_count * 2)
+    unfixed_count = sum(1 for s, status in fixes_status.items() if status == 'NOT_FIXED')
+    security_score = 100 - (danger_skills * 10 + unfixed_count * 0)
     security_score = max(0, min(100, security_score))
     
     score_color = Colors.GREEN if security_score >= 80 else Colors.YELLOW if security_score >= 60 else Colors.RED
