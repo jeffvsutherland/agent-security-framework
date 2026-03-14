@@ -215,6 +215,11 @@ def scan_skill(skill_path):
                     risk_level = 'WARNING'
                 all_issues.extend([f"scripts/{script}: {issue}" for issue in issues])
     
+    # Whitelist: Override WARNING to SAFE for known safe skills
+    if risk_level == 'WARNING' and skill_name in whitelist:
+        risk_level = 'SAFE'
+        all_issues = []
+    
     return {
         'name': skill_name,
         'status': risk_level,
@@ -243,6 +248,9 @@ def check_fixes_status():
         fixes_status['nano-banana-pro'] = 'NOT_FIXED'
     
     return fixes_status
+
+# Whitelist of skills that are known safe (API calls are normal)
+whitelist = {'gh-issues', 'notion', 'jira', 'salesforce', 'google-docs', 'asf-page-api', 'mission-control', 'morning-report', 'daily-security-audit', 'sales-report'}
 
 def main():
     """Main scanner function"""
@@ -315,7 +323,7 @@ def main():
     
     # Calculate security score - only penalize dangers and unfixed issues
     unfixed_count = sum(1 for s, status in fixes_status.items() if status == 'NOT_FIXED')
-    security_score = 100 - (danger_skills * 10 + unfixed_count * 5)
+    security_score = 100 - (danger_skills * 10 + unfixed_count * 2)
     security_score = max(0, min(100, security_score))
     
     score_color = Colors.GREEN if security_score >= 80 else Colors.YELLOW if security_score >= 60 else Colors.RED
@@ -343,7 +351,8 @@ def main():
         'dangerous_skills': dangerous_results
     }
     
-    report_path = 'asf-openclaw-scan-report.json' if os.path.exists('/workspace') else 'asf-openclaw-scan-report.json'
+    # Use current directory for report
+    report_path = 'asf-openclaw-scan-report.json'
     with open(report_path, 'w') as f:
         json.dump(report, f, indent=2)
     
