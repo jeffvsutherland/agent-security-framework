@@ -72,10 +72,26 @@ except: print('Unknown')
 " 2>/dev/null || echo "Unknown")
 fi
 
-if [ "$SCORE" -eq 100 ]; then STATUS="✅ PERFECT"; elif [ "$SCORE" -ge 90 ]; then STATUS="✅ EXCELLENT"; elif [ "$SCORE" -ge 70 ]; then STATUS="⚠️ ACCEPTABLE"; else STATUS="❌ CRITICAL"; fi
+if [ "$SCORE" -eq 100 ]; then
+    STATUS="✅ PERFECT"
+elif [ "$SCORE" -ge 90 ]; then
+    STATUS="✅ EXCELLENT"
+elif [ "$SCORE" -ge 70 ]; then
+    STATUS="⚠️ ACCEPTABLE"
+else
+    STATUS="❌ CRITICAL"
+fi
 [ "$DANGERS" -eq 0 ] && CRIT="✅ None" || CRIT="❌ ACTION REQUIRED"
 [ "$WARNINGS" -gt 0 ] && WARN_STATUS="⚠️ $WARNINGS to review" || WARN_STATUS="✅ None"
-[ "$SCORE" -eq 100 ] && MEANING="fully secured - 100/100!" || [ "$SCORE" -ge 90 ] && MEANING="well-protected" || [ "$SCORE" -ge 70 ] && MEANING="adequately protected" || MEANING="requiring attention"
+if [ "$SCORE" -eq 100 ]; then
+    MEANING="100% secured - PERFECT!"
+elif [ "$SCORE" -ge 90 ]; then
+    MEANING="well-protected"
+elif [ "$SCORE" -ge 70 ]; then
+    MEANING="adequately protected"
+else
+    MEANING="requiring attention"
+fi
 SAFE=$((52 - WARNINGS - DANGERS)); [ $SAFE -lt 0 ] && SAFE=0
 
 # Generate report
