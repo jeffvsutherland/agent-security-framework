@@ -10,10 +10,10 @@ echo "🛡️ Generating CIO Security Report..."
 rm -f asf-openclaw-scan-report.json ~/asf-openclaw-scan-report.json
 
 # Download scanner if not present
-if [ ! -f "asf-openclaw-scanner.py" ]; then
+if [ ! -f "asf-security-scanner.py" ]; then
     echo "Downloading security scanner..."
-    curl -sSL "https://raw.githubusercontent.com/jeffvsutherland/agent-security-framework/main/asf-openclaw-scanner.py" -o asf-openclaw-scanner.py
-    chmod +x asf-openclaw-scanner.py
+    curl -sSL "https://raw.githubusercontent.com/jeffvsutherland/agent-security-framework/main/asf-security-scanner.py" -o asf-security-scanner.py
+    chmod +x asf-security-scanner.py
 fi
 
 # Run scanner - try each path and use the one that finds skills
@@ -24,7 +24,7 @@ SCAN_OUTPUT=""
 for AGENT_DIR in ~/clawd/agents/*/skills; do
     if [ -d "$AGENT_DIR" ] && [ "$(ls -A "$AGENT_DIR" 2>/dev/null)" ]; then
         echo "Trying: $AGENT_DIR"
-        SCAN_OUTPUT=$(python3 asf-openclaw-scanner.py "$AGENT_DIR" 2>&1)
+        SCAN_OUTPUT=$(python3 asf-security-scanner.py "$AGENT_DIR" 2>&1)
         if echo "$SCAN_OUTPUT" | grep -q "Skills Scanned"; then
             echo "Found skills in: $AGENT_DIR"
             break
@@ -37,7 +37,7 @@ if ! echo "$SCAN_OUTPUT" | grep -q "Skills Scanned"; then
     for SKILLS_PATH in "$HOME/clawd/skills" "$HOME/Library/Application Support/OpenClaw/skills" "./skills" "/workspace/skills" "/app/skills"; do
         if [ -d "$SKILLS_PATH" ] && [ "$(ls -A "$SKILLS_PATH" 2>/dev/null)" ]; then
             echo "Trying: $SKILLS_PATH"
-            SCAN_OUTPUT=$(python3 asf-openclaw-scanner.py "$SKILLS_PATH" 2>&1)
+            SCAN_OUTPUT=$(python3 asf-security-scanner.py "$SKILLS_PATH" 2>&1)
             if echo "$SCAN_OUTPUT" | grep -q "Skills Scanned"; then
                 echo "Found skills in: $SKILLS_PATH"
                 break
