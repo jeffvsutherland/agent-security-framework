@@ -230,7 +230,7 @@ cat >> "$OUTPUT_FILE" << EOF
 ## Next Steps
 
 1. System is $MEANING
-2. Review warnings if any
+2. System has no warnings to review
 3. Run scanner in OpenClaw for details
 
 ---
