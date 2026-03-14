@@ -6,14 +6,22 @@ DATE=$(date '+%Y-%m-%d %H:%M:%S')
 
 echo "🛡️ Generating CIO Security Report..."
 
-# Run scanner
-if [ -f "asf-openclaw-scanner.py" ]; then
-    python3 asf-openclaw-scanner.py >/dev/null 2>&1 || true
+# Download scanner if not present
+if [ ! -f "asf-openclaw-scanner.py" ]; then
+    echo "Downloading security scanner..."
+    curl -sSL "https://raw.githubusercontent.com/jeffvsutherland/agent-security-framework/main/asf-openclaw-scanner.py" -o asf-openclaw-scanner.py
+    chmod +x asf-openclaw-scanner.py
 fi
+
+# Run scanner (try common skill paths)
+echo "Running security scan..."
+python3 asf-openclaw-scanner.py /app/skills 2>/dev/null || \
+python3 asf-openclaw-scanner.py ~/clawd/skills 2>/dev/null || \
+python3 asf-openclaw-scanner.py 2>/dev/null || true
 
 # Find JSON
 JSON_FILE=""
-for f in asf-openclaw-scan-report.json /workspace/asf-openclaw-scan-report.json; do
+for f in asf-openclaw-scan-report.json /workspace/asf-openclaw-scan-report.json ~/asf-openclaw-scan-report.json; do
   [ -f "$f" ] && JSON_FILE="$f" && break
 done
 
