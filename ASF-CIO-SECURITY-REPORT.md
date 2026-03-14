@@ -1,8 +1,8 @@
 # ASF Security Report - Executive Summary
 
-**Generated:** 2026-03-14 17:25:43  
+**Generated:** 2026-03-14 17:27:23  
 **System:** OpenClaw Agent Platform  
-**Security Score:** 100/100
+**Security Score:** 90/100
 
 ---
 
@@ -10,16 +10,16 @@
 
 | Metric | Value | Status |
 |--------|-------|--------|
-| Security Score | 100/100 | ✅ EXCELLENT |
-| Safe Skills | 6 | ✅ Pass |
-| Warning Skills | 6 | ⚠️ Review |
+| Security Score | 90/100 | ✅ EXCELLENT |
+| Safe Skills | 2 | ✅ Pass |
+| Warning Skills | 2 | ⚠️ Review |
 | Critical Issues | 0 | ✅ None |
 
 ---
 
 ## What This Score Means
 
-Your security score of **100/100** indicates that the system is **well-protected**.
+Your security score of **90/100** indicates that the system is **well-protected**.
 
 ---
 
@@ -56,7 +56,7 @@ The following security components are working correctly:
 ## Issues Requiring Attention ⚠️
 
 
-### Warnings (6 skills)
+### Warnings (2 skills)
 
 These skills have potential security concerns that should be reviewed:
 
@@ -64,7 +64,7 @@ These skills have potential security concerns that should be reviewed:
 |-------|-------|-----------------|-------------------|
 | No warning skills found | | |
 
-**Why This Matters:** These skills could potentially expose API credentials or be exploited if vulnerabilities are discovered. While not critical, addressing these improves your security posture.
+**Why This Matters:** These are informational warnings for skills that make external API calls. This is normal for integration skills. No action required unless specific concerns.
 
 
 ### Critical Issues
@@ -78,9 +78,9 @@ These skills have potential security concerns that should be reviewed:
 
 ### Quick Wins (Gain 5-10 points)
 
-1. **Fix warning skills** - Update openai-image-gen to use secure credential storage
+1. **Review warning skills** - Some skills make API calls (normal behavior for integration skills)
 2. **Enable all guardrails** - Run `./full-asf-35-36-37-41-42-secure.sh`
-3. **Update skills** - Remove deprecated skills like nano-banana-pro
+3. **Schedule scans** - Run weekly: `python3 asf-openclaw-scanner.py`
 
 ### Long-term Improvements (Gain 10-15 points)
 
