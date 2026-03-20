@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# asf-install.sh - One-Command ASF + OpenClaw + Mission Control Installer
+# asf-quick-install.sh - One-Command ASF + OpenClaw + Mission Control Installer
 # Usage: curl -sSL https://raw.githubusercontent.com/jeffvsutherland/agent-security-framework/main/asf-quick-install.sh | bash
 #
 set -euo pipefail
@@ -9,8 +9,6 @@ set -euo pipefail
 # CONFIGURATION
 # =============================================================================
 ASF_VERSION="2026.03"
-OC_VERSION="latest"
-MC_VERSION="latest"
 
 # Default ports (can be overridden)
 OC_GATEWAY_PORT="${OC_GATEWAY_PORT:-18789}"
@@ -21,7 +19,6 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
-CYAN='\033[0;36m'
 BOLD='\033[1m'
 NC='\033[0m' # No Color
 
@@ -34,17 +31,6 @@ log_warn() { echo -e "${YELLOW}[WARN]${NC} $*"; }
 log_error() { echo -e "${RED}[ERROR]${NC} $*"; }
 
 command_exists() { command -v "$1" >/dev/null 2>&1; }
-
-# Detect OS
-detect_os() {
-    if [[ "$OSTYPE" == "darwin"* ]]; then
-        echo "macos"
-    elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        echo "linux"
-    else
-        echo "unsupported"
-    fi
-}
 
 # Check minimum requirements
 check_requirements() {
@@ -105,7 +91,7 @@ install_openclaw() {
     
     # Copy environment template
     if [[ -f "$INSTALL_DIR/openclaw/.env.example" ]]; then
-        cp "$INSTALL_DIR/openclaw/.env.example" "$INSTALL_DIR/openclaw/.env" 2>/dev/null || true
+        cp "$INSTALL_DIR/openclaw/.env.example" "$INSTALL_DIR/openclaw/.env" 2>/dev/null
     fi
     
     log_success "OpenClaw installed"
@@ -257,7 +243,9 @@ install_asf() {
     if [[ -d "$INSTALL_DIR/agent-security-framework/.git" ]]; then
         log_warn "ASF already exists, pulling latest..."
         cd "$INSTALL_DIR/agent-security-framework"
-        git pull origin main 2>/dev/null || true
+        if ! git pull origin main 2>/dev/null; then
+            log_warn "Could not pull latest ASF, using existing version"
+        fi
     else
         git clone --depth 1 https://github.com/jeffvsutherland/agent-security-framework.git "$INSTALL_DIR/agent-security-framework"
     fi
@@ -273,7 +261,9 @@ apply_asf_fixes() {
     if [[ -d "$INSTALL_DIR/agent-security-framework" ]]; then
         # Copy security scripts
         mkdir -p "$INSTALL_DIR/openclaw/security"
-        cp -r "$INSTALL_DIR/agent-security-framework/"* "$INSTALL_DIR/openclaw/security/" 2>/dev/null || true
+        if ! cp -r "$INSTALL_DIR/agent-security-framework/"* "$INSTALL_DIR/openclaw/security/" 2>/dev/null; then
+            log_warn "Could not copy ASF security configs"
+        fi
     fi
     
     log_success "ASF security configured"
