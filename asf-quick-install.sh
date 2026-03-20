@@ -59,7 +59,27 @@ check_requirements() {
     
     # Check Docker is running
     if ! docker info >/dev/null 2>&1; then
-        log_error "Docker is not running. Please start Docker Desktop (macOS) or dockerd (Linux) and try again."
+        # Detect if Docker CLI exists but daemon not running
+        if command_exists docker; then
+            if [[ "$OSTYPE" == "darwin"* ]]; then
+                log_error "Docker CLI found but daemon not running."
+                log_info "Please start Docker Desktop:"
+                echo "  open -a Docker"
+                echo "  # Then wait ~30 seconds for Docker to fully start"
+                echo "  # Re-run this script after Docker starts"
+            else
+                log_error "Docker is not running. Start with:"
+                echo "  sudo systemctl start docker"
+            fi
+        else
+            log_error "Docker is not installed."
+            if [[ "$OSTYPE" == "darwin"* ]]; then
+                echo "  Install Docker Desktop: https://www.docker.com/products/docker-desktop"
+                echo "  Or: brew install --cask docker"
+            else
+                echo "  Install Docker: sudo apt-get install docker.io"
+            fi
+        fi
         exit 1
     fi
     
@@ -355,7 +375,7 @@ case "\${1:-status}" in
         cd "\$OC_DIR" && docker compose logs -f --tail=50 2>/dev/null || echo "No logs available"
         ;;
     shell)
-        docker exec -it openclaw-gateway-1 bash 2>/dev/null || docker exec -it openclaw_gateway_1 bash 2>/dev/null || echo "Shell not available"
+        docker exec -it openclaw-openclaw-gateway-1 bash 2>/dev/null || docker exec -it openclaw-gateway-1 bash 2>/dev/null || echo "Shell not available. Try: docker ps"
         ;;
     asf)
         shift
@@ -441,6 +461,23 @@ main() {
     echo "     See: $INSTALL_DIR/OPENCLAW-SETUP.md for examples"
     echo "  2. For remote access: Use the Control UI to pair your device"
     echo "  3. Check logs if issues: $ ./asf-launcher.sh logs"
+    echo ""
+    
+    # Security guidance
+    echo -e "\${YELLOW}🔒 SECURITY: Restrict permissions on files containing API keys:\${NC}"
+    echo "  chmod 600 ~/.openclaw/.env"
+    echo "  chmod 600 ~/.openclaw/agents/main/agent/auth-profiles.json"
+    echo "  chmod 600 $INSTALL_DIR/openclaw/.env"
+    echo "  Never commit these files to git."
+    echo ""
+    
+    # Device pairing help
+    echo -e "\${YELLOW}Device Pairing (for remote/browser access):\${NC}"
+    echo "  If you see 'pairing required' in the Control UI, run:"
+    echo "  docker exec openclaw-openclaw-gateway-1 node dist/index.js devices list"
+    echo "  docker exec openclaw-openclaw-gateway-1 node dist/index.js devices approve <requestId>"
+    echo "  Note: Local connections (127.0.0.1) are auto-approved."
+    echo "  Pairing requests expire after 5 minutes — approve promptly."
     echo ""
 }
 
