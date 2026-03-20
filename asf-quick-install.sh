@@ -93,7 +93,7 @@ setup_directories() {
 install_openclaw() {
     log_info "Installing OpenClaw..."
     
-    if [[ -d "$INSTALL_DIR/openclaw/.git ]]; then
+    if [[ -d "$INSTALL_DIR/openclaw/.git" ]]; then
         log_warn "OpenClaw already exists, skipping clone"
     else
         git clone --depth 1 https://github.com/openclaw/openclaw.git "$INSTALL_DIR/openclaw"
