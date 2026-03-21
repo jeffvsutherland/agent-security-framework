@@ -21,11 +21,14 @@
 
 | Bot | Username | Status | Token Secured? |
 |-----|----------|--------|----------------|
-| Sales | @ASFSalesBot | Active | Check token rotation |
-| Deploy | @ASFDeployBot | Active | Check token rotation |
-| Research | @ASFResearchBot | Active | Check token rotation |
-| Social | @ASFSocialBot | Active | Check token rotation |
-| Raven (me) | @AgentSaturdayASFBot | Active | Check token rotation |
+| Raven (me) | @AgentSaturdayASFBot | ✅ Active | Secure |
+| Clawdbot | @jeffsutherlandbot | ✅ Active | Secure |
+| ~~Sales~~ | ~~@ASFSalesBot~~ | ❌ Deleted (compromised) | N/A |
+| ~~Deploy~~ | ~~@ASFDeployBot~~ | ❌ Deleted (compromised) | N/A |
+| ~~Research~~ | ~~@ASFResearchBot~~ | ❌ Deleted (compromised) | N/A |
+| ~~Social~~ | ~~@ASFSocialBot~~ | ❌ Deleted (compromised) | N/A |
+
+**Action Taken:** Jeff deleted all compromised bots except Raven and Clawdbot (2026-03-21)
 
 ---
 
