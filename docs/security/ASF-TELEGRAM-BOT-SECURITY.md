@@ -4,7 +4,7 @@
 
 **Date:** 2026-03-20  
 **Attackers:** @MISHADOX, @HANDSGOD  
-**Status:** Under Investigation
+**Status:** ✅ RESOLVED
 
 ---
 
@@ -12,8 +12,9 @@
 
 1. ✅ Story created in Mission Control: `14d0777a-0aa7-4eec-b978-7a236b889919`
 2. ✅ Bot token security review initiated
-3. ⏳ Email abuse@telegram.org (pending Jeff approval)
-4. ⏳ In-app reports for attacker accounts
+3. ✅ Email abuse@telegram.org sent via Copilot (agent.saturday@scrumai.org)
+4. ✅ Compromised bots deleted by Jeff
+5. ✅ New email skill deployed: `skills/email-send/email-send.py`
 
 ---
 

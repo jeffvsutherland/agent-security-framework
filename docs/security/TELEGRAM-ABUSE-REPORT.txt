@@ -1,0 +1,30 @@
+To: abuse@telegram.org
+Subject: Bot Account Hijacking - Immediate Action Required
+
+I am the owner of the following Telegram bot(s) that have been compromised:
+
+Bots Previously Owned (deleted due to compromise):
+- @ASFSalesBot
+- @ASFDeployBot  
+- @ASFResearchBot
+- @ASFSocialBot
+
+These bots were hijacked by malicious actors:
+- @MISHADOX
+- @HANDSGOD
+
+The attackers have taken control of these bots and are using them for unauthorized purposes.
+
+Please:
+1. Suspend the attacker accounts: @MISHADOX, @HANDSGOD
+2. Investigate any other bots they may have compromised
+3. Take action to prevent further hijackings
+
+Evidence of attacks on other AI agent teams has been documented in the community. 
+These attackers appear to be targeting AI agent Telegram bots broadly.
+
+Contact: jeffsutherland@gmail.com
+Telegram ID: 1510884737
+Date: 2026-03-21
+
+Thank you for your assistance in protecting the Telegram platform from these malicious actors.
